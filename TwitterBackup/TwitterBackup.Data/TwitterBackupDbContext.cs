@@ -6,14 +6,18 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using TwitterBackup.API.Models;
 
-namespace TwitterBackup.API.Data
+namespace TwitterBackup.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class TwitterBackupDbContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public TwitterBackupDbContext(DbContextOptions<TwitterBackupDbContext> options)
             : base(options)
         {
         }
+
+        //DBSets must go here !!!
+
+        //SaveChanges must go here !!!
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
