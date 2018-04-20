@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using TwitterBackup.API.Models;
 using TwitterBackup.Data;
 using TwitterBackup.Data.Models;
+using TwitterBackup.Data.Models.Identity;
 
 namespace TwitterBackup.API
 {
@@ -23,18 +24,20 @@ namespace TwitterBackup.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Use SQL Database if in Azure, otherwise, use SQLite
             if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
+            {
                 services.AddDbContext<TwitterBackupDbContext>(options =>
-                        options.UseSqlServer(Configuration.GetConnectionString("AzureSQL")));
+                    options.UseSqlServer(Configuration.GetConnectionString("AzureSQL")));
+            }
             else
+            {
                 services.AddDbContext<TwitterBackupDbContext>(options =>
-                        options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            }
 
-            // Automatically perform database migration
-            //services.BuildServiceProvider().GetService<ApplicationDbContext>().Database.Migrate();
+            services.BuildServiceProvider().GetService<TwitterBackupDbContext>().Database.Migrate();
 
-            services.AddIdentity<User, IdentityRole>()
+            services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<TwitterBackupDbContext>()
                 .AddDefaultTokenProviders();
 
@@ -47,12 +50,6 @@ namespace TwitterBackup.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
-            {
-                var context = serviceScope.ServiceProvider.GetRequiredService<TwitterBackupDbContext>();
-                context.Database.EnsureCreated();
-            }
-
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();

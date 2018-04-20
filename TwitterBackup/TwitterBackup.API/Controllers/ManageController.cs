@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -9,11 +8,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using TwitterBackup.API.Models;
 using TwitterBackup.API.Models.ManageViewModels;
-using TwitterBackup.API.Services;
-using TwitterBackup.Data.Models;
+using TwitterBackup.Data.Models.Identity;
 
 namespace TwitterBackup.API.Controllers
 {

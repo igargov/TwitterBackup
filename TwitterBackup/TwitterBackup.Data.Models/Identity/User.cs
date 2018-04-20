@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace TwitterBackup.Data.Models
+namespace TwitterBackup.Data.Models.Identity
 {
     public class User : IdentityUser
     {
