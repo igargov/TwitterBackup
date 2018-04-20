@@ -1,13 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using TwitterBackup.Data.Models.Abstracts;
 
 namespace TwitterBackup.Data.Repositories
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class, IDeletable
+    public class GenericRepository<T> : IRepository<T> where T : class
     {
         private readonly TwitterBackupDbContext context;
 
@@ -25,16 +21,7 @@ namespace TwitterBackup.Data.Repositories
                 entityEntry.State = EntityState.Added;
             }
 
-            this.context.Set<T>().Add(entity);
-        }
-
-        public void Delete(T entity)
-        {
-            entity.isDeleted = true;
-            entity.DeletedOn = DateTime.Now;
-
-            EntityEntry entry = this.context.Entry(entity);
-            entry.State = EntityState.Modified;
+            this.context.Add(entity);
         }
 
         public void Update(T entity)
@@ -47,6 +34,20 @@ namespace TwitterBackup.Data.Repositories
             }
 
             entityEntry.State = EntityState.Modified;
+        }
+
+        public void Delete(T entity)
+        {
+            EntityEntry entry = this.context.Entry(entity);
+            if (entry.State != EntityState.Deleted)
+            {
+                entry.State = EntityState.Deleted;
+            }
+            else
+            {
+                this.context.Set<T>().Attach(entity);
+                this.context.Set<T>().Remove(entity);
+            }
         }
     }
 }

@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using TwitterBackup.API.Services;
 
 namespace TwitterBackup.API.Services
 {

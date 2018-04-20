@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using TwitterBackup.API.Data;
 using TwitterBackup.API.Models;
-using TwitterBackup.API.Services;
+using TwitterBackup.Data;
+using TwitterBackup.Data.Models;
 
 namespace TwitterBackup.API
 {
@@ -28,21 +25,21 @@ namespace TwitterBackup.API
         {
             // Use SQL Database if in Azure, otherwise, use SQLite
             if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
-                services.AddDbContext<ApplicationDbContext>(options =>
+                services.AddDbContext<TwitterBackupDbContext>(options =>
                         options.UseSqlServer(Configuration.GetConnectionString("AzureSQL")));
             else
-                services.AddDbContext<ApplicationDbContext>(options =>
+                services.AddDbContext<TwitterBackupDbContext>(options =>
                         options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             // Automatically perform database migration
             //services.BuildServiceProvider().GetService<ApplicationDbContext>().Database.Migrate();
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<TwitterBackupDbContext>()
                 .AddDefaultTokenProviders();
 
             // Add application services.
-            services.AddTransient<IEmailSender, EmailSender>();
+            //services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddMvc();
         }
@@ -52,7 +49,7 @@ namespace TwitterBackup.API
         {
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
-                var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                var context = serviceScope.ServiceProvider.GetRequiredService<TwitterBackupDbContext>();
                 context.Database.EnsureCreated();
             }
 
