@@ -2,7 +2,7 @@
 
 namespace TwitterBackup.Data.Models.Identity
 {
-    public class RoleClaim : IdentityRoleClaim<string>
+    public class RoleClaim : IdentityRoleClaim<int>
     {
     }
 }

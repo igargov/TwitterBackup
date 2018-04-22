@@ -2,7 +2,7 @@
 
 namespace TwitterBackup.Data.Models.Identity
 {
-    public class Role : IdentityRole
+    public class Role : IdentityRole<int>
     {
     }
 }
