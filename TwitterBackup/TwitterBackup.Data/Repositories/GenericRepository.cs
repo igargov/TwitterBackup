@@ -12,6 +12,13 @@ namespace TwitterBackup.Data.Repositories
             this.context = context;
         }
 
+        public T GetById(int id)
+        {
+            var entity = this.context.Set<T>().Find(id);
+
+            return entity;
+        }
+
         public void Add(T entity)
         {
             EntityEntry entityEntry = this.context.Entry(entity);
