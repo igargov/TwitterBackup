@@ -2,12 +2,12 @@
 
 namespace TwitterBackup.Data.Models
 {
-    public class UserTwAccount
+    public class UserTwitterAccount
     {
         public int UserId { get; set; }
         public User User { get; set; }
 
-        public int TwAccountId { get; set; }
-        public TwAccount TwAccount { get; set; }
+        public int TwitterAccountId { get; set; }
+        public TwitterAccount TwitterAccount { get; set; }
     }
 }

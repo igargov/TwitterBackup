@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TwitterBackup.Data.Models
 {
-    public class TwAccount
+    public class TwitterAccount
     {
         public int Id { get; set; }
 
@@ -28,8 +28,8 @@ namespace TwitterBackup.Data.Models
         public DateTime? CreatedAt { get; set; }
 
 
-        public TwAccountImage TwAccountImage { get; set; }
+        public TwitterAccountImage TwitterAccountImage { get; set; }
 
-        public List<UserTwAccount> Users { get; set; }
+        public List<UserTwitterAccount> Users { get; set; }
     }
 }

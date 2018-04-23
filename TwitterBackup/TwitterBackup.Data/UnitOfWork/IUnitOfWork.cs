@@ -5,9 +5,9 @@ namespace TwitterBackup.Data.UnitOfWork
 {
     public interface IUnitOfWork
     {
-        IRepository<TwAccount> TwitterAccounts { get; }
+        IRepository<TwitterAccount> TwitterAccounts { get; }
 
-        IRepository<TwAccountImage> TwitterAccountImages { get; }
+        IRepository<TwitterAccountImage> TwitterAccountImages { get; }
 
         void SaveChanges();
 

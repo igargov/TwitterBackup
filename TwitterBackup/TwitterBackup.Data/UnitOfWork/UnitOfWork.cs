@@ -6,34 +6,34 @@ namespace TwitterBackup.Data.UnitOfWork
     class UnitOfWork : IUnitOfWork
     {
         private readonly TwitterBackupDbContext context;
-        private IRepository<TwAccount> twitterAccounts;
-        private IRepository<TwAccountImage> twitterAccountImages;
+        private IRepository<TwitterAccount> twitterAccounts;
+        private IRepository<TwitterAccountImage> twitterAccountImages;
 
         public UnitOfWork(TwitterBackupDbContext context)
         {
             this.context = context;
         }
 
-        public IRepository<TwAccount> TwitterAccounts
+        public IRepository<TwitterAccount> TwitterAccounts
         {
             get
             {
                 if (this.twitterAccounts == null)
                 {
-                    return new GenericRepository<TwAccount>(this.context);
+                    return new GenericRepository<TwitterAccount>(this.context);
                 }
 
                 return this.twitterAccounts;
             }
         }
 
-        public IRepository<TwAccountImage> TwitterAccountImages
+        public IRepository<TwitterAccountImage> TwitterAccountImages
         {
             get
             {
                 if (this.twitterAccountImages == null)
                 {
-                    return new GenericRepository<TwAccountImage>(this.context);
+                    return new GenericRepository<TwitterAccountImage>(this.context);
                 }
 
                 return this.twitterAccountImages;

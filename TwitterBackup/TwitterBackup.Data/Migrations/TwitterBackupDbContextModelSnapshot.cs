@@ -176,7 +176,7 @@ namespace TwitterBackup.Data.Migrations
                     b.ToTable("UserTokens");
                 });
 
-            modelBuilder.Entity("TwitterBackup.Data.Models.TwAccount", b =>
+            modelBuilder.Entity("TwitterBackup.Data.Models.TwitterAccount", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -206,34 +206,34 @@ namespace TwitterBackup.Data.Migrations
                     b.ToTable("TwitterAccounts");
                 });
 
-            modelBuilder.Entity("TwitterBackup.Data.Models.TwAccountImage", b =>
+            modelBuilder.Entity("TwitterBackup.Data.Models.TwitterAccountImage", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<byte[]>("ProfileImage");
 
-                    b.Property<int>("TwAccountId");
+                    b.Property<int>("TwitterAccountId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TwAccountId")
+                    b.HasIndex("TwitterAccountId")
                         .IsUnique();
 
                     b.ToTable("TwitterAccountImages");
                 });
 
-            modelBuilder.Entity("TwitterBackup.Data.Models.UserTwAccount", b =>
+            modelBuilder.Entity("TwitterBackup.Data.Models.UserTwitterAccount", b =>
                 {
                     b.Property<int>("UserId");
 
-                    b.Property<int>("TwAccountId");
+                    b.Property<int>("TwitterAccountId");
 
-                    b.HasKey("UserId", "TwAccountId");
+                    b.HasKey("UserId", "TwitterAccountId");
 
-                    b.HasIndex("TwAccountId");
+                    b.HasIndex("TwitterAccountId");
 
-                    b.ToTable("UserTwAccount");
+                    b.ToTable("UserTwitterAccount");
                 });
 
             modelBuilder.Entity("TwitterBackup.Data.Models.Identity.RoleClaim", b =>
@@ -281,19 +281,19 @@ namespace TwitterBackup.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("TwitterBackup.Data.Models.TwAccountImage", b =>
+            modelBuilder.Entity("TwitterBackup.Data.Models.TwitterAccountImage", b =>
                 {
-                    b.HasOne("TwitterBackup.Data.Models.TwAccount", "TwAccount")
-                        .WithOne("TwAccountImage")
-                        .HasForeignKey("TwitterBackup.Data.Models.TwAccountImage", "TwAccountId")
+                    b.HasOne("TwitterBackup.Data.Models.TwitterAccount", "TwitterAccount")
+                        .WithOne("TwitterAccountImage")
+                        .HasForeignKey("TwitterBackup.Data.Models.TwitterAccountImage", "TwitterAccountId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("TwitterBackup.Data.Models.UserTwAccount", b =>
+            modelBuilder.Entity("TwitterBackup.Data.Models.UserTwitterAccount", b =>
                 {
-                    b.HasOne("TwitterBackup.Data.Models.TwAccount", "TwAccount")
+                    b.HasOne("TwitterBackup.Data.Models.TwitterAccount", "TwitterAccount")
                         .WithMany("Users")
-                        .HasForeignKey("TwAccountId")
+                        .HasForeignKey("TwitterAccountId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("TwitterBackup.Data.Models.Identity.User", "User")

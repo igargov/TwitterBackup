@@ -5,6 +5,6 @@ namespace TwitterBackup.Data.Models.Identity
 {
     public class User : IdentityUser<int>
     {
-        public List<UserTwAccount> FavouriteUsers { get; set; }
+        public List<UserTwitterAccount> FavouriteUsers { get; set; }
     }
 }
