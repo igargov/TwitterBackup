@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using System;
+using System.Collections.Generic;
 
 namespace TwitterBackup.Data.Migrations
 {
@@ -99,14 +100,14 @@ namespace TwitterBackup.Data.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ProfileImage = table.Column<byte[]>(nullable: true),
-                    TwAccountId = table.Column<int>(nullable: false)
+                    TwitterAccountId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TwitterAccountImages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TwitterAccountImages_TwitterAccounts_TwAccountId",
-                        column: x => x.TwAccountId,
+                        name: "FK_TwitterAccountImages_TwitterAccounts_TwitterAccountId",
+                        column: x => x.TwitterAccountId,
                         principalTable: "TwitterAccounts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -198,23 +199,23 @@ namespace TwitterBackup.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserTwAccount",
+                name: "UserTwitterAccount",
                 columns: table => new
                 {
                     UserId = table.Column<int>(nullable: false),
-                    TwAccountId = table.Column<int>(nullable: false)
+                    TwitterAccountId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserTwAccount", x => new { x.UserId, x.TwAccountId });
+                    table.PrimaryKey("PK_UserTwitterAccount", x => new { x.UserId, x.TwitterAccountId });
                     table.ForeignKey(
-                        name: "FK_UserTwAccount_TwitterAccounts_TwAccountId",
-                        column: x => x.TwAccountId,
+                        name: "FK_UserTwitterAccount_TwitterAccounts_TwitterAccountId",
+                        column: x => x.TwitterAccountId,
                         principalTable: "TwitterAccounts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserTwAccount_Users_UserId",
+                        name: "FK_UserTwitterAccount_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -234,9 +235,9 @@ namespace TwitterBackup.Data.Migrations
                 filter: "[NormalizedName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TwitterAccountImages_TwAccountId",
+                name: "IX_TwitterAccountImages_TwitterAccountId",
                 table: "TwitterAccountImages",
-                column: "TwAccountId",
+                column: "TwitterAccountId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -267,9 +268,9 @@ namespace TwitterBackup.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserTwAccount_TwAccountId",
-                table: "UserTwAccount",
-                column: "TwAccountId");
+                name: "IX_UserTwitterAccount_TwitterAccountId",
+                table: "UserTwitterAccount",
+                column: "TwitterAccountId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -293,7 +294,7 @@ namespace TwitterBackup.Data.Migrations
                 name: "UserTokens");
 
             migrationBuilder.DropTable(
-                name: "UserTwAccount");
+                name: "UserTwitterAccount");
 
             migrationBuilder.DropTable(
                 name: "Roles");

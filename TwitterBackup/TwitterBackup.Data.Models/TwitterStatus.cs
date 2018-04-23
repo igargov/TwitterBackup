@@ -1,6 +1,6 @@
 ﻿namespace TwitterBackup.Data.Models
 {
-    public class TwStatus
+    public class TwitterStatus
     {
         public int Id { get; set; }
 

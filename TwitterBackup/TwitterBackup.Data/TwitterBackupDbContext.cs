@@ -12,29 +12,29 @@ namespace TwitterBackup.Data
         {
         }
 
-        public DbSet<TwAccount> TwitterAccounts { get; set; }
-        public DbSet<TwAccountImage> TwitterAccountImages { get; set; }
+        public DbSet<TwitterAccount> TwitterAccounts { get; set; }
+        public DbSet<TwitterAccountImage> TwitterAccountImages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<UserTwAccount>()
-                .HasKey(k => new { k.UserId, k.TwAccountId });
+            builder.Entity<UserTwitterAccount>()
+                .HasKey(k => new { k.UserId, k.TwitterAccountId });
 
-            builder.Entity<UserTwAccount>()
+            builder.Entity<UserTwitterAccount>()
                 .HasOne(u => u.User)
                 .WithMany(twu => twu.FavouriteUsers)
                 .HasForeignKey(fk => fk.UserId);
 
-            builder.Entity<UserTwAccount>()
-                .HasOne(twu => twu.TwAccount)
+            builder.Entity<UserTwitterAccount>()
+                .HasOne(twu => twu.TwitterAccount)
                 .WithMany(twu => twu.Users)
-                .HasForeignKey(fk => fk.TwAccountId);
+                .HasForeignKey(fk => fk.TwitterAccountId);
 
-            builder.Entity<TwAccount>()
-                .HasOne(twui => twui.TwAccountImage)
-                .WithOne(twu => twu.TwAccount);
+            builder.Entity<TwitterAccount>()
+                .HasOne(twui => twui.TwitterAccountImage)
+                .WithOne(twu => twu.TwitterAccount);
 
             builder.Entity<User>(e => e.ToTable("Users"));
             builder.Entity<Role>(e => e.ToTable("Roles"));
