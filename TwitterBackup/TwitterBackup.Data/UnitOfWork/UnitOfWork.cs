@@ -3,7 +3,7 @@ using TwitterBackup.Data.Repositories;
 
 namespace TwitterBackup.Data.UnitOfWork
 {
-    class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         private readonly TwitterBackupDbContext context;
         private IRepository<TwitterAccount> twitterAccounts;
