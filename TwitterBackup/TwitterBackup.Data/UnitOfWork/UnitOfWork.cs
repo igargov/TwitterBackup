@@ -3,7 +3,7 @@ using TwitterBackup.Data.Repositories;
 
 namespace TwitterBackup.Data.UnitOfWork
 {
-    class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         private readonly TwitterBackupDbContext context;
         private IRepository<TwitterAccount> twitterAccounts;
@@ -20,7 +20,7 @@ namespace TwitterBackup.Data.UnitOfWork
             {
                 if (this.twitterAccounts == null)
                 {
-                    return new GenericRepository<TwitterAccount>(this.context);
+                    return this.twitterAccounts = new GenericRepository<TwitterAccount>(this.context);
                 }
 
                 return this.twitterAccounts;
@@ -33,7 +33,7 @@ namespace TwitterBackup.Data.UnitOfWork
             {
                 if (this.twitterAccountImages == null)
                 {
-                    return new GenericRepository<TwitterAccountImage>(this.context);
+                    return this.twitterAccountImages = new GenericRepository<TwitterAccountImage>(this.context);
                 }
 
                 return this.twitterAccountImages;

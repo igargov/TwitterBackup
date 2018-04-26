@@ -44,5 +44,10 @@ namespace TwitterBackup.Data
             builder.Entity<UserToken>(e => e.ToTable("UserTokens"));
             builder.Entity<RoleClaim>(e => e.ToTable("RoleClaims"));
         }
+
+        public DbSet<T> DbSet<T>() where T : class
+        {
+            return base.Set<T>();
+        }
     }
 }

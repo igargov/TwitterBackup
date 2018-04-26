@@ -14,11 +14,11 @@ namespace TwitterBackup.Data.Repositories
 
         public T GetById(int id)
         {
-            var entity = this.context.Set<T>().Find(id);
+            var entity = this.context.DbSet<T>().Find(id);
 
             return entity;
         }
-
+        
         public void Add(T entity)
         {
             EntityEntry entityEntry = this.context.Entry(entity);
@@ -37,7 +37,7 @@ namespace TwitterBackup.Data.Repositories
 
             if (entityEntry.State == EntityState.Detached)
             {
-                this.context.Set<T>().Attach(entity);
+                this.context.DbSet<T>().Attach(entity);
             }
 
             entityEntry.State = EntityState.Modified;
@@ -52,8 +52,8 @@ namespace TwitterBackup.Data.Repositories
             }
             else
             {
-                this.context.Set<T>().Attach(entity);
-                this.context.Set<T>().Remove(entity);
+                this.context.DbSet<T>().Attach(entity);
+                this.context.DbSet<T>().Remove(entity);
             }
         }
     }
