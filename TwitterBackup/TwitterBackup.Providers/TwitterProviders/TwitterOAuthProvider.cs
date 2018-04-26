@@ -38,7 +38,7 @@ namespace TwitterBackup.Providers
             {
                 if (string.IsNullOrWhiteSpace(TwitterOAuthProvider.requestToken))
                 {
-                    return this.GenerateRequestToken(consumer_key, consumer_secret);
+                    TwitterOAuthProvider.requestToken = this.GenerateRequestToken(consumer_key, consumer_secret);
                 }
 
                 return TwitterOAuthProvider.requestToken;
