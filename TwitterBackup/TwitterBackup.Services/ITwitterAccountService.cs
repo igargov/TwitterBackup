@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using TwitterBackup.Services.ViewModels;
+﻿using TwitterBackup.Services.ViewModels;
 
 namespace TwitterBackup.Services
 {
-    public interface ITwAccountService
+    public interface ITwitterAccountService
     {
-        int SaveAccount(TwAccountViewModel model);
+        int SaveAccount(TwitterAccountViewModel model);
     }
 }
