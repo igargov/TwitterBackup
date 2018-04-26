@@ -20,7 +20,7 @@ namespace TwitterBackup.Data.UnitOfWork
             {
                 if (this.twitterAccounts == null)
                 {
-                    return this.twitterAccounts = new GenericRepository<TwitterAccount>(this.context);
+                    this.twitterAccounts = new GenericRepository<TwitterAccount>(this.context);
                 }
 
                 return this.twitterAccounts;
@@ -33,7 +33,7 @@ namespace TwitterBackup.Data.UnitOfWork
             {
                 if (this.twitterAccountImages == null)
                 {
-                    return this.twitterAccountImages = new GenericRepository<TwitterAccountImage>(this.context);
+                    this.twitterAccountImages = new GenericRepository<TwitterAccountImage>(this.context);
                 }
 
                 return this.twitterAccountImages;
