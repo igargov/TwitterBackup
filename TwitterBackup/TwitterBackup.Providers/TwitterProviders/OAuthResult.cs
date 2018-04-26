@@ -1,6 +1,6 @@
 ﻿namespace TwitterBackup.Providers
 {
-    public class AuthResult
+    public class OAuthResult
     {
         public string TokenType { get; set; }
 
