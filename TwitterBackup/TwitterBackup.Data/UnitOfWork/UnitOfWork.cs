@@ -14,6 +14,16 @@ namespace TwitterBackup.Data.UnitOfWork
             this.context = context;
         }
 
+        public UnitOfWork(
+            TwitterBackupDbContext context, 
+            IRepository<TwitterAccount> twitterAccounts, 
+            IRepository<TwitterAccountImage> twitterAccountImages)
+        {
+            this.context = context;
+            this.twitterAccounts = twitterAccounts;
+            this.twitterAccountImages = twitterAccountImages;
+        }
+
         public IRepository<TwitterAccount> TwitterAccounts
         {
             get
