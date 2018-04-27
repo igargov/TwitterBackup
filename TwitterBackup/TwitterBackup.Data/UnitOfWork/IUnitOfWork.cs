@@ -1,4 +1,5 @@
-﻿using TwitterBackup.Data.Models;
+﻿using System.Threading.Tasks;
+using TwitterBackup.Data.Models;
 using TwitterBackup.Data.Repositories;
 
 namespace TwitterBackup.Data.UnitOfWork
@@ -9,8 +10,8 @@ namespace TwitterBackup.Data.UnitOfWork
 
         IRepository<TwitterAccountImage> TwitterAccountImages { get; }
 
-        void SaveChanges();
+        int SaveChanges();
 
-        void SaveChangesAsync();
+        Task<int> SaveChangesAsync();
     }
 }

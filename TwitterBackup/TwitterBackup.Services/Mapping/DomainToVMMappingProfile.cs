@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using TwitterBackup.Data.Models;
+using TwitterBackup.Services.ViewModels;
 
 namespace TwitterBackup.Services.Mapping
 {
@@ -6,7 +8,7 @@ namespace TwitterBackup.Services.Mapping
     {
         public DomainToVMMappingProfile()
         {
-
+            CreateMap<TwitterAccount, TwitterAccountViewModel>();
         }
     }
 }

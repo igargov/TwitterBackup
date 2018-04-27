@@ -1,4 +1,5 @@
-﻿using TwitterBackup.Data.Models;
+﻿using System.Threading.Tasks;
+using TwitterBackup.Data.Models;
 using TwitterBackup.Data.Repositories;
 
 namespace TwitterBackup.Data.UnitOfWork
@@ -15,8 +16,8 @@ namespace TwitterBackup.Data.UnitOfWork
         }
 
         public UnitOfWork(
-            TwitterBackupDbContext context, 
-            IRepository<TwitterAccount> twitterAccounts, 
+            TwitterBackupDbContext context,
+            IRepository<TwitterAccount> twitterAccounts,
             IRepository<TwitterAccountImage> twitterAccountImages)
         {
             this.context = context;
@@ -50,14 +51,14 @@ namespace TwitterBackup.Data.UnitOfWork
             }
         }
 
-        public void SaveChanges()
+        public int SaveChanges()
         {
-            this.context.SaveChanges();
+            return this.context.SaveChanges();
         }
 
-        public void SaveChangesAsync()
+        public async Task<int> SaveChangesAsync()
         {
-            this.context.SaveChangesAsync();
+            return await this.context.SaveChangesAsync();
         }
     }
 }

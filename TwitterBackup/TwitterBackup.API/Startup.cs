@@ -9,6 +9,13 @@ using TwitterBackup.API.Models;
 using TwitterBackup.Data;
 using TwitterBackup.Data.Models;
 using TwitterBackup.Data.Models.Identity;
+using TwitterBackup.Providers.Contracts;
+using TwitterBackup.Providers.RestClientFactory;
+using AutoMapper;
+using TwitterBackup.Providers.TwitterProviders;
+using TwitterBackup.Providers;
+using TwitterBackup.Services;
+using TwitterBackup.Data.UnitOfWork;
 
 namespace TwitterBackup.API
 {
@@ -43,6 +50,19 @@ namespace TwitterBackup.API
 
             // Add application services.
             //services.AddTransient<IEmailSender, EmailSender>();
+
+            services.AddScoped<IRestClientFactory, RestClientFactory>();
+            services.AddScoped<IRestRequestFactory, RestRequestFactory>();
+            services.AddScoped<ITwitterFacadeProvider, TwitterFacadeProvider>();
+            services.AddScoped<ITwitterAccountService, TwitterAccountService>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IMappingProvider, MappingProvider>();
+
+            services.AddScoped<TwitterOAuthProvider, TwitterOAuthProvider>(twitterOAuthProvider =>
+            {
+                return new TwitterOAuthProvider("vBCinenfbxWDWJRbQlxyZS2Yy", "WYBIL5LV3L0vEzGNC1fx6VsLpB7TWZfSx70nJlUYjpc2843B7p");
+            });
+            services.AddAutoMapper();
 
             services.AddMvc();
         }
