@@ -1,6 +1,11 @@
-﻿
+﻿@model TwitterBackup.Services.ViewModels.TwitterAccountViewModel
 @{
-    ViewData["Title"] = "GetTwitter";
+	if (Model == null)
+	{
+		await Html.PartialAsync("_UserNotFound");
+	}
+	else
+	{
+		await Html.PartialAsync("_UserFound", Model);
+	}
 }
-
-<h2>GetTwitter</h2>

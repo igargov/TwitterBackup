@@ -39,21 +39,18 @@ namespace TwitterBackup.API.Controllers
             var accessToken = await this.twitterOAuthProvider.GetAccessTokenAsync();
             var twitterResult = await this.twitterFacadeProvider.RetrieveTwitterAccountAsync(screenName, accessToken);
 
-            var jsonSettings = new JsonSerializerSettings();
-            jsonSettings.DateFormatString = "ddd MMM dd HH:mm:ss +ffff yyyy";
+            TwitterAccountViewModel twitterAccountViewModel = null;
 
-            TwitterAccountViewModel twitterAccountViewModel = JsonConvert.DeserializeObject<TwitterAccountViewModel>(twitterResult, jsonSettings);
-            twitterAccountViewModel.CreatedAt = DateTime.Now;
+            if (!twitterResult.Contains("User not found"))
+            {
+                var jsonSettings = new JsonSerializerSettings();
+                jsonSettings.DateFormatString = "ddd MMM dd HH:mm:ss +ffff yyyy";
+                twitterAccountViewModel = JsonConvert.DeserializeObject<TwitterAccountViewModel>(twitterResult, jsonSettings);
+                twitterAccountViewModel.CreatedAt = DateTime.Now;
+                int saveResult = this.twitterAccountService.SaveAccount(twitterAccountViewModel);
+            }
 
-            int saveResult = this.twitterAccountService.SaveAccount(twitterAccountViewModel);
-
-            //TODO: Handle exception !
-            //if (saveResult == -1)
-            //{
-            //    return RedirectToAction("Index");
-            //}
-
-            return View();
+            return View(twitterAccountViewModel);
         }
     }
 }
