@@ -1,6 +1,7 @@
 ﻿using RestSharp;
 using System.Threading.Tasks;
 using TwitterBackup.TwitterApiClient.Contracts;
+using TwitterBackup.TwitterApiClient.TwitterModels;
 
 namespace TwitterBackup.TwitterApiClient
 {
@@ -20,9 +21,9 @@ namespace TwitterBackup.TwitterApiClient
             this.accessTokenProvider = accessTokenProvider;
         }
 
-        public async Task<string> RetrieveTwitterAccountAsync(string screenName)
+        public async Task<TwitterAccountDTO> RetrieveTwitterAccountAsync(string screenName)
         {
-            var twitterAccount = await this.ExecuteRequestCommonAsync<string>(screenName, TwitterApiParams.UsersShowEndpoint);
+            var twitterAccount = await this.ExecuteRequestCommonAsync<TwitterAccountDTO>(screenName, TwitterApiParams.UsersShowEndpoint);
 
             return twitterAccount;
         }

@@ -7,7 +7,10 @@ namespace TwitterBackup.TwitterApiClient.RestClientFactory
     {
         public IRestClient Create(string baseUrl)
         {
-            return new RestClient(baseUrl);
+            var client = new RestClient(baseUrl);
+            client.AddHandler("application/json", new CustomJsonSerializer());
+
+            return client;
         }
     }
 }

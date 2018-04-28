@@ -1,10 +1,11 @@
 ﻿using System.Threading.Tasks;
+using TwitterBackup.TwitterApiClient.TwitterModels;
 
 namespace TwitterBackup.TwitterApiClient.Contracts
 {
     public interface ITwitterApiService
     {
-        Task<string> RetrieveTwitterAccountAsync(string screenName);
+        Task<TwitterAccountDTO> RetrieveTwitterAccountAsync(string screenName);
 
         Task<string> RetrieveTwitterAccountStatusesAsync(string screenName);
     }

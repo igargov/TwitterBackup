@@ -54,7 +54,7 @@ namespace TwitterBackup.API
 
             services.AddSingleton<TwitterAccessTokenProvider, TwitterAccessTokenProvider>(twitterOAuthProvider =>
             {
-                return new TwitterAccessTokenProvider("vBCinenfbxWDWJRbQlxyZS2Yy", "WYBIL5LV3L0vEzGNC1fx6VsLpB7TWZfSx70nJlUYjpc2843B7p");
+                return new TwitterAccessTokenProvider("", "");
             });
 
             services.AddScoped<ITwitterApiService, TwitterApiService>();
