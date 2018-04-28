@@ -35,6 +35,8 @@ namespace TwitterBackup.API.Controllers
         {
             var twitterResult = await this.twitterApiService.RetrieveTwitterAccountAsync(screenName);
 
+            TwitterAccountViewModel twitterAccountViewModel = null;
+
             //if (!twitterResult.Contains("User not found"))
             //{
             //    var jsonSettings = new JsonSerializerSettings();
@@ -44,7 +46,7 @@ namespace TwitterBackup.API.Controllers
             //    int saveResult = this.twitterAccountService.SaveAccount(twitterAccountViewModel);
             //}
 
-            return View();
+            return View(twitterAccountViewModel);
         }
     }
 }
