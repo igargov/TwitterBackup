@@ -25,7 +25,13 @@ namespace TwitterBackup.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetTwitter(string screenName)
+        public IActionResult FindAccount()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetTwitter([FromQuery]string screenName)
         {
             var twitterResult = await this.twitterApiService.RetrieveTwitterAccountAsync(screenName);
 

@@ -1,0 +1,11 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using TwitterBackup.API.Models
+@using TwitterBackup.Data.Models.Identity;
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+	<li><a asp-area="" asp-controller="TwitterAccount" asp-action="FindAccount">Find Account</a></li>
+}
