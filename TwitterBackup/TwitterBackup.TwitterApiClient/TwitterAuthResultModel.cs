@@ -1,6 +1,6 @@
-﻿namespace TwitterBackup.Providers
+﻿namespace TwitterBackup.TwitterApiClient
 {
-    public class OAuthResult
+    public class TwitterAuthResultModel
     {
         public string TokenType { get; set; }
 

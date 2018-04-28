@@ -1,30 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TwitterBackup.API.Models;
-using TwitterBackup.Providers;
-using TwitterBackup.Providers.Contracts;
 using TwitterBackup.Services;
 using Newtonsoft.Json;
 using TwitterBackup.Services.ViewModels;
+using TwitterBackup.TwitterApiClient.Contracts;
 
 namespace TwitterBackup.API.Controllers
 {
-    [Authorize]
+    //[Authorize]
     //[Route("[controller]/[account]")]
     public class TwitterAccountController : Controller
     {
-        private readonly ITwitterFacadeProvider twitterFacadeProvider;
-        private readonly TwitterOAuthProvider twitterOAuthProvider;
+        private readonly ITwitterApiService twitterApiService;
         private readonly ITwitterAccountService twitterAccountService;
 
-        public TwitterAccountController(ITwitterFacadeProvider twitterFacadeProvider, TwitterOAuthProvider twitterOAuthProvider, ITwitterAccountService twitterAccountService)
+        public TwitterAccountController(ITwitterApiService twitterApiService, ITwitterAccountService twitterAccountService)
         {
-            this.twitterFacadeProvider = twitterFacadeProvider;
-            this.twitterOAuthProvider = twitterOAuthProvider;
+            this.twitterApiService = twitterApiService;
             this.twitterAccountService = twitterAccountService;
         }
 
@@ -36,8 +29,7 @@ namespace TwitterBackup.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetTwitter(string screenName)
         {
-            var accessToken = await this.twitterOAuthProvider.GetAccessTokenAsync();
-            var twitterResult = await this.twitterFacadeProvider.RetrieveTwitterAccountAsync(screenName, accessToken);
+            var twitterResult = await this.twitterApiService.RetrieveTwitterAccountAsync(screenName);
 
             TwitterAccountViewModel twitterAccountViewModel = null;
 

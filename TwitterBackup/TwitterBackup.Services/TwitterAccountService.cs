@@ -1,7 +1,6 @@
-﻿using System;
-using TwitterBackup.Data.Models;
+﻿using TwitterBackup.Data.Models;
 using TwitterBackup.Data.UnitOfWork;
-using TwitterBackup.Providers.Contracts;
+using TwitterBackup.Providers;
 using TwitterBackup.Services.ViewModels;
 
 namespace TwitterBackup.Services

@@ -1,11 +1,11 @@
 ﻿using RestSharp;
-using TwitterBackup.Providers.Contracts;
+using TwitterBackup.TwitterApiClient.Contracts;
 
-namespace TwitterBackup.Providers.RestClientProvider
+namespace TwitterBackup.TwitterApiClient.RestClientFactory
 {
     public class RestClientFactory : IRestClientFactory
     {
-        public RestClient Create(string baseUrl)
+        public IRestClient Create(string baseUrl)
         {
             return new RestClient(baseUrl);
         }

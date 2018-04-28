@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace TwitterBackup.Providers.Contracts
+namespace TwitterBackup.Providers
 {
     public interface IMappingProvider
     {

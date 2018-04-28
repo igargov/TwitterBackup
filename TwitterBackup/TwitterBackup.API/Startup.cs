@@ -7,13 +7,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TwitterBackup.Data;
 using TwitterBackup.Data.Models.Identity;
-using TwitterBackup.Providers.Contracts;
 using AutoMapper;
-using TwitterBackup.Providers.TwitterProviders;
 using TwitterBackup.Providers;
 using TwitterBackup.Services;
 using TwitterBackup.Data.UnitOfWork;
-using TwitterBackup.Providers.RestClientProvider;
+using TwitterBackup.TwitterApiClient.Contracts;
+using TwitterBackup.TwitterApiClient.RestClientFactory;
+using TwitterBackup.TwitterApiClient;
 
 namespace TwitterBackup.API
 {
@@ -49,17 +49,19 @@ namespace TwitterBackup.API
             // Add application services.
             //services.AddTransient<IEmailSender, EmailSender>();
 
-            services.AddScoped<IRestClientFactory, RestClientFactory>();
-            services.AddScoped<IRestRequestFactory, RestRequestFactory>();
-            services.AddScoped<ITwitterFacadeProvider, TwitterFacadeProvider>();
+            services.AddSingleton<IRestClientFactory, RestClientFactory>();
+            services.AddSingleton<IRestRequestFactory, RestRequestFactory>();
+
+            services.AddSingleton<TwitterAccessTokenProvider, TwitterAccessTokenProvider>(twitterOAuthProvider =>
+            {
+                return new TwitterAccessTokenProvider("vBCinenfbxWDWJRbQlxyZS2Yy", "WYBIL5LV3L0vEzGNC1fx6VsLpB7TWZfSx70nJlUYjpc2843B7p");
+            });
+
+            services.AddScoped<ITwitterApiService, TwitterApiService>();
             services.AddScoped<ITwitterAccountService, TwitterAccountService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IMappingProvider, MappingProvider>();
 
-            services.AddScoped<TwitterOAuthProvider, TwitterOAuthProvider>(twitterOAuthProvider =>
-            {
-                return new TwitterOAuthProvider("vBCinenfbxWDWJRbQlxyZS2Yy", "WYBIL5LV3L0vEzGNC1fx6VsLpB7TWZfSx70nJlUYjpc2843B7p");
-            });
             services.AddAutoMapper();
 
             services.AddMvc();
