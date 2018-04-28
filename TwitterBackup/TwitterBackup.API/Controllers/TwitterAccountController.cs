@@ -1,8 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TwitterBackup.Services;
-using Newtonsoft.Json;
 using TwitterBackup.Services.ViewModels;
 using TwitterBackup.TwitterApiClient.Contracts;
 

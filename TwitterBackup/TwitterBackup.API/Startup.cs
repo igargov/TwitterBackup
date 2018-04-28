@@ -26,7 +26,6 @@ namespace TwitterBackup.API
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
@@ -37,7 +36,7 @@ namespace TwitterBackup.API
             else
             {
                 services.AddDbContext<TwitterBackupDbContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                    options.UseSqlServer(Configuration.GetConnectionString("LocalSQL")));
             }
 
             services.BuildServiceProvider().GetService<TwitterBackupDbContext>().Database.Migrate();
@@ -52,9 +51,12 @@ namespace TwitterBackup.API
             services.AddSingleton<IRestClientFactory, RestClientFactory>();
             services.AddSingleton<IRestRequestFactory, RestRequestFactory>();
 
-            services.AddSingleton<TwitterAccessTokenProvider, TwitterAccessTokenProvider>(twitterOAuthProvider =>
+            services.AddSingleton<TwitterAccessTokenProvider, TwitterAccessTokenProvider>(tatp =>
             {
-                return new TwitterAccessTokenProvider("", "");
+                var key = Environment.GetEnvironmentVariable("CONSUMER_KEY", EnvironmentVariableTarget.Machine);
+                var secret = Environment.GetEnvironmentVariable("CONSUMER_SECRET", EnvironmentVariableTarget.Machine);
+
+                return new TwitterAccessTokenProvider(key, secret);
             });
 
             services.AddScoped<ITwitterApiService, TwitterApiService>();
