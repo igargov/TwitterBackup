@@ -288,4 +288,4 @@ __pycache__/
 *.xsd.cs
 
 # Ignore production configuration
-**/appsettings.json
+#**/appsettings.json
