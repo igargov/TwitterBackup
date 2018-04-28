@@ -5,17 +5,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using TwitterBackup.API.Models;
 using TwitterBackup.Data;
-using TwitterBackup.Data.Models;
 using TwitterBackup.Data.Models.Identity;
 using TwitterBackup.Providers.Contracts;
-using TwitterBackup.Providers.RestClientFactory;
 using AutoMapper;
 using TwitterBackup.Providers.TwitterProviders;
 using TwitterBackup.Providers;
 using TwitterBackup.Services;
 using TwitterBackup.Data.UnitOfWork;
+using TwitterBackup.Providers.RestClientProvider;
 
 namespace TwitterBackup.API
 {

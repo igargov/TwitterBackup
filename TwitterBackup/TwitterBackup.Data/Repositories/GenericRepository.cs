@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.Linq;
 
 namespace TwitterBackup.Data.Repositories
 {
@@ -10,6 +11,11 @@ namespace TwitterBackup.Data.Repositories
         public GenericRepository(TwitterBackupDbContext context)
         {
             this.context = context;
+        }
+
+        public IQueryable<T> All()
+        {
+            return this.context.DbSet<T>().AsQueryable();
         }
 
         public T GetById(int id)
@@ -55,6 +61,13 @@ namespace TwitterBackup.Data.Repositories
                 this.context.DbSet<T>().Attach(entity);
                 this.context.DbSet<T>().Remove(entity);
             }
+        }
+
+        public void Delete(int id)
+        {
+            var entity = this.GetById(id);
+
+            this.Delete(entity);
         }
     }
 }
