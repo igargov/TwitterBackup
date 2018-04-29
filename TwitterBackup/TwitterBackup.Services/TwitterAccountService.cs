@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using TwitterBackup.Data.Models;
 using TwitterBackup.Data.UnitOfWork;
 using TwitterBackup.Providers;
@@ -21,6 +22,16 @@ namespace TwitterBackup.Services
         {
             try
             {
+                var dbModel = this.unitOfWork.TwitterAccounts
+                    .All()
+                    .Where(t => t.TwitterId.Equals(model.IdString))
+                    .FirstOrDefault();
+
+                if (dbModel != null)
+                {
+                    return -1;
+                }
+
                 var twitterAccount = this.mappingProvider.MapTo<TwitterAccount>(model);
                 twitterAccount.CreatedAt = DateTime.Now;
 
@@ -33,6 +44,16 @@ namespace TwitterBackup.Services
             {
                 return -1;
             }
+        }
+
+        public int Update(TwitterAccountDTO model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Delete(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }
