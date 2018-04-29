@@ -51,7 +51,9 @@ namespace TwitterBackup.API.Controllers
                 return await this.twitterApiService.RetrieveTwitterAccountAsync(screenName);
             });
 
-            return View();
+            var result = this.twitterAccountService.Create(twitterAccountResult);
+
+            return this.StatusCode(200);
         }
     }
 }

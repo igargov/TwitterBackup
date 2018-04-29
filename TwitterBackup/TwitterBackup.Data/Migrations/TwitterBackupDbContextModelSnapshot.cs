@@ -187,15 +187,21 @@ namespace TwitterBackup.Data.Migrations
 
                     b.Property<string>("Description");
 
+                    b.Property<int>("FavouritesCount");
+
                     b.Property<int>("FollowersCount");
 
                     b.Property<int>("FriendsCount");
 
+                    b.Property<string>("Language");
+
+                    b.Property<int>("ListedCount");
+
                     b.Property<string>("Name");
 
-                    b.Property<string>("ProfileImageUrl");
-
                     b.Property<string>("ScreenName");
+
+                    b.Property<int>("StatusesCount");
 
                     b.Property<string>("TwitterId");
 

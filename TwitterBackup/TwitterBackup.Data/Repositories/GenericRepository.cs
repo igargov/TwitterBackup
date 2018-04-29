@@ -24,7 +24,7 @@ namespace TwitterBackup.Data.Repositories
 
             return entity;
         }
-        
+
         public void Add(T entity)
         {
             EntityEntry entityEntry = this.context.Entry(entity);

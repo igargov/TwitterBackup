@@ -5,6 +5,6 @@ namespace TwitterBackup.Services
 {
     public interface ITwitterAccountService
     {
-        int SaveTwitterAccount(TwitterAccountDTO model);
+        int Create(TwitterAccountDTO model);
     }
 }

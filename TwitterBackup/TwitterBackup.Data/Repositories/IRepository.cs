@@ -1,7 +1,11 @@
-﻿namespace TwitterBackup.Data.Repositories
+﻿using System.Linq;
+
+namespace TwitterBackup.Data.Repositories
 {
     public interface IRepository<T> where T : class
     {
+        IQueryable<T> All();
+
         T GetById(int id);
 
         void Add(T entity);

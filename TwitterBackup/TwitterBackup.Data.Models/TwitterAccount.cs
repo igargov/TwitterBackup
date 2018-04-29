@@ -21,7 +21,13 @@ namespace TwitterBackup.Data.Models
 
         public int FriendsCount { get; set; }
 
-        public string ProfileImageUrl { get; set; }
+        public int ListedCount { get; set; }
+
+        public int FavouritesCount { get; set; }
+
+        public int StatusesCount { get; set; }
+
+        public string Language { get; set; }
 
         public DateTime? CreatedAtTwitter { get; set; }
 
@@ -30,6 +36,6 @@ namespace TwitterBackup.Data.Models
 
         public TwitterAccountImage TwitterAccountImage { get; set; }
 
-        public List<UserTwitterAccount> Users { get; set; }
+        public ICollection<UserTwitterAccount> Users { get; set; }
     }
 }

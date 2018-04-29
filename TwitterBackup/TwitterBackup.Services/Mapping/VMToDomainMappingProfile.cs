@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using TwitterBackup.Data.Models;
-using TwitterBackup.Services.ViewModels;
+using TwitterBackup.TwitterApiClient.TwitterModels;
 
 namespace TwitterBackup.Services.Mapping
 {
@@ -8,7 +8,9 @@ namespace TwitterBackup.Services.Mapping
     {
         public VMToDomainMappingProfile()
         {
-            CreateMap<TwitterAccountViewModel, TwitterAccount>();
+            CreateMap<TwitterAccountDTO, TwitterAccount>()
+                .ForMember(d => d.CreatedAtTwitter, opt => opt.MapFrom(s => s.CreatedAt))
+                .ForMember(d => d.TwitterId, opt => opt.MapFrom(s => s.IdString));
         }
     }
 }

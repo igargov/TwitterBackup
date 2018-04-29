@@ -1,7 +1,7 @@
-﻿using TwitterBackup.Data.Models;
+﻿using System;
+using TwitterBackup.Data.Models;
 using TwitterBackup.Data.UnitOfWork;
 using TwitterBackup.Providers;
-using TwitterBackup.Services.ViewModels;
 using TwitterBackup.TwitterApiClient.TwitterModels;
 
 namespace TwitterBackup.Services
@@ -17,13 +17,22 @@ namespace TwitterBackup.Services
             this.mappingProvider = mappingProvider;
         }
 
-        public int SaveTwitterAccount(TwitterAccountDTO model)
+        public int Create(TwitterAccountDTO model)
         {
-            var domainModel = this.mappingProvider.MapTo<TwitterAccount>(model);
+            try
+            {
+                var twitterAccount = this.mappingProvider.MapTo<TwitterAccount>(model);
+                twitterAccount.CreatedAt = DateTime.Now;
 
-            this.unitOfWork.TwitterAccounts.Add(domainModel);
+                this.unitOfWork.TwitterAccounts.Add(twitterAccount);
+                this.unitOfWork.SaveChanges();
 
-            return this.unitOfWork.SaveChanges();
+                return twitterAccount.Id;
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
         }
     }
 }
