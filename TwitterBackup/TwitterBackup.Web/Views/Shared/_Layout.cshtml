@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - TwitterBackup.API</title>
+    <title>@ViewData["Title"] - TwitterBackup</title>
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -29,12 +29,17 @@
 				<a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">TwitterBackup.API</a>
 			</div>
 			<div class="navbar-collapse collapse">
-				<ul class="nav navbar-nav">
-					<li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-					<li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-					<li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-					@await Html.PartialAsync("_SearchPartial")
-				</ul>
+                <ul class="nav navbar-nav">
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
+                    @{
+                        if (Context.User.Identity.IsAuthenticated)
+                        {
+                            <li><a asp-area="" asp-controller="TwitterAccount" asp-action="FindAccount">Search</a></li>
+                            <li><a asp-area="" asp-controller="" asp-action="">Favourited</a></li>
+                        }
+                    }
+                </ul>
 				@await Html.PartialAsync("_LoginPartial")
 			</div>
 		</div>
@@ -43,7 +48,7 @@
 		@RenderBody()
 		<hr />
 		<footer>
-			<p>&copy; 2018 - TwitterBackup.API</p>
+			<p>&copy; 2018 - TwitterBackup</p>
 		</footer>
 	</div>
 

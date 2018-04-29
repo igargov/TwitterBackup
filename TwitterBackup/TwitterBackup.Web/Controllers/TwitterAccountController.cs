@@ -1,25 +1,30 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
+using TwitterBackup.Providers;
 using TwitterBackup.Services;
+using TwitterBackup.Services.ViewModels;
 using TwitterBackup.TwitterApiClient.Contracts;
 
 namespace TwitterBackup.API.Controllers
 {
-    //[Authorize]
-    //[Route("[controller]/[account]")]
+    [Authorize]
     public class TwitterAccountController : Controller
     {
         private readonly ITwitterApiService twitterApiService;
         private readonly ITwitterAccountService twitterAccountService;
+        private readonly IMappingProvider mapping;
         private readonly IMemoryCache memoryCache;
 
-        public TwitterAccountController(ITwitterApiService twitterApiService, ITwitterAccountService twitterAccountService, IMemoryCache memoryCache)
+        public TwitterAccountController(ITwitterApiService twitterApiService, ITwitterAccountService twitterAccountService, 
+                                        IMemoryCache memoryCache, IMappingProvider mapping)
         {
             this.twitterApiService = twitterApiService;
             this.twitterAccountService = twitterAccountService;
             this.memoryCache = memoryCache;
+            this.mapping = mapping;
         }
 
         [HttpGet]
@@ -38,7 +43,14 @@ namespace TwitterBackup.API.Controllers
                 return await this.twitterApiService.RetrieveTwitterAccountAsync(screenName);
             });
 
-            return View();
+            if (twitterAccountResult == null)
+            {
+                
+            }
+
+            var viewModel = this.mapping.MapTo<TwitterAccountViewModel>(twitterAccountResult);
+
+            return View(viewModel);
         }
 
         [HttpPost]

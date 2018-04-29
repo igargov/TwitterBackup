@@ -5,6 +5,8 @@ namespace TwitterBackup.TwitterApiClient.TwitterModels
 {
     public class TwitterAccountDTO
     {
+        private string profileImageUrl;
+
         [JsonProperty("id_str")]
         public string IdString { get; set; }
 
@@ -39,6 +41,21 @@ namespace TwitterBackup.TwitterApiClient.TwitterModels
         [JsonProperty("lang")]
         public string Language { get; set; }
 
-        public string ProfileImageUrl { get; set; }
+        public string ProfileImageUrl
+        {
+            get
+            {
+                return this.profileImageUrl;
+            }
+
+            set
+            {
+                string url = value;
+
+                string result = url.Replace("_normal", "_bigger");
+
+                this.profileImageUrl = result;
+            }
+        }
     }
 }

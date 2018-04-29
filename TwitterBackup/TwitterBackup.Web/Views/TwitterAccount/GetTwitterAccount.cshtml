@@ -1,11 +1,35 @@
-﻿@model TwitterBackup.Services.ViewModels.TwitterAccountViewModel
+﻿@using TwitterBackup.Services.ViewModels
+@model TwitterAccountViewModel
+
 @{
-	if (Model == null)
-	{
-		await Html.PartialAsync("_UserNotFound");
-	}
-	else
-	{
-		await Html.PartialAsync("_UserFound", Model);
-	}
-}
+    ViewData["Title"] = "Search Result:";
+}  
+
+    <h3>@ViewData["Title"]</h3>    
+
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="widget-head-color-box navy-bg p-lg text-center">
+                <div class="m-b-md">
+                    <h2 class="font-bold no-margins">
+                        @Model.ScreenName
+                    </h2>
+                </div>
+                <img src="@Model.ProfileImageUrl" class="img-circle circle-border m-b-md" alt="profile" style="width: inherit">
+                <div>
+                    <span>@Model.StatusesCount Tweets</span> |
+                    <span>@Model.FriendsCount Friends</span> |
+                    <span>@Model.FollowersCount Followers</span>
+                </div>
+            </div>
+            <div class="widget-text-box">
+                <h4 class="media-heading">@Model.Name</h4>
+                <p>@Model.Description</p>
+            </div>
+            
+            <div>
+                @Html.ActionLink("Save", "PostTwitterAccount", "TwitterAccount", new { screenName = Model.ScreenName }, new { @class = "btn btn-primary" })
+                @Html.ActionLink("Back to search", "FindAccount", "TwitterAccount", null, new { @class = "btn btn-secondary" })
+            </div>
+        </div>
+    </div>
