@@ -8,9 +8,9 @@
 <body>
 	<h2>Search for Twitter User:</h2>
 	
-	<form id="inForm" class="form-inline my-2 my-lg-0 search-form">
-		<input id="innerINput"class="form-control mr-sm-2 search-input" type="search" placeholder="Enter twitter user name" aria-label="Search">
-		<button id="searchBtn" class="btn btn-outline-success my-2 my-sm-0 search-btn" type="submit">Search</button>
+	<form method ="get" asp-controller="TwitterAccount" asp-action="GetTwitterAccount" class="form-inline my-2 my-lg-0 search-form">
+		<input name="screenName" id="innerINput"class="form-control mr-sm-2 search-input" type="search" placeholder="Enter twitter user name" aria-label="Search">
+		<button class="btn btn-outline-success my-2 my-sm-0 search-btn" type="submit">Search</button>
 	</form>
 </body>
 </html>

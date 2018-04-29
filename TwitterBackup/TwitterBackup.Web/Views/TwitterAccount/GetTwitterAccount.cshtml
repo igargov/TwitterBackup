@@ -1,11 +1,19 @@
 ﻿@model TwitterBackup.Services.ViewModels.TwitterAccountViewModel
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title></title>
+</head>
+<body>
+	<h1>Sexy Mexy</h1>
 @{
-	if (Model == null)
+	if (Model.ScreenName == null)
 	{
-		await Html.PartialAsync("_UserNotFound");
+		await Html.RenderPartialAsync("_NotFound");
 	}
 	else
 	{
-		await Html.PartialAsync("_UserFound", Model);
+		await Html.RenderPartialAsync("_Found", Model);
 	}
 }
+</body>
+</html>

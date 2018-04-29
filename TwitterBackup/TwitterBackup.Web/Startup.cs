@@ -15,6 +15,7 @@ using TwitterBackup.TwitterApiClient.Contracts;
 using TwitterBackup.TwitterApiClient.RestClientFactory;
 using TwitterBackup.TwitterApiClient;
 using Microsoft.Extensions.Caching.Memory;
+using TwitterBackup.Services.ViewModels;
 
 namespace TwitterBackup.API
 {
@@ -69,6 +70,7 @@ namespace TwitterBackup.API
             services.AddScoped<ITwitterAccountService, TwitterAccountService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IMappingProvider, MappingProvider>();
+            services.AddScoped<TwitterAccountViewModel, TwitterAccountViewModel>();
 
             services.AddAutoMapper();
 
