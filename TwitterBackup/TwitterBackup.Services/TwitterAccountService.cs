@@ -2,6 +2,7 @@
 using TwitterBackup.Data.UnitOfWork;
 using TwitterBackup.Providers;
 using TwitterBackup.Services.ViewModels;
+using TwitterBackup.TwitterApiClient.TwitterModels;
 
 namespace TwitterBackup.Services
 {
@@ -16,7 +17,7 @@ namespace TwitterBackup.Services
             this.mappingProvider = mappingProvider;
         }
 
-        public int SaveAccount(TwitterAccountViewModel model)
+        public int SaveTwitterAccount(TwitterAccountDTO model)
         {
             var domainModel = this.mappingProvider.MapTo<TwitterAccount>(model);
 

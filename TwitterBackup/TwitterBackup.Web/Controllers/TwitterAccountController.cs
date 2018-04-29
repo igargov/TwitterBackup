@@ -1,7 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using TwitterBackup.Services;
-using TwitterBackup.Services.ViewModels;
 using TwitterBackup.TwitterApiClient.Contracts;
 
 namespace TwitterBackup.API.Controllers
@@ -12,16 +13,13 @@ namespace TwitterBackup.API.Controllers
     {
         private readonly ITwitterApiService twitterApiService;
         private readonly ITwitterAccountService twitterAccountService;
+        private readonly IMemoryCache memoryCache;
 
-        public TwitterAccountController(ITwitterApiService twitterApiService, ITwitterAccountService twitterAccountService)
+        public TwitterAccountController(ITwitterApiService twitterApiService, ITwitterAccountService twitterAccountService, IMemoryCache memoryCache)
         {
             this.twitterApiService = twitterApiService;
             this.twitterAccountService = twitterAccountService;
-        }
-
-        public IActionResult Index()
-        {
-            return View();
+            this.memoryCache = memoryCache;
         }
 
         [HttpGet]
@@ -31,22 +29,29 @@ namespace TwitterBackup.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetTwitter([FromQuery]string screenName)
+        public async Task<IActionResult> GetTwitterAccount([FromQuery] string screenName)
         {
-            var twitterResult = await this.twitterApiService.RetrieveTwitterAccountAsync(screenName);
+            var twitterAccountResult = await this.memoryCache.GetOrCreateAsync(screenName, async (entry) =>
+            {
+                entry.SetSlidingExpiration(TimeSpan.FromSeconds(60));
 
-            TwitterAccountViewModel twitterAccountViewModel = null;
+                return await this.twitterApiService.RetrieveTwitterAccountAsync(screenName);
+            });
 
-            //if (!twitterResult.Contains("User not found"))
-            //{
-            //    var jsonSettings = new JsonSerializerSettings();
-            //    jsonSettings.DateFormatString = "ddd MMM dd HH:mm:ss +ffff yyyy";
-            //    twitterAccountViewModel = JsonConvert.DeserializeObject<TwitterAccountViewModel>(twitterResult, jsonSettings);
-            //    twitterAccountViewModel.CreatedAt = DateTime.Now;
-            //    int saveResult = this.twitterAccountService.SaveAccount(twitterAccountViewModel);
-            //}
+            return View();
+        }
 
-            return View(twitterAccountViewModel);
+        [HttpPost]
+        public async Task<IActionResult> PostTwitterAccount([FromQuery] string screenName)
+        {
+            var twitterAccountResult = await this.memoryCache.GetOrCreateAsync(screenName, async (entry) =>
+            {
+                entry.SetSlidingExpiration(TimeSpan.FromSeconds(60));
+
+                return await this.twitterApiService.RetrieveTwitterAccountAsync(screenName);
+            });
+
+            return View();
         }
     }
 }

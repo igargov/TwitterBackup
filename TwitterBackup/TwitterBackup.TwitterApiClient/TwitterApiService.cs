@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using RestSharp;
+﻿using RestSharp;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TwitterBackup.TwitterApiClient.Contracts;

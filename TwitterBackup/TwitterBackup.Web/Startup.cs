@@ -14,6 +14,7 @@ using TwitterBackup.Data.UnitOfWork;
 using TwitterBackup.TwitterApiClient.Contracts;
 using TwitterBackup.TwitterApiClient.RestClientFactory;
 using TwitterBackup.TwitterApiClient;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace TwitterBackup.API
 {
@@ -47,6 +48,11 @@ namespace TwitterBackup.API
 
             // Add application services.
             //services.AddTransient<IEmailSender, EmailSender>();
+
+            services.AddMemoryCache(mc => new MemoryCacheOptions()
+            {
+                
+            });
 
             services.AddSingleton<IRestClientFactory, RestClientFactory>();
             services.AddSingleton<IRestRequestFactory, RestRequestFactory>();
