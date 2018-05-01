@@ -16,6 +16,7 @@ using TwitterBackup.TwitterApiClient.RestClientFactory;
 using TwitterBackup.TwitterApiClient;
 using Microsoft.Extensions.Caching.Memory;
 using TwitterBackup.Services.ViewModels;
+using System.Threading.Tasks;
 
 namespace TwitterBackup.API
 {
@@ -28,7 +29,7 @@ namespace TwitterBackup.API
 
         public IConfiguration Configuration { get; }
 
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
             {
@@ -52,7 +53,7 @@ namespace TwitterBackup.API
 
             services.AddMemoryCache(mc => new MemoryCacheOptions()
             {
-                
+
             });
 
             services.AddSingleton<IRestClientFactory, RestClientFactory>();
@@ -71,14 +72,14 @@ namespace TwitterBackup.API
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IMappingProvider, MappingProvider>();
             services.AddScoped<TwitterAccountViewModel, TwitterAccountViewModel>();
-
             services.AddAutoMapper();
-
             services.AddMvc();
+
+            return services.BuildServiceProvider();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -97,10 +98,57 @@ namespace TwitterBackup.API
 
             app.UseMvc(routes =>
             {
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+
+                routes.MapRoute(
+                  name: "areas",
+                  template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
+
             });
+
+            this.CreateRoles(serviceProvider).Wait();
+        }
+
+        private async Task CreateRoles(IServiceProvider serviceProvider)
+        {
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<Role>>();
+            var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
+
+            string[] roleNames = { "Admin", "User" };
+
+            IdentityResult roleResult;
+
+            foreach (var roleName in roleNames)
+            {
+                var roleExist = await roleManager.RoleExistsAsync(roleName);
+                if (!roleExist)
+                {
+                    roleResult = await roleManager.CreateAsync(new Role(roleName));
+                }
+            }
+
+            var admin = new User
+            {
+                UserName = "Stev3n",
+                Email = "steveG_98@gmail.com"
+            };
+
+            string userPWD = "Segal_98_";
+
+            var user = await userManager.FindByEmailAsync("steveG_98@gmail.com");
+
+            if (user == null)
+            {
+                var createAdmin = await userManager.CreateAsync(admin, userPWD);
+                if (createAdmin.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(admin, "Admin");
+                }
+            }
         }
     }
 }
