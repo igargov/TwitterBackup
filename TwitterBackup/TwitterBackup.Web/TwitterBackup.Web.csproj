@@ -28,4 +28,9 @@
     <ProjectReference Include="..\TwitterBackup.TwitterApiClient\TwitterBackup.TwitterApiClient.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Administration\Data\" />
+    <Folder Include="Areas\Administration\Models\" />
+  </ItemGroup>
+
 </Project>
