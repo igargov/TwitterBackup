@@ -2,11 +2,8 @@
 @model TwitterAccountViewModel
 
 @{
-    ViewData["Title"] = "Search Result:";
+    ViewBag.Title = "Search Result:";
 }  
-
-    <h3>@ViewData["Title"]</h3>    
-
     <div class="row">
         <div class="col-lg-4">
             <div class="widget-head-color-box navy-bg p-lg text-center">
@@ -15,7 +12,7 @@
                         @Model.ScreenName
                     </h2>
                 </div>
-                <img src="@Model.ProfileImageUrl" class="img-circle circle-border m-b-md" alt="profile" style="width: inherit">
+                <img src="@Model.ProfileImageUrl" class="img-circle circle-border m-b-md" alt="profile">
                 <div>
                     <span>@Model.StatusesCount Tweets</span> |
                     <span>@Model.FriendsCount Friends</span> |
@@ -25,11 +22,10 @@
             <div class="widget-text-box">
                 <h4 class="media-heading">@Model.Name</h4>
                 <p>@Model.Description</p>
+                <div class="text-right">
+                    <button id="save" class="btn btn-sm btn-primary">Save</button>
+                </div>
             </div>
             
-            <div>
-                @Html.ActionLink("Save", "PostTwitterAccount", "TwitterAccount", new { screenName = Model.ScreenName }, new { @class = "btn btn-primary" })
-                @Html.ActionLink("Back to search", "FindAccount", "TwitterAccount", null, new { @class = "btn btn-secondary" })
-            </div>
         </div>
-    </div>
+    </div>   

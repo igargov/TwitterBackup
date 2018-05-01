@@ -54,7 +54,7 @@ namespace TwitterBackup.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostTwitterAccount([FromQuery] string screenName)
+        public async Task<IActionResult> PostTwitterAccount([FromBody] string screenName)
         {
             var twitterAccountResult = await this.memoryCache.GetOrCreateAsync(screenName, async (entry) =>
             {
