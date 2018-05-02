@@ -1,5 +1,46 @@
 ﻿@{
-    ViewBag.Title = "ShowAllUsers";
+	ViewBag.Title = "ShowAllUsers";
 }
 
-<h2>ShowAllUsers</h2>
+@using TwitterBackup.Services.ViewModels;
+
+@model IEnumerable<UserViewModel>
+<table class="table">
+	<thead>
+		<tr>
+			<th scope="col">TweetId</th>
+			<th scope="col">UserName</th>
+			<th scope="col">Email</th>
+			<th scope="col">Make Admin</th>
+			<th scope="col">Delete User</th>
+			<th scope="col">View Saved Tweets</th>
+			<th scope="col">View Saved Twitters</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var user in Model)
+		{
+			<tr>
+				<td>#@user.Id</td>
+				<td>@user.UserName</td>
+				<td>@user.Email</td>
+				
+				<td><a id="@user.Id" class="btn btn-success promoteUser" data-name="@user.Id">Promote</a></td>
+
+				<td><a class="btn btn-danger deleteUser @user.Id" data-name="@user.Id">Delete</a></td>
+				<td>
+					<form asp-area="Admin" asp-controller="Home" asp-action="SavedForAdmin" method="get">
+						<input hidden name="userId" value="@user.Id" />
+						<button type="submit" class="btn btn-primary">Tweets</button>
+					</form>
+				</td>
+				<td>
+					<form asp-area="Admin" asp-controller="Home" asp-action="SavedTwittersForAdmin" method="get">
+						<input hidden name="userId" value="@user.Id" />
+						<button type="submit" class="btn btn-warning">Twitters</button>
+					</form>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>

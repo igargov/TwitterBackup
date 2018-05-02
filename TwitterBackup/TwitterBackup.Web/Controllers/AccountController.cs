@@ -21,7 +21,7 @@ namespace TwitterBackup.API.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger _logger;
-        private readonly TwitterBackupDbContext db;
+        private readonly TwitterBackupDbContext _db;
 
         public AccountController(
             UserManager<User> userManager,
@@ -33,7 +33,7 @@ namespace TwitterBackup.API.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
-            this.db = db;
+            _db = db;
         }
 
         [TempData]
@@ -62,7 +62,7 @@ namespace TwitterBackup.API.Controllers
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 try
                 {
-                    var user = db.Users.Where(u => u.Email.Equals(model.Email)).Single(); // where db is ApplicationDbContext instance
+                    var user = _db.Users.Where(u => u.Email.Equals(model.Email)).Single(); // where db is ApplicationDbContext instance
                     var result = await this._signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, lockoutOnFailure: false);
                     if (result.Succeeded)
                     {
@@ -230,8 +230,11 @@ namespace TwitterBackup.API.Controllers
             {
                 var user = new User { UserName = model.Email, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
+
                 if (result.Succeeded)
                 {
+                    await this._userManager.AddToRoleAsync(user, "User");
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
