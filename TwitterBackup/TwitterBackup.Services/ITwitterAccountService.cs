@@ -1,5 +1,4 @@
-﻿using TwitterBackup.Services.ViewModels;
-using TwitterBackup.TwitterApiClient.TwitterModels;
+﻿using TwitterBackup.TwitterDTOs;
 
 namespace TwitterBackup.Services
 {

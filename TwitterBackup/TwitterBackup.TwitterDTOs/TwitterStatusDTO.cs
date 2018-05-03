@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace TwitterBackup.TwitterApiClient.TwitterModels
+namespace TwitterBackup.TwitterDTOs
 {
     public class TwitterStatusDTO
     {

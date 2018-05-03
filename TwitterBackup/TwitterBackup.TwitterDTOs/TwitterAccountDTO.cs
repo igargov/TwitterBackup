@@ -1,7 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using TwitterBackup.TwitterDTOs;
 
-namespace TwitterBackup.TwitterApiClient.TwitterModels
+namespace TwitterBackup.TwitterDTOs
 {
     public class TwitterAccountDTO
     {
@@ -57,5 +59,7 @@ namespace TwitterBackup.TwitterApiClient.TwitterModels
                 this.profileImageUrl = result;
             }
         }
+
+        public IList<TwitterErrorDTO> Errors { get; set; }
     }
 }

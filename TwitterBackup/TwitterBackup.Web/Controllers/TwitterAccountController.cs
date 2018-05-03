@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -45,10 +46,13 @@ namespace TwitterBackup.API.Controllers
 
             ViewData.Add("SearchScreenName", screenName);
 
-            //TODO: Fix when no user is found
-            if (twitterAccountResult == null)
+            if (twitterAccountResult.Errors != null)
             {
-                return View("UserNotFound");  
+                var error = twitterAccountResult.Errors.First();
+
+                var errModel = this.mapping.MapTo<TwitterErrorViewModel>(error);
+
+                return View("TwitterError", errModel);
             }
 
             var viewModel = this.mapping.MapTo<TwitterAccountViewModel>(twitterAccountResult);

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using TwitterBackup.Data.Models;
-using TwitterBackup.TwitterApiClient.TwitterModels;
+using TwitterBackup.TwitterDTOs;
 
 namespace TwitterBackup.Services.Mapping
 {
