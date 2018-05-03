@@ -52,7 +52,7 @@ namespace TwitterBackup.TwitterApiClient.TwitterModels
             {
                 string url = value;
 
-                string result = url.Replace("_normal", "_bigger");
+                string result = url.Replace("_normal", "");
 
                 this.profileImageUrl = result;
             }

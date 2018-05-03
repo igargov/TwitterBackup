@@ -34,7 +34,7 @@ namespace TwitterBackup.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetTwitterAccount([FromQuery] string screenName)
+        public async Task<IActionResult> GetTwitterAccount(string screenName)
         {
             var twitterAccountResult = await this.memoryCache.GetOrCreateAsync(screenName, async (entry) =>
             {
@@ -43,9 +43,12 @@ namespace TwitterBackup.API.Controllers
                 return await this.twitterApiService.RetrieveTwitterAccountAsync(screenName);
             });
 
+            ViewData.Add("SearchScreenName", screenName);
+
+            //TODO: Fix when no user is found
             if (twitterAccountResult == null)
             {
-                
+                return View("UserNotFound");  
             }
 
             var viewModel = this.mapping.MapTo<TwitterAccountViewModel>(twitterAccountResult);
@@ -54,7 +57,7 @@ namespace TwitterBackup.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostTwitterAccount([FromBody] string screenName)
+        public async Task<IActionResult> PostTwitterAccount(string screenName)
         {
             var twitterAccountResult = await this.memoryCache.GetOrCreateAsync(screenName, async (entry) =>
             {
