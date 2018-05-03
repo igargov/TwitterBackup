@@ -37,7 +37,7 @@ namespace TwitterBackup.TwitterApiClient
             };
 
             var twitterAccount = 
-                await this.ExecuteRequestCommonAsync<TwitterAccountDTO>(screenName, TwitterApiParams.UsersShowEndpoint, parameters);
+                await this.ExecuteRequestCommonAsync<TwitterAccountDTO>(TwitterApiParams.UsersShowEndpoint, parameters);
 
             return twitterAccount;
         }
@@ -57,7 +57,7 @@ namespace TwitterBackup.TwitterApiClient
             };
 
             var twitterAccountStatuses = 
-                await this.ExecuteRequestCommonAsync<string>(screenName, TwitterApiParams.StatusesUserTimelineEndpoint, parameters);
+                await this.ExecuteRequestCommonAsync<string>(TwitterApiParams.StatusesUserTimelineEndpoint, parameters);
 
             return twitterAccountStatuses;
         }
@@ -85,12 +85,12 @@ namespace TwitterBackup.TwitterApiClient
             };
 
             var twitterAccountStatuses = 
-                await this.ExecuteRequestCommonAsync<string>(screenName, TwitterApiParams.StatusesUserTimelineEndpoint, parameters);
+                await this.ExecuteRequestCommonAsync<string>(TwitterApiParams.StatusesUserTimelineEndpoint, parameters);
 
             return twitterAccountStatuses;
         }
 
-        private async Task<T> ExecuteRequestCommonAsync<T>(string screenName, string resource, IEnumerable<Parameter> parameters)
+        private async Task<T> ExecuteRequestCommonAsync<T>(string resource, IEnumerable<Parameter> parameters)
         {
             var restClient = this.restClientFactory.Create(TwitterApiParams.BaseUrl);
             var restRequest = this.restRequestFactory.Create(resource, Method.GET);
