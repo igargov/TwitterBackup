@@ -18,6 +18,11 @@
                     {
                         <li><a asp-area="" asp-controller="" asp-action="">Favourites</a></li>
                     }
+
+                    if(User.IsInRole("Admin"))
+                    {
+                        <li><a asp-area="Administration" asp-controller="Admin" asp-action="ShowAllUsers">All Users</a></li>
+                    }
                 }
             </ul>
 

@@ -2,12 +2,6 @@
 {
     public class TwitterAccountViewModel
     {
-        public string TwitterId { get; set; }
-
-        public string Name { get; set; }
-
-        public string ScreenName { get; set; }
-
         public string Description { get; set; }
 
         public int FollowersCount { get; set; }
@@ -17,11 +11,6 @@
         public int StatusesCount { get; set; }
 
         public string Name { get; set; }
-
-
-        public DateTime? CreatedAtTwitter { get; set; }
-
-        public DateTime? CreatedAt { get; set; }
 
         public string ProfileImageUrl { get; set; }
 

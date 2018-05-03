@@ -130,19 +130,23 @@ namespace TwitterBackup.API
                 }
             }
 
-            var admin = new User
+            var adminSettings = this.Configuration.GetSection("AdminData");
+
+            string userName = adminSettings.GetValue<string>("UserName");
+            string userEmail = adminSettings.GetValue<string>("UserEmail");
+            string userPassword = adminSettings.GetValue<string>("UserPassword");
+
+            var admin = new User()
             {
-                UserName = "Stev3n",
-                Email = "steveG_98@gmail.com"
+                UserName = userName,
+                Email = userEmail
             };
 
-            string userPWD = "Segal_98_";
-
-            var user = await userManager.FindByEmailAsync("steveG_98@gmail.com");
+            var user = await userManager.FindByEmailAsync(userEmail);
 
             if (user == null)
             {
-                var createAdmin = await userManager.CreateAsync(admin, userPWD);
+                var createAdmin = await userManager.CreateAsync(admin, userPassword);
                 if (createAdmin.Succeeded)
                 {
                     await userManager.AddToRoleAsync(admin, "Admin");
