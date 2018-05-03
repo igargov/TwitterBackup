@@ -39,6 +39,19 @@ namespace TwitterBackup.API.Controllers
         }
 
         [HttpGet]
+        public IActionResult ListAllAccounts()
+        {
+            var allAccounts = this.twitterAccountService.GetAll();
+
+            if (allAccounts == null)
+            {
+                return View("_NotFound");
+            }
+
+            return View(allAccounts);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> RetrieveAccount(string screenName)
         {
             var twitterAccountResult = await this.memoryCache.GetOrCreateAsync(screenName, async (entry) =>

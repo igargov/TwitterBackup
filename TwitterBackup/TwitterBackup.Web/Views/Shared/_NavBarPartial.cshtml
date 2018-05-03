@@ -16,7 +16,7 @@
                 @{
                     if (Context.User.Identity.IsAuthenticated)
                     {
-                        <li><a asp-area="" asp-controller="" asp-action="">Favourites</a></li>
+                        <li><a asp-area="" asp-controller="TwitterAccount" asp-action="ListAllAccounts">Favourites</a></li>
                     }
 
                     if(User.IsInRole("Admin"))

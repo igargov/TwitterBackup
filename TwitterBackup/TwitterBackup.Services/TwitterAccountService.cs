@@ -1,9 +1,12 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using TwitterBackup.Data.Models;
 using TwitterBackup.Data.UnitOfWork;
 using TwitterBackup.Providers;
 using TwitterBackup.Services.Contracts;
+using TwitterBackup.Services.ViewModels;
 using TwitterBackup.TwitterDTOs;
 
 namespace TwitterBackup.Services
@@ -17,6 +20,17 @@ namespace TwitterBackup.Services
         {
             this.unitOfWork = unitOfWork;
             this.mappingProvider = mappingProvider;
+        }
+
+        public List<TwitterAccountWithImageViewModel> GetAll()
+        {
+            var allAccounts = this.unitOfWork.TwitterAccounts
+                .All()
+                .Include(tai => tai.TwitterAccountImage);
+
+            var allAccountModel = this.mappingProvider.ProjectTo<TwitterAccountWithImageViewModel>(allAccounts).ToList();
+
+            return allAccountModel;
         }
 
         public int Create(TwitterAccountDTO model, int userId, string picBase64)
