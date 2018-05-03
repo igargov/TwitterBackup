@@ -19,7 +19,7 @@ namespace TwitterBackup.Services
             this.mappingProvider = mappingProvider;
         }
 
-        public int Create(TwitterAccountDTO model)
+        public int Create(TwitterAccountDTO model, int userId, string picBase64)
         {
             try
             {
@@ -34,7 +34,22 @@ namespace TwitterBackup.Services
                 }
 
                 var twitterAccount = this.mappingProvider.MapTo<TwitterAccount>(model);
+
                 twitterAccount.CreatedAt = DateTime.Now;
+                twitterAccount.Users.Add(new UserTwitterAccount()
+                {
+                    TwitterAccount = twitterAccount,
+                    UserId = userId
+                });
+
+                if (!string.IsNullOrEmpty(picBase64))
+                {
+                    twitterAccount.TwitterAccountImage = new TwitterAccountImage()
+                    {
+                        ProfileImage = picBase64,
+                        TwitterAccount = twitterAccount
+                    };
+                }
 
                 this.unitOfWork.TwitterAccounts.Add(twitterAccount);
                 this.unitOfWork.SaveChanges();

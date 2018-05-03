@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
-using TwitterBackup.Services;
+using TwitterBackup.Services.Contracts;
 
 namespace TwitterBackup.Web.Areas.Administration.Controllers
 {

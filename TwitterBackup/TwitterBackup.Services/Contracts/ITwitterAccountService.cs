@@ -4,7 +4,7 @@ namespace TwitterBackup.Services.Contracts
 {
     public interface ITwitterAccountService
     {
-        int Create(TwitterAccountDTO model);
+        int Create(TwitterAccountDTO model, int userId, string picBase64);
 
         int Update(TwitterAccountDTO model);
 

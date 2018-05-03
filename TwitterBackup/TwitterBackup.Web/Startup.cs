@@ -17,6 +17,7 @@ using TwitterBackup.TwitterApiClient;
 using Microsoft.Extensions.Caching.Memory;
 using TwitterBackup.Services.ViewModels;
 using System.Threading.Tasks;
+using TwitterBackup.Services.Contracts;
 
 namespace TwitterBackup.API
 {
