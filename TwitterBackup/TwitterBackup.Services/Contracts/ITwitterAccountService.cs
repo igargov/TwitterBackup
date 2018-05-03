@@ -1,6 +1,6 @@
 ﻿using TwitterBackup.TwitterDTOs;
 
-namespace TwitterBackup.Services
+namespace TwitterBackup.Services.Contracts
 {
     public interface ITwitterAccountService
     {

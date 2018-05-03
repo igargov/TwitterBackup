@@ -28,7 +28,7 @@ namespace TwitterBackup.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetTwitterAccount(string screenName)
+        public async Task<IActionResult> RetrieveAccount(string screenName)
         {
             var twitterAccountResult = await this.memoryCache.GetOrCreateAsync(screenName, async (entry) =>
             {
@@ -54,7 +54,7 @@ namespace TwitterBackup.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostTwitterAccount(string screenName)
+        public async Task<IActionResult> CreateAccount(string screenName)
         {
             var twitterAccountResult = await this.memoryCache.GetOrCreateAsync(screenName, async (entry) =>
             {

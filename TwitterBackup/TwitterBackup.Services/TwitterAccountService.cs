@@ -3,6 +3,7 @@ using System.Linq;
 using TwitterBackup.Data.Models;
 using TwitterBackup.Data.UnitOfWork;
 using TwitterBackup.Providers;
+using TwitterBackup.Services.Contracts;
 using TwitterBackup.TwitterDTOs;
 
 namespace TwitterBackup.Services
