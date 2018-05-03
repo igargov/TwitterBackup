@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using TwitterBackup.Data.Models;
+using TwitterBackup.Data.Models.Identity;
 using TwitterBackup.Data.Repositories;
 
 namespace TwitterBackup.Data.UnitOfWork
@@ -9,6 +10,8 @@ namespace TwitterBackup.Data.UnitOfWork
         private readonly TwitterBackupDbContext context;
         private IRepository<TwitterAccount> twitterAccounts;
         private IRepository<TwitterAccountImage> twitterAccountImages;
+        private IRepository<User> users;
+        private IRepository<Role> roles;
 
         public UnitOfWork(TwitterBackupDbContext context)
         {
@@ -18,11 +21,15 @@ namespace TwitterBackup.Data.UnitOfWork
         public UnitOfWork(
             TwitterBackupDbContext context,
             IRepository<TwitterAccount> twitterAccounts,
-            IRepository<TwitterAccountImage> twitterAccountImages)
+            IRepository<TwitterAccountImage> twitterAccountImages,
+            IRepository<User> users,
+            IRepository<Role> roles)
         {
             this.context = context;
             this.twitterAccounts = twitterAccounts;
             this.twitterAccountImages = twitterAccountImages;
+            this.users = users;
+            this.roles = roles;
         }
 
         public IRepository<TwitterAccount> TwitterAccounts
@@ -48,6 +55,32 @@ namespace TwitterBackup.Data.UnitOfWork
                 }
 
                 return this.twitterAccountImages;
+            }
+        }
+
+        public IRepository<User> Users
+        {
+            get
+            {
+                if (this.users == null)
+                {
+                    this.users = new GenericRepository<User>(this.context);
+                }
+
+                return this.users;
+            }
+        }
+
+        public IRepository<Role> Roles
+        {
+            get
+            {
+                if (this.roles == null)
+                {
+                    this.roles = new GenericRepository<Role>(this.context);
+                }
+
+                return this.roles;
             }
         }
 

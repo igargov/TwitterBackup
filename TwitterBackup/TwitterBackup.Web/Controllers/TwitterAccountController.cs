@@ -18,14 +18,14 @@ namespace TwitterBackup.API.Controllers
         private readonly ITwitterAccountService twitterAccountService;
         private readonly IMappingProvider mapping;
         private readonly IMemoryCache memoryCache;
+        private readonly IMappingProvider mappingProvider;
 
-        public TwitterAccountController(ITwitterApiService twitterApiService, ITwitterAccountService twitterAccountService, 
-                                        IMemoryCache memoryCache, IMappingProvider mapping)
+        public TwitterAccountController(ITwitterApiService twitterApiService, ITwitterAccountService twitterAccountService, IMemoryCache memoryCache, IMappingProvider mappingProvider)
         {
             this.twitterApiService = twitterApiService;
             this.twitterAccountService = twitterAccountService;
             this.memoryCache = memoryCache;
-            this.mapping = mapping;
+            this.mappingProvider = mappingProvider;
         }
 
         [HttpGet]

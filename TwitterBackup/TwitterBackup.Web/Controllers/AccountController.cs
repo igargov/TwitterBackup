@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using TwitterBackup.API.Models.AccountViewModels;
+using TwitterBackup.Data;
 using TwitterBackup.Data.Models.Identity;
 
 namespace TwitterBackup.API.Controllers
@@ -18,15 +21,19 @@ namespace TwitterBackup.API.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger _logger;
+        private readonly TwitterBackupDbContext _db;
 
         public AccountController(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger,
+            TwitterBackupDbContext db
+            )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _db = db;
         }
 
         [TempData]
@@ -53,22 +60,31 @@ namespace TwitterBackup.API.Controllers
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
+                try
                 {
-                    _logger.LogInformation("User logged in.");
-                    return RedirectToLocal(returnUrl);
+                    var user = _db.Users.Where(u => u.Email.Equals(model.Email)).Single(); // where db is ApplicationDbContext instance
+                    var result = await this._signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, lockoutOnFailure: false);
+                    if (result.Succeeded)
+                    {
+                        _logger.LogInformation("User logged in.");
+                        return RedirectToLocal(returnUrl);
+                    }
+                    if (result.RequiresTwoFactor)
+                    {
+                        return RedirectToAction(nameof(LoginWith2fa), new { returnUrl, model.RememberMe });
+                    }
+                    if (result.IsLockedOut)
+                    {
+                        _logger.LogWarning("User account locked out.");
+                        return RedirectToAction(nameof(Lockout));
+                    }
+                    if (!result.Succeeded)
+                    {
+                        throw new InvalidOperationException();
+                    }
                 }
-                if (result.RequiresTwoFactor)
-                {
-                    return RedirectToAction(nameof(LoginWith2fa), new { returnUrl, model.RememberMe });
-                }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User account locked out.");
-                    return RedirectToAction(nameof(Lockout));
-                }
-                else
+
+                catch (InvalidOperationException)
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                     return View(model);
@@ -214,8 +230,11 @@ namespace TwitterBackup.API.Controllers
             {
                 var user = new User { UserName = model.Email, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
+
                 if (result.Succeeded)
                 {
+                    await this._userManager.AddToRoleAsync(user, "User");
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
