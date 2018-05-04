@@ -106,9 +106,11 @@ namespace TwitterBackup.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult DeleteAccount(int id)
+        public IActionResult DeleteAccount(int accountId)
         {
-            bool isDeleted = this.twitterAccountService.Delete(id);
+            var userId = int.Parse(this.userManager.GetUserId(this.User));
+
+            bool isDeleted = this.twitterAccountService.Delete(accountId, userId);
 
             return this.Ok(new { success = isDeleted });
         }

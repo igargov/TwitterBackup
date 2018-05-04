@@ -38,10 +38,16 @@
 
 @section Scripts {
     <script type="text/javascript">
-        $('#cardHolder').on("click", ".details-button", function () { 
+        $('#cardHolder').on("click", ".delete-button", function () { 
             let cardId = $(this).parent().attr('data-card-id');
 
-            
+            $.ajax({
+                type: 'POST',
+                url: '/TwitterAccount/DeleteAccount',
+                data: {
+                    accountId: cardId
+                }
+            });
         })
-    </script>>
+    </script>
 }
