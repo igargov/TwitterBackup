@@ -16,7 +16,6 @@ using TwitterBackup.TwitterApiClient.RestClientFactory;
 using TwitterBackup.TwitterApiClient;
 using Microsoft.Extensions.Caching.Memory;
 using TwitterBackup.Services.ViewModels;
-using System.Threading.Tasks;
 using TwitterBackup.Services.Contracts;
 
 namespace TwitterBackup.Web
@@ -32,15 +31,26 @@ namespace TwitterBackup.Web
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            string consumerKey;
+            string consumerSecret;
+
             if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
             {
                 services.AddDbContext<TwitterBackupDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("AzureSQL")));
+
+                var section = Configuration.GetSection("TwitterAppSecrets");
+
+                consumerKey = section.GetValue<string>("ConsumerKey");
+                consumerSecret = section.GetValue<string>("ConsumerSecret");
             }
             else
             {
                 services.AddDbContext<TwitterBackupDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("LocalSQL")));
+
+                consumerKey = Environment.GetEnvironmentVariable("CONSUMER_KEY", EnvironmentVariableTarget.Machine);
+                consumerSecret = Environment.GetEnvironmentVariable("CONSUMER_SECRET", EnvironmentVariableTarget.Machine);
             }
 
             services.BuildServiceProvider().GetService<TwitterBackupDbContext>().Database.Migrate();
@@ -58,10 +68,7 @@ namespace TwitterBackup.Web
             //TODO: Extension method
             services.AddSingleton<TwitterAccessTokenProvider, TwitterAccessTokenProvider>(tatp =>
             {
-                var key = Environment.GetEnvironmentVariable("CONSUMER_KEY", EnvironmentVariableTarget.Machine);
-                var secret = Environment.GetEnvironmentVariable("CONSUMER_SECRET", EnvironmentVariableTarget.Machine);
-
-                return new TwitterAccessTokenProvider(key, secret);
+                return new TwitterAccessTokenProvider(consumerKey, consumerSecret);
             });
 
             services.AddScoped<ITwitterApiService, TwitterApiService>();
