@@ -39,7 +39,7 @@ namespace TwitterBackup.Web
                 services.AddDbContext<TwitterBackupDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("AzureSQL")));
 
-                var section = Configuration.GetSection("TwitterAppSecrets");
+                var section = Configuration.GetSection("AppSettings");
 
                 consumerKey = section.GetValue<string>("ConsumerKey");
                 consumerSecret = section.GetValue<string>("ConsumerSecret");
