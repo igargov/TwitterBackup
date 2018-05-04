@@ -19,7 +19,7 @@ using TwitterBackup.Services.ViewModels;
 using System.Threading.Tasks;
 using TwitterBackup.Services.Contracts;
 
-namespace TwitterBackup.API
+namespace TwitterBackup.Web
 {
     public class Startup
     {
@@ -28,7 +28,7 @@ namespace TwitterBackup.API
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        public static IConfiguration Configuration { get; private set; }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
@@ -49,14 +49,8 @@ namespace TwitterBackup.API
                 .AddEntityFrameworkStores<TwitterBackupDbContext>()
                 .AddDefaultTokenProviders();
 
-            // Add application services.
-            //services.AddTransient<IEmailSender, EmailSender>();
-
             //TODO: Decorator pattern
-            services.AddMemoryCache(mc => new MemoryCacheOptions()
-            {
-
-            });
+            services.AddMemoryCache(mc => new MemoryCacheOptions());
 
             services.AddSingleton<IRestClientFactory, RestClientFactory>();
             services.AddSingleton<IRestRequestFactory, RestRequestFactory>();
@@ -111,50 +105,6 @@ namespace TwitterBackup.API
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-
-            this.CreateRoles(serviceProvider).Wait();
-        }
-
-        private async Task CreateRoles(IServiceProvider serviceProvider)
-        {
-            var roleManager = serviceProvider.GetRequiredService<RoleManager<Role>>();
-            var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
-
-            string[] roleNames = { "Admin", "User" };
-
-            IdentityResult roleResult;
-
-            foreach (var roleName in roleNames)
-            {
-                var roleExist = await roleManager.RoleExistsAsync(roleName);
-                if (!roleExist)
-                {
-                    roleResult = await roleManager.CreateAsync(new Role(roleName));
-                }
-            }
-
-            var adminSettings = this.Configuration.GetSection("AdminData");
-
-            string userName = adminSettings.GetValue<string>("UserName");
-            string userEmail = adminSettings.GetValue<string>("UserEmail");
-            string userPassword = adminSettings.GetValue<string>("UserPassword");
-
-            var admin = new User()
-            {
-                UserName = userName,
-                Email = userEmail
-            };
-
-            var user = await userManager.FindByEmailAsync(userEmail);
-
-            if (user == null)
-            {
-                var createAdmin = await userManager.CreateAsync(admin, userPassword);
-                if (createAdmin.Succeeded)
-                {
-                    await userManager.AddToRoleAsync(admin, "Admin");
-                }
-            }
         }
     }
 }
