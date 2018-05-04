@@ -8,10 +8,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using TwitterBackup.API.Models.ManageViewModels;
 using TwitterBackup.Data.Models.Identity;
+using TwitterBackup.Web.Models.ManageViewModels;
 
-namespace TwitterBackup.API.Controllers
+namespace TwitterBackup.Web.Controllers
 {
     [Authorize]
     [Route("[controller]/[action]")]

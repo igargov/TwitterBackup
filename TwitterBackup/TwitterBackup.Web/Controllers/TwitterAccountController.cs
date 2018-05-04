@@ -12,7 +12,7 @@ using TwitterBackup.Services.ViewModels;
 using TwitterBackup.TwitterApiClient.Contracts;
 using TwitterBackup.TwitterDTOs;
 
-namespace TwitterBackup.API.Controllers
+namespace TwitterBackup.Web.Controllers
 {
     [Authorize]
     public class TwitterAccountController : Controller
