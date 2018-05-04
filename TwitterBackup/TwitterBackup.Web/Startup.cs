@@ -52,6 +52,7 @@ namespace TwitterBackup.API
             // Add application services.
             //services.AddTransient<IEmailSender, EmailSender>();
 
+            //TODO: Decorator pattern
             services.AddMemoryCache(mc => new MemoryCacheOptions()
             {
 
@@ -60,6 +61,7 @@ namespace TwitterBackup.API
             services.AddSingleton<IRestClientFactory, RestClientFactory>();
             services.AddSingleton<IRestRequestFactory, RestRequestFactory>();
 
+            //TODO: Extension method
             services.AddSingleton<TwitterAccessTokenProvider, TwitterAccessTokenProvider>(tatp =>
             {
                 var key = Environment.GetEnvironmentVariable("CONSUMER_KEY", EnvironmentVariableTarget.Machine);

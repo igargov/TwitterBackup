@@ -11,6 +11,8 @@ namespace TwitterBackup.Data.UnitOfWork
 
         IRepository<TwitterAccountImage> TwitterAccountImages { get; }
 
+        IRepository<UserTwitterAccount> UserTwitterAccounts { get; }
+
         IRepository<User> Users { get; }
 
         IRepository<Role> Roles { get; }

@@ -41,7 +41,9 @@ namespace TwitterBackup.API.Controllers
         [HttpGet]
         public IActionResult ListAllAccounts()
         {
-            var allAccounts = this.twitterAccountService.GetAll();
+            int userId = int.Parse(this.userManager.GetUserId(this.User));
+
+            var allAccounts = this.twitterAccountService.GetAll(userId);
 
             if (allAccounts == null)
             {
@@ -91,14 +93,24 @@ namespace TwitterBackup.API.Controllers
 
             int userId = int.Parse(this.userManager.GetUserId(this.User));
 
-            var result = this.twitterAccountService.Create(twitterAccount, userId, accountImage);
-
-            if (result == -1)
+            try
             {
-                return this.StatusCode(400);
-            }
+                var result = this.twitterAccountService.Create(twitterAccount, userId, accountImage);
 
-            return this.StatusCode(200);
+                return this.Ok(new { accountId = result });
+            }
+            catch (Exception ex)
+            {
+                return this.BadRequest(new { result = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult DeleteAccount(int id)
+        {
+            bool isDeleted = this.twitterAccountService.Delete(id);
+
+            return this.Ok(new { success = isDeleted });
         }
     }
 }

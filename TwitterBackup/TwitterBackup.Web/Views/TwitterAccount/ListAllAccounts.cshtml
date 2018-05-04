@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Search Result";
 }
-<div class="row">
+<div class="row" id="cardHolder">
     @{
         foreach (var item in Model)
         {
@@ -25,12 +25,23 @@
                     <h4 class="media-heading m-xs">@item.Name</h4>
                     <a href="@item.Url" class="m-xs">@@@item.ScreenName</a>
                     <p class="m-xs">@item.Description</p>
-                    <div class="text-right">
-                        <button id="save" type="submit" class="btn btn-sm btn-primary btn-rounded navy-bg">Save</button>
-                        <button id="delete" type="submit" class="btn btn-sm btn-danger btn-rounded">Delete</button>
+                    <div class="text-right" data-card-id="@item.Id">
+                        <button id="details" type="submit" class="btn btn-sm btn-default btn-rounded details-button">Details</button>
+                        <button id="update" type="submit" class="btn btn-sm btn-primary btn-rounded navy-bg update-button">Update</button>
+                        <button id="delete" type="submit" class="btn btn-sm btn-danger btn-rounded delete-button">Delete</button>
                     </div>
                 </div>
             </div>
         }
     }
 </div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $('#cardHolder').on("click", ".details-button", function () { 
+            let cardId = $(this).parent().attr('data-card-id');
+
+            
+        })
+    </script>>
+}
