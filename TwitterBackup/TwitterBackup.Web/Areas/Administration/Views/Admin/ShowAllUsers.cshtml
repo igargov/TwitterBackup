@@ -1,0 +1,75 @@
+﻿@{
+	ViewBag.Title = "ShowAllUsers";
+}
+
+@using TwitterBackup.Services.ViewModels;
+
+@model IEnumerable<UserViewModel>
+<table class="table">
+	<thead>
+		<tr>
+			<th scope="col">TweetId</th>
+			<th scope="col">UserName</th>
+			<th scope="col">Email</th>
+			<th scope="col">Make Admin</th>
+			<th scope="col">Delete User</th>
+			<th scope="col">View Saved Tweets</th>
+			<th scope="col">View Saved Twitters</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var user in Model)
+		{
+		<tr>
+			<td>#@user.Id</td>
+			<td>@user.UserName</td>
+			<td>@user.Email</td>
+
+			<td><button type="button" class="promote-btn btn btn-primary" data-toggle="modal" data-target="#exampleModal">Promote</button></td>
+
+			<td><a class="btn btn-danger deleteUser @user.Id" data-name="@user.Id">Delete</a></td>
+			<td>
+				<form asp-area="Admin" asp-controller="Home" asp-action="SavedForAdmin" method="get">
+					<input hidden name="userId" value="@user.Id" />
+					<button type="submit" class="btn btn-primary">Tweets</button>
+				</form>
+			</td>
+			<td>
+				<form asp-area="Admin" asp-controller="Home" asp-action="SavedTwittersForAdmin" method="get">
+					<input hidden name="userId" value="@user.Id" />
+					<button type="submit" class="btn btn-warning">Twitters</button>
+				</form>
+			</td>
+		</tr>
+
+		<!-- Modal -->
+		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Promote Action</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						Are you sure you want to promote this user?
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+						<form asp-area="Administration" asp-controller="Admin" asp-action="PromoteUser" method="post" class="promote-form">
+							<input name="userId" value="@user.Id" type="hidden" />
+
+							<button type="submit" class="btn btn-primary" >Yes, I'am sure!</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		}
+	</tbody>
+</table>
+
+@section Scripts {
+	<script src="~/js/show-all-users-async-operations.js"></script>
+}

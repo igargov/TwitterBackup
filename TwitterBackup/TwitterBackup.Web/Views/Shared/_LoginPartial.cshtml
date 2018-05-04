@@ -1,0 +1,28 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using TwitterBackup.Web.Models
+@using TwitterBackup.Data.Models.Identity;
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <div class="nav navbar-nav m-t-xxs-4 dropdown">
+        <img class="img-circle img-circle-nav-bar" src="~/images/default_profile_normal.png" />
+        <a data-toggle="dropdown" class="dropdown-toggle twitter-blue" href="#">
+            <strong class="font-bold">@UserManager.GetUserName(User)</strong>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a asp-area="" asp-controller="Manage" asp-action="Index">Profile</a></li>
+            <li><a asp-area="" asp-controller="" asp-action="">Contacts</a></li>
+            <li class="divider"></li>
+            <li><a id="logoutLink" asp-controller="Account" asp-action="Logout">Logout</a></li>
+        </ul>
+    </div>
+}
+else
+{
+    <ul class="nav navbar-nav">
+        <li><a asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
+        <li><a asp-area="" asp-controller="Account" asp-action="Register">Register</a></li>
+    </ul>
+}

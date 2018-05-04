@@ -1,0 +1,9 @@
+﻿@using TwitterBackup.Services.ViewModels
+@model TwitterErrorViewModel;
+
+@{
+    ViewData["Title"] = "TwitterError";
+}
+
+<h1 class="text-danger">Error <code>@Model.Code</code></h1>
+<h2 class="text-danger">@Model.Message</h2>

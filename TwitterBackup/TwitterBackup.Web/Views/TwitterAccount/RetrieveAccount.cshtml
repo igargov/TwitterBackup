@@ -1,0 +1,51 @@
+﻿@using TwitterBackup.Services.ViewModels
+@model TwitterAccountViewModel
+
+@{
+    ViewBag.Title = "Search Result";
+}  
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="widget-head-color-box navy-bg p-h-m text-center">
+                <div class="m-b-md">
+                    <h2>@Model.Name</h2>
+                </div>
+                <img src="@Model.ProfileImageUrl" class="img-circle img-circle-profile circle-border m-b-md" alt="profile">
+                <div>
+                    <span>@Model.StatusesCount Tweets</span> |
+                    <span>@Model.FriendsCount Friends</span> |
+                    <span>@Model.FollowersCount Followers</span>
+                </div>
+            </div>
+            <div class="widget-text-box">
+                <h4 class="media-heading m-xs">@Model.Name</h4>
+                <a href="@Model.Url" class="m-xs">@@@Model.ScreenName</a>
+                <p class="m-xs">@Model.Description</p>
+                <div class="text-right">
+                    <button id="save" type="submit" class="btn btn-sm btn-primary btn-rounded navy-bg">Save</button>
+                    <button id="delete" type="submit" class="btn btn-sm btn-danger btn-rounded">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>   
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $('#save').on("click", function () {
+            let screenName = '@Model.ScreenName';
+
+            $.ajax({
+                type: 'POST',
+                url: '/TwitterAccount/CreateAccount',
+                data: {
+                    screenName: screenName
+                },
+                dataType: "json",
+                success: function (success) {
+
+                },
+            });
+        });
+    </script>
+}
