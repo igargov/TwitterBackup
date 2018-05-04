@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using TwitterBackup.Data.Models.Identity;
 using TwitterBackup.Services;
 
 namespace TwitterBackup.Web.Areas.Administration.Controllers
@@ -8,10 +11,12 @@ namespace TwitterBackup.Web.Areas.Administration.Controllers
     public class AdminController : Controller
     {
         private readonly IUserService userService;
+        private readonly UserManager<User> userManager;
 
-        public AdminController(IUserService userService)
+        public AdminController(IUserService userService, UserManager<User> userManager)
         {
             this.userService = userService;
+            this.userManager = userManager;
         }
 
         public IActionResult Index()
@@ -28,23 +33,36 @@ namespace TwitterBackup.Web.Areas.Administration.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult PromoteUser(string userId)
+        public async Task<string> PromoteUser(string Id)
         {
-            if (string.IsNullOrEmpty(userId))
+            if (Id == null)
             {
-                throw new ArgumentException("message", nameof(userId));
+                throw new ArgumentException();
             }
 
-            try
+            var user = await this.userManager.FindByIdAsync(Id);
+            if (user == null)
             {
-                //Service Promote User
+                throw new ArgumentException();
+            }
 
-                return this.Json(new { isPromoted = true });
-            }
-            catch (Exception)
+            await this.userManager.RemoveFromRoleAsync(user, "User");
+            await this.userManager.AddToRoleAsync(user, "Admin");
+            return "success";
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<string> DelUser(string Id)
+        {
+            if (Id == null)
             {
-                return this.Json(new { isPromoted = false });
+                throw new ArgumentException();
             }
+
+            var user = await this.userManager.FindByIdAsync(Id);
+            await this.userManager.DeleteAsync(user);
+            return "success";
         }
     }
 }

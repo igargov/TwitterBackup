@@ -9,5 +9,7 @@ namespace TwitterBackup.Services
     public interface IUserService
     {
         IEnumerable<UserViewModel> GetUsers();
+
+        void DeleteUser(User user);
     }
 }

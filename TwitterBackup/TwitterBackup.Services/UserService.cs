@@ -28,5 +28,10 @@ namespace TwitterBackup.Services
 
             return viewModels;
         }
+
+        public void DeleteUser(User user)
+        {
+            this.unitOfWork.Users.Delete(user);
+        }
     }
 }
