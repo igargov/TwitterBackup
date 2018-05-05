@@ -76,7 +76,7 @@ namespace TwitterBackup.Web
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IMappingProvider, MappingProvider>();
             services.AddScoped<TwitterAccountViewModel, TwitterAccountViewModel>();
-            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<TwitterBackup.Services.IUserService, UserService>();
             services.AddAutoMapper();
             services.AddMvc();
             services.AddAntiforgery(opt => { opt.HeaderName = "token"; });
