@@ -23,6 +23,7 @@
                 <p class="m-xs">@Model.Description</p>
                 <div class="text-right">
                     <button id="save" type="submit" class="btn btn-sm btn-primary btn-rounded navy-bg">Save</button>
+                    <button id="delete" type="submit" class="btn btn-sm btn-danger btn-rounded">Delete</button>
                 </div>
             </div>
         </div>
@@ -36,10 +37,14 @@
 
             $.ajax({
                 type: 'POST',
-                url: '/TwitterAccount/PostTwitterAccount',
+                url: '/TwitterAccount/CreateAccount',
                 data: {
                     screenName: screenName
-                }
+                },
+                dataType: "json",
+                success: function (success) {
+
+                },
             });
         });
     </script>

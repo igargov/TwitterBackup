@@ -102,7 +102,7 @@ namespace TwitterBackup.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    ProfileImage = table.Column<byte[]>(nullable: true),
+                    ProfileImage = table.Column<string>(nullable: true),
                     TwitterAccountId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>

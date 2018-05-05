@@ -1,4 +1,5 @@
 ﻿using RestSharp;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TwitterBackup.TwitterApiClient.Contracts;
@@ -20,6 +21,18 @@ namespace TwitterBackup.TwitterApiClient
             this.restClientFactory = restClientFactory;
             this.restRequestFactory = restRequestFactory;
             this.accessTokenProvider = accessTokenProvider;
+        }
+
+        public async Task<string> RetrieveAccountProfileImage(string url)
+        {
+            var client = this.restClientFactory.Create(url);
+            var request = this.restRequestFactory.Create("", Method.GET);
+
+            var result = await client.ExecuteTaskAsync<string>(request);
+
+            string picBase64 = Convert.ToBase64String(result.RawBytes);
+
+            return picBase64;
         }
 
         public async Task<TwitterAccountDTO> RetrieveTwitterAccountAsync(string screenName)

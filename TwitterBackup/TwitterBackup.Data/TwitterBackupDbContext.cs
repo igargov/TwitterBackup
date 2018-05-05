@@ -34,7 +34,8 @@ namespace TwitterBackup.Data
 
             builder.Entity<TwitterAccount>()
                 .HasOne(twui => twui.TwitterAccountImage)
-                .WithOne(twu => twu.TwitterAccount);
+                .WithOne(twu => twu.TwitterAccount)
+                .HasForeignKey<TwitterAccountImage>();
 
             builder.Entity<User>(e => e.ToTable("Users"));
             builder.Entity<Role>(e => e.ToTable("Roles"));

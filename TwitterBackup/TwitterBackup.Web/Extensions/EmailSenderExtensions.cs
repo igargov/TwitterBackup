@@ -1,7 +1,8 @@
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using TwitterBackup.API.Services;
 
-namespace TwitterBackup.API.Services
+namespace TwitterBackup.Web.Services
 {
     public static class EmailSenderExtensions
     {

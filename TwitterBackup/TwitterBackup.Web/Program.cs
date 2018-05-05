@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using TwitterBackup.Web.Extensions;
 
-namespace TwitterBackup.API
+namespace TwitterBackup.Web
 {
     public class Program
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            BuildWebHost(args).SeedData().Run();
         }
 
         public static IWebHost BuildWebHost(string[] args) =>

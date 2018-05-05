@@ -16,7 +16,7 @@
                 @{
                     if (Context.User.Identity.IsAuthenticated)
                     {
-                        <li><a asp-area="" asp-controller="" asp-action="">Favourites</a></li>
+                        <li><a asp-area="" asp-controller="TwitterAccount" asp-action="ListAllAccounts">Favourites</a></li>
                     }
 
                     if(User.IsInRole("Admin"))
@@ -31,7 +31,7 @@
                     if (Context.User.Identity.IsAuthenticated)
                     {
                         <div class="search-bar nav navbar-nav m-t-xs">
-                            <form asp-controller="TwitterAccount" asp-action="GetTwitterAccount" method="get">
+                            <form asp-controller="TwitterAccount" asp-action="RetrieveAccount" method="get">
                                 <input type="search" name="screenName" value="@ViewData["SearchScreenName"]" placeholder="Search Twitter" />
                             </form>
                         </div>

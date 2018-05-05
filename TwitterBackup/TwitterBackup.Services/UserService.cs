@@ -1,11 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using TwitterBackup.Data.Models.Identity;
 using TwitterBackup.Data.UnitOfWork;
 using TwitterBackup.Providers;
+using TwitterBackup.Services.Contracts;
 using TwitterBackup.Services.ViewModels;
 
 namespace TwitterBackup.Services

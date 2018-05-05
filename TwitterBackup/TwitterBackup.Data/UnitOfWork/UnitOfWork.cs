@@ -11,6 +11,7 @@ namespace TwitterBackup.Data.UnitOfWork
         private readonly TwitterBackupDbContext context;
         private IRepository<TwitterAccount> twitterAccounts;
         private IRepository<TwitterAccountImage> twitterAccountImages;
+        private IRepository<UserTwitterAccount> userTwitterAccounts;
         private IRepository<User> users;
         private IRepository<Role> roles;
 
@@ -23,12 +24,14 @@ namespace TwitterBackup.Data.UnitOfWork
             TwitterBackupDbContext context,
             IRepository<TwitterAccount> twitterAccounts,
             IRepository<TwitterAccountImage> twitterAccountImages,
+            IRepository<UserTwitterAccount> userTwitterAccounts,
             IRepository<User> users,
             IRepository<Role> roles)
         {
             this.context = context;
             this.twitterAccounts = twitterAccounts;
             this.twitterAccountImages = twitterAccountImages;
+            this.userTwitterAccounts = userTwitterAccounts;
             this.users = users;
             this.roles = roles;
         }
@@ -56,6 +59,19 @@ namespace TwitterBackup.Data.UnitOfWork
                 }
 
                 return this.twitterAccountImages;
+            }
+        }
+
+        public IRepository<UserTwitterAccount> UserTwitterAccounts
+        {
+            get
+            {
+                if (this.userTwitterAccounts == null)
+                {
+                    this.userTwitterAccounts = new GenericRepository<UserTwitterAccount>(this.context);
+                }
+
+                return this.userTwitterAccounts;
             }
         }
 

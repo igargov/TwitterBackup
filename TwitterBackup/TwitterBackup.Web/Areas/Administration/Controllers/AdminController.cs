@@ -4,16 +4,17 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TwitterBackup.Data.Models.Identity;
 using TwitterBackup.Services;
+using TwitterBackup.Services.Contracts;
 
 namespace TwitterBackup.Web.Areas.Administration.Controllers
 {
     [Area("Administration")]
     public class AdminController : Controller
     {
-        private readonly IUserService userService;
+        private readonly TwitterBackup.Services.IUserService userService;
         private readonly UserManager<User> userManager;
 
-        public AdminController(IUserService userService, UserManager<User> userManager)
+        public AdminController(TwitterBackup.Services.IUserService userService, UserManager<User> userManager)
         {
             this.userService = userService;
             this.userManager = userManager;

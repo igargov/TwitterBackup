@@ -217,7 +217,7 @@ namespace TwitterBackup.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<byte[]>("ProfileImage");
+                    b.Property<string>("ProfileImage");
 
                     b.Property<int>("TwitterAccountId");
 

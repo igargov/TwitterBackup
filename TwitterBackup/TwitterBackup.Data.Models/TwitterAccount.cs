@@ -5,6 +5,11 @@ namespace TwitterBackup.Data.Models
 {
     public class TwitterAccount
     {
+        public TwitterAccount()
+        {
+            this.Users = new HashSet<UserTwitterAccount>();
+        }
+
         public int Id { get; set; }
 
         public string TwitterId { get; set; }

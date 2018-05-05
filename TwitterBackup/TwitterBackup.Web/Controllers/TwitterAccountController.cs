@@ -2,14 +2,17 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
+using TwitterBackup.Data.Models.Identity;
 using TwitterBackup.Providers;
-using TwitterBackup.Services;
+using TwitterBackup.Services.Contracts;
 using TwitterBackup.Services.ViewModels;
 using TwitterBackup.TwitterApiClient.Contracts;
+using TwitterBackup.TwitterDTOs;
 
-namespace TwitterBackup.API.Controllers
+namespace TwitterBackup.Web.Controllers
 {
     [Authorize]
     public class TwitterAccountController : Controller
@@ -18,17 +21,40 @@ namespace TwitterBackup.API.Controllers
         private readonly ITwitterAccountService twitterAccountService;
         private readonly IMappingProvider mapping;
         private readonly IMemoryCache memoryCache;
+        private readonly UserManager<User> userManager;
 
-        public TwitterAccountController(ITwitterApiService twitterApiService, ITwitterAccountService twitterAccountService, IMemoryCache memoryCache, IMappingProvider mapping)
+        public TwitterAccountController(
+            ITwitterApiService twitterApiService,
+            ITwitterAccountService twitterAccountService,
+            IMemoryCache memoryCache,
+            IMappingProvider mapping,
+            UserManager<User> userManager
+            )
         {
             this.twitterApiService = twitterApiService;
             this.twitterAccountService = twitterAccountService;
             this.memoryCache = memoryCache;
             this.mapping = mapping;
+            this.userManager = userManager;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetTwitterAccount(string screenName)
+        public IActionResult ListAllAccounts()
+        {
+            int userId = int.Parse(this.userManager.GetUserId(this.User));
+
+            var allAccounts = this.twitterAccountService.GetAll(userId);
+
+            if (allAccounts == null)
+            {
+                return View("_NotFound");
+            }
+
+            return View(allAccounts);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> RetrieveAccount(string screenName)
         {
             var twitterAccountResult = await this.memoryCache.GetOrCreateAsync(screenName, async (entry) =>
             {
@@ -54,18 +80,39 @@ namespace TwitterBackup.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostTwitterAccount(string screenName)
+        public async Task<IActionResult> CreateAccount(string screenName)
         {
-            var twitterAccountResult = await this.memoryCache.GetOrCreateAsync(screenName, async (entry) =>
+            bool isAccountPresent = this.memoryCache.TryGetValue(screenName, out TwitterAccountDTO twitterAccount);
+
+            if (!isAccountPresent)
             {
-                entry.SetSlidingExpiration(TimeSpan.FromSeconds(60));
+                twitterAccount = await this.twitterApiService.RetrieveTwitterAccountAsync(screenName);
+            }
 
-                return await this.twitterApiService.RetrieveTwitterAccountAsync(screenName);
-            });
+            string accountImage = await this.twitterApiService.RetrieveAccountProfileImage(twitterAccount.ProfileImageUrl);
 
-            var result = this.twitterAccountService.Create(twitterAccountResult);
+            int userId = int.Parse(this.userManager.GetUserId(this.User));
 
-            return this.StatusCode(200);
+            try
+            {
+                var result = this.twitterAccountService.Create(twitterAccount, userId, accountImage);
+
+                return this.Ok(new { accountId = result });
+            }
+            catch (Exception ex)
+            {
+                return this.BadRequest(new { result = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult DeleteAccount(int accountId)
+        {
+            var userId = int.Parse(this.userManager.GetUserId(this.User));
+
+            bool isDeleted = this.twitterAccountService.Delete(accountId, userId);
+
+            return this.Ok(new { success = isDeleted });
         }
     }
 }

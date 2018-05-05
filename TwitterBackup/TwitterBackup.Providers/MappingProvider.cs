@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace TwitterBackup.Providers
-{
+{ 
     public class MappingProvider : IMappingProvider
     {
         private IMapper mapper;
