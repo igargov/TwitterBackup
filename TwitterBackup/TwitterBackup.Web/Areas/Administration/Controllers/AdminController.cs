@@ -16,12 +16,14 @@ namespace TwitterBackup.Web.Areas.Administration.Controllers
     {
         private readonly IMappingProvider mappingProvider;
         private readonly IUserService userService;
+        private readonly ITwitterAccountService twitterAccountService;
         private readonly UserManager<User> userManager;
 
-        public AdminController(IMappingProvider mappingProvider, IUserService userService, UserManager<User> userManager)
+        public AdminController(IMappingProvider mappingProvider, IUserService userService, ITwitterAccountService twitterAccountService, UserManager<User> userManager)
         {
             this.mappingProvider = mappingProvider;
             this.userService = userService;
+            this.twitterAccountService = twitterAccountService;
             this.userManager = userManager;
         }
 
@@ -100,6 +102,12 @@ namespace TwitterBackup.Web.Areas.Administration.Controllers
             var user = await this.userManager.FindByIdAsync(Id);
             await this.userManager.DeleteAsync(user);
             return RedirectToAction("ShowAllUsers");
+        }
+
+        [HttpGet]
+        public IActionResult SavedTwitters(string userId)
+        {
+            return RedirectToAction("ListAllAccounts", "TwitterAccount", new { area = "", externalUserId = userId });
         }
     }
 }

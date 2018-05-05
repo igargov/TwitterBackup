@@ -18,11 +18,5 @@ namespace TwitterBackup.Services
             this.unitOfWork = unitOfWork;
             this.mappingProvider = mappingProvider;
         }
-
-        public void DeleteUser(User user)
-        {
-            this.unitOfWork.Users.Delete(user);
-        }
-
     }
 }
