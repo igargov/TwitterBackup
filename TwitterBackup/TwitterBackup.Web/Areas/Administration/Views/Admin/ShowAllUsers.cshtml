@@ -23,27 +23,27 @@
 				<td>@user.Email</td>
 
 				<td>
-					<a id="@user.Id" class="btn btn-success promoteUser" onclick="togglePromoteUserModal('@user.Id')" data-name="@user.Id">
+					<a id="@user.Id" class="btn btn-primary btn-rounded navy-bg promoteUser" onclick="togglePromoteUserModal('@user.Id')" data-name="@user.Id">
 						Promote
 					</a>
 				</td>
 
 				<td>
-					<a id ="@user.Id" class="btn btn-danger deleteUser" onclick="toggleDeleteUserModal('@user.Id')" data-name="@user.Id">
+					<a id="@user.Id" class="btn btn-danger btn-rounded deleteUser" onclick="toggleDeleteUserModal('@user.Id')" data-name="@user.Id">
 						Delete
 					</a>
 				</td>
-				
+
 				<td>
 					<form asp-area="Admin" asp-controller="Home" asp-action="SavedTweets" method="get">
 						<input hidden name="userId" value="@user.Id" />
-						<button type="submit" class="btn btn-primary">Tweets</button>
+						<button style="background:#ffffff; border-color: #19BCFF; color: #19BCFF" type="submit" class="btn btn-rounded">Tweets</button>
 					</form>
 				</td>
 				<td>
 					<form asp-area="Admin" asp-controller="Home" asp-action="SavedTwitters" method="get">
 						<input hidden name="userId" value="@user.Id" />
-						<button type="submit" class="btn btn-warning">Twitters</button>
+						<button style="background:#ffffff; border-color: #19BCFF; color: #19BCFF" type="submit" class="btn btn-rounded">Twitters</button>
 					</form>
 				</td>
 			</tr>

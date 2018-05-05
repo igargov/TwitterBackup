@@ -20,11 +20,7 @@
     @await Html.PartialAsync("_NavBarPartial.cshtml")
 
     <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; 2018 - TwitterBackup</p>
-        </footer>
+		@RenderBody()
     </div>
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>

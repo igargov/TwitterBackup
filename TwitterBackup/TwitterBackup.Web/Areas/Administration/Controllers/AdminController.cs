@@ -33,7 +33,7 @@ namespace TwitterBackup.Web.Areas.Administration.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<string> PromoteUser(string Id)
+        public async Task<IActionResult> PromoteUser(string Id)
         {
             if (Id == null)
             {
@@ -48,12 +48,12 @@ namespace TwitterBackup.Web.Areas.Administration.Controllers
 
             await this.userManager.RemoveFromRoleAsync(user, "User");
             await this.userManager.AddToRoleAsync(user, "Admin");
-            return "success";
+            return RedirectToAction("ShowAllUsers");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<string> DelUser(string Id)
+        public async Task<IActionResult> DelUser(string Id)
         {
             if (Id == null)
             {
@@ -62,7 +62,7 @@ namespace TwitterBackup.Web.Areas.Administration.Controllers
 
             var user = await this.userManager.FindByIdAsync(Id);
             await this.userManager.DeleteAsync(user);
-            return "success";
+            return RedirectToAction("ShowAllUsers");
         }
     }
 }

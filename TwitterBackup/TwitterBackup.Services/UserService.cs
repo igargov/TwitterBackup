@@ -23,9 +23,10 @@ namespace TwitterBackup.Services
 
         public IEnumerable<UserViewModel> GetUsers()
         {
-            var domainModels = this.unitOfWork.Users.All().AsEnumerable();/*.Where(u => u.Roles.Any(r => r.Name.Equals("Admin")))*/;
-            var viewModels = this.mappingProvider.ProjectTo<UserViewModel>(domainModels);
+            var userids = this.unitOfWork.Context.UserRoles.Where(a => a.RoleId != 1).Select(b => b.UserId).Distinct();
+            var domainModels = this.unitOfWork.Context.Users.Where(a => userids.Any(c => c == a.Id));
 
+            var viewModels = this.mappingProvider.ProjectTo<UserViewModel>(domainModels);
             return viewModels;
         }
 
