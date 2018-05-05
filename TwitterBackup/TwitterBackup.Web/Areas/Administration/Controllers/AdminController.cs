@@ -1,21 +1,26 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TwitterBackup.Data.Models.Identity;
-using TwitterBackup.Services;
+using TwitterBackup.Providers;
 using TwitterBackup.Services.Contracts;
+using TwitterBackup.Services.ViewModels;
 
 namespace TwitterBackup.Web.Areas.Administration.Controllers
 {
     [Area("Administration")]
     public class AdminController : Controller
     {
-        private readonly TwitterBackup.Services.IUserService userService;
+        private readonly IMappingProvider mappingProvider;
+        private readonly IUserService userService;
         private readonly UserManager<User> userManager;
 
-        public AdminController(TwitterBackup.Services.IUserService userService, UserManager<User> userManager)
+        public AdminController(IMappingProvider mappingProvider, IUserService userService, UserManager<User> userManager)
         {
+            this.mappingProvider = mappingProvider;
             this.userService = userService;
             this.userManager = userManager;
         }
@@ -25,11 +30,42 @@ namespace TwitterBackup.Web.Areas.Administration.Controllers
             return View();
         }
 
-        public IActionResult ShowAllUsers()
+        public async Task<IActionResult> ShowAllUsers()
         {
-            var userViewModels = this.userService.GetUsers();
+            var users = new List<User>();
 
-            return View(userViewModels);
+            foreach (User user in this.userManager.Users)
+            {
+                var userRoles = await this.userManager.GetRolesAsync(user);
+
+                if (userRoles.Contains("User"))
+                {
+                    users.Add(user);
+                }
+            }
+
+            var usersAsViewModels = this.mappingProvider.ProjectTo<UserViewModel>(users.AsQueryable<User>());
+
+            return View(usersAsViewModels);
+        }
+
+        public async Task<IActionResult> ShowAllAdmins()
+        {
+            var admins = new List<User>();
+
+            foreach (User user in this.userManager.Users)
+            {
+                var userRoles = await this.userManager.GetRolesAsync(user);
+
+                if (userRoles.Contains("Admin"))
+                {
+                    admins.Add(user);
+                }
+            }
+
+            var usersAsViewModels = this.mappingProvider.ProjectTo<UserViewModel>(admins.AsQueryable<User>());
+
+            return View(usersAsViewModels);
         }
 
         [HttpPost]

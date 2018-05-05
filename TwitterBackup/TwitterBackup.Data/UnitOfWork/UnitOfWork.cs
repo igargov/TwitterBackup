@@ -101,14 +101,6 @@ namespace TwitterBackup.Data.UnitOfWork
             }
         }
 
-        public IdentityDbContext<User, Role, int, UserClaim, UserRole, UserLogin, RoleClaim, UserToken> Context
-        {
-            get
-            {
-                return this.context;
-            }
-        }
-
         public int SaveChanges()
         {
             return this.context.SaveChanges();

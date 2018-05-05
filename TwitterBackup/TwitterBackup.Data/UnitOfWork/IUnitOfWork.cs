@@ -18,8 +18,6 @@ namespace TwitterBackup.Data.UnitOfWork
 
         IRepository<Role> Roles { get; }
 
-        IdentityDbContext<User, Role, int, UserClaim, UserRole, UserLogin, RoleClaim, UserToken> Context { get; }
-
         int SaveChanges();
 
         Task<int> SaveChangesAsync();
