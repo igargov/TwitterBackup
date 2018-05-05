@@ -29,11 +29,9 @@ namespace TwitterBackup.Web.Seed
                 }
             }
 
-            var adminSettings = Startup.Configuration.GetSection("AppSettings");
-
-            string userName = adminSettings.GetValue<string>("AdminUserName");
-            string userEmail = adminSettings.GetValue<string>("AdminUserEmail");
-            string userPassword = adminSettings.GetValue<string>("AdminUserPassword");
+            string userName = Startup.Configuration.GetValue<string>("AdminUserName");
+            string userEmail = Startup.Configuration.GetValue<string>("AdminUserEmail");
+            string userPassword = Startup.Configuration.GetValue<string>("AdminUserPassword");
 
             var admin = new User()
             {
