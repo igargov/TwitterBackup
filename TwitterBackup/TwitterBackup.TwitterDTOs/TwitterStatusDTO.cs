@@ -29,10 +29,10 @@ namespace TwitterBackup.TwitterDTOs
 
         public int RetweetCount { get; set; }
 
-        public int FavouriteCount { get; set; }
+        public int FavoriteCount { get; set; }
 
-        [JsonProperty("favourited")]
-        public bool? IsFavourited { get; set; }
+        [JsonProperty("favorited")]
+        public bool? IsFavorited { get; set; }
 
         [JsonProperty("retweeted")]
         public bool? IsRetweeted { get; set; }
