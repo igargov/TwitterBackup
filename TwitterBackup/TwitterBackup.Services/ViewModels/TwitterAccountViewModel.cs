@@ -2,6 +2,8 @@
 {
     public class TwitterAccountViewModel
     {
+        public int Id { get; set; }
+
         public string Description { get; set; }
 
         public int FollowersCount { get; set; }
@@ -13,6 +15,8 @@
         public string Name { get; set; }
 
         public string ProfileImageUrl { get; set; }
+
+        public string ProfileImage { get; set; }
 
         public string ScreenName { get; set; }
 

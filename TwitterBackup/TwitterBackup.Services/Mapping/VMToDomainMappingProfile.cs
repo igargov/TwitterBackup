@@ -9,7 +9,7 @@ namespace TwitterBackup.Services.Mapping
     {
         public VMToDomainMappingProfile()
         {
-            CreateMap<TwitterAccountWithImageViewModel, TwitterAccount>();
+            CreateMap<TwitterAccountViewModel, TwitterAccount>();
 
             //DTO mapping
             CreateMap<TwitterAccountDTO, TwitterAccount>()

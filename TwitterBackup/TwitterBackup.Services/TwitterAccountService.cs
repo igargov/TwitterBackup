@@ -22,14 +22,14 @@ namespace TwitterBackup.Services
             this.mappingProvider = mappingProvider;
         }
 
-        public List<TwitterAccountWithImageViewModel> GetAll(int userId)
+        public List<TwitterAccountViewModel> GetAll(int userId)
         {
             var allAccounts = this.unitOfWork.TwitterAccounts
                 .All()
                 .Where(ta => ta.Users.Any(u => u.UserId == userId))
                 .Include(tai => tai.TwitterAccountImage);
 
-            var allAccountModel = this.mappingProvider.ProjectTo<TwitterAccountWithImageViewModel>(allAccounts).ToList();
+            var allAccountModel = this.mappingProvider.ProjectTo<TwitterAccountViewModel>(allAccounts).ToList();
 
             return allAccountModel;
         }

@@ -34,15 +34,9 @@ namespace TwitterBackup.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> RetrieveStatuses(string screenName)
         {
-            var tweets = await this.twitterApiService.RetrieveTwitterAccountStatusesAsync(screenName, 1);
+            var tweets = await this.twitterApiService.RetrieveTwitterAccountStatusesAsync(screenName, 3);
 
-            try
-            {
-                var result = this.twitterStatusService.Create(tweets.First());
-            }
-            catch (Exception ex)
-            {
-            }
+
 
             return this.Ok();
         }

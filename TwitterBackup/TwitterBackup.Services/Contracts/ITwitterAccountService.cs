@@ -6,7 +6,7 @@ namespace TwitterBackup.Services.Contracts
 {
     public interface ITwitterAccountService
     {
-        List<TwitterAccountWithImageViewModel> GetAll(int userId);
+        List<TwitterAccountViewModel> GetAll(int userId);
 
         int Create(TwitterAccountDTO model, int userId, string picBase64);
 
