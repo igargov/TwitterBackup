@@ -1,4 +1,7 @@
-﻿namespace TwitterBackup.Services.ViewModels
+﻿using System;
+using TwitterBackup.TwitterDTOs;
+
+namespace TwitterBackup.Services.ViewModels
 {
     public class TwitterStatusViewModel
     {
@@ -11,5 +14,9 @@
         public int RetweetCount { get; set; }
 
         public int FavoriteCount { get; set; }
+
+        public TwitterAccountDTO User { get; set; }
+
+        public DateTime? CreatedAt { get; set; }
     }
 }
