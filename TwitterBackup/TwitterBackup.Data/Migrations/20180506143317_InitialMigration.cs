@@ -123,6 +123,7 @@ namespace TwitterBackup.Data.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     CreatedAt = table.Column<DateTime>(nullable: true),
+                    CreatedAtTwitter = table.Column<DateTime>(nullable: true),
                     FavoriteCount = table.Column<int>(nullable: false),
                     InReplyToScreenName = table.Column<string>(nullable: true),
                     InReplyToTwitterAccountId = table.Column<string>(nullable: true),

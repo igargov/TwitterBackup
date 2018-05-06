@@ -50,7 +50,7 @@ namespace TwitterBackup.Services
 
                 var account = this.unitOfWork.TwitterAccounts
                     .All()
-                    .Where(ta => ta.TwitterId.Equals(model.IdString))
+                    .Where(ta => ta.TwitterId.Equals(model.User.IdString))
                     .FirstOrDefault();
 
                 if (account == null)

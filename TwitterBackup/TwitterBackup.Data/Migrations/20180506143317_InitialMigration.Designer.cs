@@ -11,7 +11,7 @@ using TwitterBackup.Data;
 namespace TwitterBackup.Data.Migrations
 {
     [DbContext(typeof(TwitterBackupDbContext))]
-    [Migration("20180506133800_InitialMigration")]
+    [Migration("20180506143317_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -238,6 +238,8 @@ namespace TwitterBackup.Data.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime?>("CreatedAt");
+
+                    b.Property<DateTime?>("CreatedAtTwitter");
 
                     b.Property<int>("FavoriteCount");
 

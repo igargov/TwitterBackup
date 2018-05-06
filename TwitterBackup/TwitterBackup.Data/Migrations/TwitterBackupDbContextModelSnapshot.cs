@@ -238,6 +238,8 @@ namespace TwitterBackup.Data.Migrations
 
                     b.Property<DateTime?>("CreatedAt");
 
+                    b.Property<DateTime?>("CreatedAtTwitter");
+
                     b.Property<int>("FavoriteCount");
 
                     b.Property<string>("InReplyToScreenName");

@@ -71,6 +71,7 @@ namespace TwitterBackup.Web
 
             services.AddScoped<ITwitterApiService, TwitterApiService>();
             services.AddScoped<ITwitterAccountService, TwitterAccountService>();
+            services.AddScoped<ITwitterStatusService, TwitterStatusService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IMappingProvider, MappingProvider>();
             services.AddScoped<TwitterAccountViewModel, TwitterAccountViewModel>();
