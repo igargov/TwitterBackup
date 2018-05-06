@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -68,7 +69,8 @@ namespace TwitterBackup.Web.Controllers
             {
                 var errors = twitterAccountResult.Errors;
 
-                var errModel = this.mapping.ProjectTo<TwitterErrorViewModel>(errors);
+                var errModel = this.mapping
+                    .MapTo<IEnumerable<TwitterErrorDTO>, IEnumerable<TwitterErrorViewModel>>(errors);
 
                 return View("TwitterError", errModel);
             }
