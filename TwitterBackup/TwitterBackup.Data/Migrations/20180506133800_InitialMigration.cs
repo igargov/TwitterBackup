@@ -122,6 +122,7 @@ namespace TwitterBackup.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CreatedAt = table.Column<DateTime>(nullable: true),
                     FavoriteCount = table.Column<int>(nullable: false),
                     InReplyToScreenName = table.Column<string>(nullable: true),
                     InReplyToTwitterAccountId = table.Column<string>(nullable: true),
@@ -131,7 +132,7 @@ namespace TwitterBackup.Data.Migrations
                     QuotedStatusId = table.Column<string>(nullable: true),
                     RetweetCount = table.Column<int>(nullable: false),
                     Text = table.Column<string>(nullable: true),
-                    TwitterAccountId = table.Column<int>(nullable: false),
+                    TwitterAccountId = table.Column<int>(nullable: true),
                     TwitterStatusId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -142,7 +143,7 @@ namespace TwitterBackup.Data.Migrations
                         column: x => x.TwitterAccountId,
                         principalTable: "TwitterAccounts",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(

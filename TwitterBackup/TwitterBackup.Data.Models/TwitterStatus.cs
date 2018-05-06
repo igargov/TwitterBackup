@@ -1,4 +1,6 @@
-﻿namespace TwitterBackup.Data.Models
+﻿using System;
+
+namespace TwitterBackup.Data.Models
 {
     public class TwitterStatus
     {
@@ -25,7 +27,9 @@
 
         public string QuotedStatusId { get; set; }
 
-        public int TwitterAccountId { get; set; }
+        public DateTime? CreatedAt { get; set; }
+
+        public int? TwitterAccountId { get; set; }
         public TwitterAccount TwitterAccount { get; set; }
     }
 }

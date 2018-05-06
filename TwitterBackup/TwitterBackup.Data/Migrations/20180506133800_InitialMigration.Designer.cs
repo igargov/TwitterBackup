@@ -11,7 +11,7 @@ using TwitterBackup.Data;
 namespace TwitterBackup.Data.Migrations
 {
     [DbContext(typeof(TwitterBackupDbContext))]
-    [Migration("20180506131320_InitialMigration")]
+    [Migration("20180506133800_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -237,6 +237,8 @@ namespace TwitterBackup.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime?>("CreatedAt");
+
                     b.Property<int>("FavoriteCount");
 
                     b.Property<string>("InReplyToScreenName");
@@ -255,7 +257,7 @@ namespace TwitterBackup.Data.Migrations
 
                     b.Property<string>("Text");
 
-                    b.Property<int>("TwitterAccountId");
+                    b.Property<int?>("TwitterAccountId");
 
                     b.Property<string>("TwitterStatusId");
 
@@ -338,8 +340,7 @@ namespace TwitterBackup.Data.Migrations
                 {
                     b.HasOne("TwitterBackup.Data.Models.TwitterAccount", "TwitterAccount")
                         .WithMany("TwitterStatuses")
-                        .HasForeignKey("TwitterAccountId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("TwitterAccountId");
                 });
 
             modelBuilder.Entity("TwitterBackup.Data.Models.UserTwitterAccount", b =>

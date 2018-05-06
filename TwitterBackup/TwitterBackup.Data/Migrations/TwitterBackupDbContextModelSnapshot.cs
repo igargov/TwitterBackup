@@ -236,6 +236,8 @@ namespace TwitterBackup.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime?>("CreatedAt");
+
                     b.Property<int>("FavoriteCount");
 
                     b.Property<string>("InReplyToScreenName");
@@ -254,7 +256,7 @@ namespace TwitterBackup.Data.Migrations
 
                     b.Property<string>("Text");
 
-                    b.Property<int>("TwitterAccountId");
+                    b.Property<int?>("TwitterAccountId");
 
                     b.Property<string>("TwitterStatusId");
 
@@ -337,8 +339,7 @@ namespace TwitterBackup.Data.Migrations
                 {
                     b.HasOne("TwitterBackup.Data.Models.TwitterAccount", "TwitterAccount")
                         .WithMany("TwitterStatuses")
-                        .HasForeignKey("TwitterAccountId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("TwitterAccountId");
                 });
 
             modelBuilder.Entity("TwitterBackup.Data.Models.UserTwitterAccount", b =>
