@@ -1,9 +1,14 @@
 ﻿@using TwitterBackup.Services.ViewModels
-@model TwitterErrorViewModel;
-
+@model IEnumerable<TwitterErrorViewModel>
 @{
     ViewData["Title"] = "TwitterError";
 }
 
-<h1 class="text-danger">Error <code>@Model.Code</code></h1>
-<h2 class="text-danger">@Model.Message</h2>
+@{
+    foreach (var item in Model)
+    {
+        <h1 class="text-danger">Error <code>@item.Code</code></h1>
+        <h2 class="text-danger">@item.Message</h2>
+    }
+}
+
