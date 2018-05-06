@@ -17,7 +17,8 @@ namespace TwitterBackup.Services.Mapping
             CreateMap<User, UserViewModel>();
 
             //DTO mapping
-            CreateMap<TwitterAccountDTO, TwitterAccountViewModel>();
+            CreateMap<TwitterAccountDTO, TwitterAccountViewModel>()
+                .ForMember(vm => vm.TwitterId, opt => opt.MapFrom(d => d.IdString));
             CreateMap<TwitterErrorDTO, TwitterErrorViewModel>();
         }
     }
