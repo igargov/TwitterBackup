@@ -74,7 +74,6 @@ namespace TwitterBackup.Web
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IMappingProvider, MappingProvider>();
             services.AddScoped<TwitterAccountViewModel, TwitterAccountViewModel>();
-            services.AddScoped<IUserService, UserService>();
             services.AddAutoMapper();
             services.AddMvc();
 

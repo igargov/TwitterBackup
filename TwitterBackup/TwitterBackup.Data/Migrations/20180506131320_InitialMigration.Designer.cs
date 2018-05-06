@@ -11,7 +11,7 @@ using TwitterBackup.Data;
 namespace TwitterBackup.Data.Migrations
 {
     [DbContext(typeof(TwitterBackupDbContext))]
-    [Migration("20180503201627_InitialMigration")]
+    [Migration("20180506131320_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -210,6 +210,8 @@ namespace TwitterBackup.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("TwitterId");
+
                     b.ToTable("TwitterAccounts");
                 });
 
@@ -228,6 +230,42 @@ namespace TwitterBackup.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("TwitterAccountImages");
+                });
+
+            modelBuilder.Entity("TwitterBackup.Data.Models.TwitterStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("FavoriteCount");
+
+                    b.Property<string>("InReplyToScreenName");
+
+                    b.Property<string>("InReplyToTwitterAccountId");
+
+                    b.Property<string>("InReplyToTwitterStatusId");
+
+                    b.Property<bool>("IsQuotedStatus");
+
+                    b.Property<string>("Language");
+
+                    b.Property<string>("QuotedStatusId");
+
+                    b.Property<int>("RetweetCount");
+
+                    b.Property<string>("Text");
+
+                    b.Property<int>("TwitterAccountId");
+
+                    b.Property<string>("TwitterStatusId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TwitterAccountId");
+
+                    b.HasIndex("TwitterStatusId");
+
+                    b.ToTable("TwitterStatuses");
                 });
 
             modelBuilder.Entity("TwitterBackup.Data.Models.UserTwitterAccount", b =>
@@ -293,6 +331,14 @@ namespace TwitterBackup.Data.Migrations
                     b.HasOne("TwitterBackup.Data.Models.TwitterAccount", "TwitterAccount")
                         .WithOne("TwitterAccountImage")
                         .HasForeignKey("TwitterBackup.Data.Models.TwitterAccountImage", "TwitterAccountId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("TwitterBackup.Data.Models.TwitterStatus", b =>
+                {
+                    b.HasOne("TwitterBackup.Data.Models.TwitterAccount", "TwitterAccount")
+                        .WithMany("TwitterStatuses")
+                        .HasForeignKey("TwitterAccountId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

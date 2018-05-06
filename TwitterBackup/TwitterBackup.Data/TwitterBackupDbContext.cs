@@ -9,11 +9,13 @@ namespace TwitterBackup.Data
     {
         public TwitterBackupDbContext(DbContextOptions<TwitterBackupDbContext> options)
             : base(options)
-        {
-        }
+        { }
 
         public DbSet<TwitterAccount> TwitterAccounts { get; set; }
+
         public DbSet<TwitterAccountImage> TwitterAccountImages { get; set; }
+
+        public DbSet<TwitterStatus> TwitterStatuses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -36,6 +38,12 @@ namespace TwitterBackup.Data
                 .HasOne(twui => twui.TwitterAccountImage)
                 .WithOne(twu => twu.TwitterAccount)
                 .HasForeignKey<TwitterAccountImage>();
+
+            builder.Entity<TwitterAccount>()
+                .HasIndex(ta => ta.TwitterId);
+
+            builder.Entity<TwitterStatus>()
+                .HasIndex(ts => ts.TwitterStatusId);
 
             builder.Entity<User>(e => e.ToTable("Users"));
             builder.Entity<Role>(e => e.ToTable("Roles"));
