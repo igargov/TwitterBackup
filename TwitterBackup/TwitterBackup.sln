@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitterBackup.Data.Models",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitterBackup.TwitterApiClient", "TwitterBackup.TwitterApiClient\TwitterBackup.TwitterApiClient.csproj", "{502030B6-0B36-425C-ACB2-40F54AE7E201}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterBackup.TwitterDTOs", "TwitterBackup.TwitterDTOs\TwitterBackup.TwitterDTOs.csproj", "{EFEFF0AA-AF70-4C4F-8803-79009EBAF8F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitterBackup.TwitterDTOs", "TwitterBackup.TwitterDTOs\TwitterBackup.TwitterDTOs.csproj", "{EFEFF0AA-AF70-4C4F-8803-79009EBAF8F4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -7,6 +7,8 @@ namespace TwitterBackup.Providers
     {
         TDestination MapTo<TDestination>(object source);
 
+        TDestination MapTo<TSource, TDestination>(TSource source);
+
         IQueryable<TDestination> ProjectTo<TDestination>(IQueryable<object> source);
 
         IEnumerable<TDestination> ProjectTo<TDestination>(IEnumerable<object> source);

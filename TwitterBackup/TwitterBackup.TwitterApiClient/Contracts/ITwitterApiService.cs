@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using TwitterBackup.TwitterApiClient.TwitterModels;
+using TwitterBackup.TwitterDTOs;
 
 namespace TwitterBackup.TwitterApiClient.Contracts
 {
@@ -8,5 +8,7 @@ namespace TwitterBackup.TwitterApiClient.Contracts
         Task<TwitterAccountDTO> RetrieveTwitterAccountAsync(string screenName);
 
         Task<string> RetrieveTwitterAccountStatusesAsync(string screenName);
+
+        Task<string> RetrieveAccountProfileImage(string url);
     }
 }

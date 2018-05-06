@@ -19,6 +19,11 @@ namespace TwitterBackup.Providers
             return this.mapper.Map<TDestination>(source);
         }
 
+        public TDestination MapTo<TSource, TDestination>(TSource source)
+        {
+            return this.mapper.Map<TSource, TDestination>(source);
+        }
+
         public IQueryable<TDestination> ProjectTo<TDestination>(IQueryable<object> source)
         {
             return source.ProjectTo<TDestination>();

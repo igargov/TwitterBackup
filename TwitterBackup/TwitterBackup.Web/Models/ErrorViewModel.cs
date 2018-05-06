@@ -1,6 +1,4 @@
-using System;
-
-namespace TwitterBackup.API.Models
+namespace TwitterBackup.Web.Models
 {
     public class ErrorViewModel
     {

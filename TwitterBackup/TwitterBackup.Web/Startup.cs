@@ -15,8 +15,10 @@ using TwitterBackup.TwitterApiClient.Contracts;
 using TwitterBackup.TwitterApiClient.RestClientFactory;
 using TwitterBackup.TwitterApiClient;
 using Microsoft.Extensions.Caching.Memory;
+using TwitterBackup.Services.ViewModels;
+using TwitterBackup.Services.Contracts;
 
-namespace TwitterBackup.API
+namespace TwitterBackup.Web
 {
     public class Startup
     {
@@ -25,19 +27,28 @@ namespace TwitterBackup.API
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        public static IConfiguration Configuration { get; private set; }
 
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            string consumerKey;
+            string consumerSecret;
+
             if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
             {
                 services.AddDbContext<TwitterBackupDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("AzureSQL")));
+
+                consumerKey = Configuration.GetValue<string>("ConsumerKey");
+                consumerSecret = Configuration.GetValue<string>("ConsumerSecret");
             }
             else
             {
                 services.AddDbContext<TwitterBackupDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("LocalSQL")));
+
+                consumerKey = Environment.GetEnvironmentVariable("CONSUMER_KEY", EnvironmentVariableTarget.Machine);
+                consumerSecret = Environment.GetEnvironmentVariable("CONSUMER_SECRET", EnvironmentVariableTarget.Machine);
             }
 
             services.BuildServiceProvider().GetService<TwitterBackupDbContext>().Database.Migrate();
@@ -46,37 +57,32 @@ namespace TwitterBackup.API
                 .AddEntityFrameworkStores<TwitterBackupDbContext>()
                 .AddDefaultTokenProviders();
 
-            // Add application services.
-            //services.AddTransient<IEmailSender, EmailSender>();
-
-            services.AddMemoryCache(mc => new MemoryCacheOptions()
-            {
-                
-            });
+            //TODO: Decorator pattern
+            services.AddMemoryCache(mc => new MemoryCacheOptions());
 
             services.AddSingleton<IRestClientFactory, RestClientFactory>();
             services.AddSingleton<IRestRequestFactory, RestRequestFactory>();
 
+            //TODO: Extension method
             services.AddSingleton<TwitterAccessTokenProvider, TwitterAccessTokenProvider>(tatp =>
             {
-                var key = Environment.GetEnvironmentVariable("CONSUMER_KEY", EnvironmentVariableTarget.Machine);
-                var secret = Environment.GetEnvironmentVariable("CONSUMER_SECRET", EnvironmentVariableTarget.Machine);
-
-                return new TwitterAccessTokenProvider(key, secret);
+                return new TwitterAccessTokenProvider(consumerKey, consumerSecret);
             });
 
             services.AddScoped<ITwitterApiService, TwitterApiService>();
             services.AddScoped<ITwitterAccountService, TwitterAccountService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IMappingProvider, MappingProvider>();
-
+            services.AddScoped<TwitterAccountViewModel, TwitterAccountViewModel>();
+            services.AddScoped<IUserService, UserService>();
             services.AddAutoMapper();
-
             services.AddMvc();
+
+            return services.BuildServiceProvider();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -95,6 +101,11 @@ namespace TwitterBackup.API
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                    name: "areas",
+                    template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");

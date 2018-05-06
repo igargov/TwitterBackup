@@ -1,9 +1,13 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using TwitterBackup.Data.Models;
 using TwitterBackup.Data.UnitOfWork;
 using TwitterBackup.Providers;
-using TwitterBackup.TwitterApiClient.TwitterModels;
+using TwitterBackup.Services.Contracts;
+using TwitterBackup.Services.ViewModels;
+using TwitterBackup.TwitterDTOs;
 
 namespace TwitterBackup.Services
 {
@@ -18,31 +22,64 @@ namespace TwitterBackup.Services
             this.mappingProvider = mappingProvider;
         }
 
-        public int Create(TwitterAccountDTO model)
+        public List<TwitterAccountWithImageViewModel> GetAll(int userId)
+        {
+            var allAccounts = this.unitOfWork.TwitterAccounts
+                .All()
+                .Where(ta => ta.Users.Any(u => u.UserId == userId))
+                .Include(tai => tai.TwitterAccountImage);
+
+            var allAccountModel = this.mappingProvider.ProjectTo<TwitterAccountWithImageViewModel>(allAccounts).ToList();
+
+            return allAccountModel;
+        }
+
+        public int Create(TwitterAccountDTO model, int userId, string picBase64)
         {
             try
             {
-                var dbModel = this.unitOfWork.TwitterAccounts
+                var account = this.unitOfWork.TwitterAccounts
                     .All()
-                    .Where(t => t.TwitterId.Equals(model.IdString))
+                    .Where(ta => ta.TwitterId.Equals(model.IdString))
                     .FirstOrDefault();
 
-                if (dbModel != null)
+                if (account == null)
                 {
-                    return -1;
+                    account = this.mappingProvider.MapTo<TwitterAccount>(model);
+                    account.CreatedAt = DateTime.Now;
+                    account.Users.Add(new UserTwitterAccount()
+                    {
+                        UserId = userId,
+                        TwitterAccount = account
+                    });
+
+                    if (!string.IsNullOrEmpty(picBase64))
+                    {
+                        account.TwitterAccountImage = new TwitterAccountImage()
+                        {
+                            ProfileImage = picBase64,
+                            TwitterAccount = account
+                        };
+                    }
+
+                    this.unitOfWork.TwitterAccounts.Add(account);
+                }
+                else
+                {
+                    account.Users.Add(new UserTwitterAccount()
+                    {
+                        UserId = userId,
+                        TwitterAccount = account
+                    });
                 }
 
-                var twitterAccount = this.mappingProvider.MapTo<TwitterAccount>(model);
-                twitterAccount.CreatedAt = DateTime.Now;
-
-                this.unitOfWork.TwitterAccounts.Add(twitterAccount);
                 this.unitOfWork.SaveChanges();
 
-                return twitterAccount.Id;
+                return account.Id;
             }
             catch (Exception ex)
             {
-                return -1;
+                throw new ArgumentException("Error", ex);
             }
         }
 
@@ -51,9 +88,24 @@ namespace TwitterBackup.Services
             throw new NotImplementedException();
         }
 
-        public int Delete(int id)
+        public bool Delete(int accountId, int userId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var result = this.unitOfWork.UserTwitterAccounts
+                    .All()
+                    .Where(uta => uta.TwitterAccountId == accountId && uta.UserId == userId)
+                    .FirstOrDefault();
+
+                this.unitOfWork.UserTwitterAccounts.Delete(result);
+                this.unitOfWork.SaveChanges();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

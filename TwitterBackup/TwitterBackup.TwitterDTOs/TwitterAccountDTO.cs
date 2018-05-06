@@ -1,10 +1,13 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 
-namespace TwitterBackup.TwitterApiClient.TwitterModels
+namespace TwitterBackup.TwitterDTOs
 {
     public class TwitterAccountDTO
     {
+        private string profileImageUrl;
+
         [JsonProperty("id_str")]
         public string IdString { get; set; }
 
@@ -39,6 +42,23 @@ namespace TwitterBackup.TwitterApiClient.TwitterModels
         [JsonProperty("lang")]
         public string Language { get; set; }
 
-        public string ProfileImageUrl { get; set; }
+        public string ProfileImageUrl
+        {
+            get
+            {
+                return this.profileImageUrl;
+            }
+
+            set
+            {
+                string url = value;
+
+                string result = url.Replace("_normal", "");
+
+                this.profileImageUrl = result;
+            }
+        }
+
+        public IList<TwitterErrorDTO> Errors { get; set; }
     }
 }

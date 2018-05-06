@@ -1,8 +1,9 @@
 ﻿using RestSharp;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TwitterBackup.TwitterApiClient.Contracts;
-using TwitterBackup.TwitterApiClient.TwitterModels;
+using TwitterBackup.TwitterDTOs;
 
 namespace TwitterBackup.TwitterApiClient
 {
@@ -22,6 +23,18 @@ namespace TwitterBackup.TwitterApiClient
             this.accessTokenProvider = accessTokenProvider;
         }
 
+        public async Task<string> RetrieveAccountProfileImage(string url)
+        {
+            var client = this.restClientFactory.Create(url);
+            var request = this.restRequestFactory.Create("", Method.GET);
+
+            var result = await client.ExecuteTaskAsync<string>(request);
+
+            string picBase64 = Convert.ToBase64String(result.RawBytes);
+
+            return picBase64;
+        }
+
         public async Task<TwitterAccountDTO> RetrieveTwitterAccountAsync(string screenName)
         {
             var parameters = new List<Parameter>()
@@ -37,7 +50,7 @@ namespace TwitterBackup.TwitterApiClient
             };
 
             var twitterAccount = 
-                await this.ExecuteRequestCommonAsync<TwitterAccountDTO>(screenName, TwitterApiParams.UsersShowEndpoint, parameters);
+                await this.ExecuteRequestCommonAsync<TwitterAccountDTO>(TwitterApiParams.UsersShowEndpoint, parameters);
 
             return twitterAccount;
         }
@@ -57,7 +70,7 @@ namespace TwitterBackup.TwitterApiClient
             };
 
             var twitterAccountStatuses = 
-                await this.ExecuteRequestCommonAsync<string>(screenName, TwitterApiParams.StatusesUserTimelineEndpoint, parameters);
+                await this.ExecuteRequestCommonAsync<string>(TwitterApiParams.StatusesUserTimelineEndpoint, parameters);
 
             return twitterAccountStatuses;
         }
@@ -85,12 +98,12 @@ namespace TwitterBackup.TwitterApiClient
             };
 
             var twitterAccountStatuses = 
-                await this.ExecuteRequestCommonAsync<string>(screenName, TwitterApiParams.StatusesUserTimelineEndpoint, parameters);
+                await this.ExecuteRequestCommonAsync<string>(TwitterApiParams.StatusesUserTimelineEndpoint, parameters);
 
             return twitterAccountStatuses;
         }
 
-        private async Task<T> ExecuteRequestCommonAsync<T>(string screenName, string resource, IEnumerable<Parameter> parameters)
+        private async Task<T> ExecuteRequestCommonAsync<T>(string resource, IEnumerable<Parameter> parameters)
         {
             var restClient = this.restClientFactory.Create(TwitterApiParams.BaseUrl);
             var restRequest = this.restRequestFactory.Create(resource, Method.GET);

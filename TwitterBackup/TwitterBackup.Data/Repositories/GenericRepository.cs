@@ -58,7 +58,8 @@ namespace TwitterBackup.Data.Repositories
             }
             else
             {
-                this.context.DbSet<T>().Attach(entity);
+                //TODO: Check Attach and Remove
+                //this.context.DbSet<T>().Attach(entity);
                 this.context.DbSet<T>().Remove(entity);
             }
         }
