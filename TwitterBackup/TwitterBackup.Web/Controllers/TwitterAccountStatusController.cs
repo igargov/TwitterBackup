@@ -30,8 +30,13 @@ namespace TwitterBackup.Web.Controllers
             var twitterAccountStatuses = this.twitterStatusService.GetAll(userId);
 
             var detailsModel = new TwitterAccountStatusDetailsViewModel();
+
             detailsModel.TwitterAccount = twitterAccount;
-            detailsModel.TwitterStatuses = twitterAccountStatuses;
+
+            detailsModel.TwitterStatusWithAccount = new TwitterStatusWithAccountViewModel();
+            detailsModel.TwitterStatusWithAccount.ProfileImage = twitterAccount.ProfileImage;
+            detailsModel.TwitterStatusWithAccount.TwitterAccountName = twitterAccount.Name;
+            detailsModel.TwitterStatusWithAccount.TwitterStatuses = twitterAccountStatuses;
 
             return View(detailsModel);
         }

@@ -1,5 +1,9 @@
 ﻿@using TwitterBackup.Services.ViewModels
-@model IEnumerable<TwitterStatusViewModel>
+@model TwitterStatusWithAccountViewModel
+
+@{ 
+    var profileImage = @"data:image/jpeg;base64," + Model.ProfileImage;
+}
 
 <div class="row">
     <div class="col-lg-9">
@@ -9,12 +13,12 @@
             <div class="ibox-content">
                 <div class="feed-activity-list">
                 @{
-                    foreach (var status in Model)
+                    foreach (var status in Model.TwitterStatuses)
                     {
                     <div class="feed-element">
-                        <img alt="image" class="img-circle pull-left" src="@status.User.ProfileImage">
+                        <img alt="image" class="img-circle pull-left" src="@profileImage">
                         <div class="media-body">
-                            <strong>@status.User.Name</strong> <br>
+                            <strong>@Model.TwitterAccountName</strong> <br>
                             <small class="text-muted">@status.CreatedAt</small>
                             <p>@status.Text</p>
                             <div class="pull-right">

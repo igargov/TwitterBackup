@@ -6,6 +6,6 @@ namespace TwitterBackup.Services.ViewModels
     {
         public TwitterAccountViewModel TwitterAccount { get; set; }
 
-        public List<TwitterStatusViewModel> TwitterStatuses { get; set; }
+        public TwitterStatusWithAccountViewModel TwitterStatusWithAccount { get; set; }
     }
 }

@@ -69,7 +69,7 @@ namespace TwitterBackup.Web.Controllers
             {
                 var statuses = await this.twitterApiService.RetrieveTwitterAccountStatusesAsync(screenName);
 
-                var statusesModel = this.mappingProvider.MapTo<IEnumerable<TwitterStatusDTO>, IEnumerable<TwitterStatusViewModel>>(statuses);
+                var statusesModel = this.mappingProvider.MapTo<IEnumerable<TwitterStatusDTO>, IEnumerable<TwitterStatusPartialViewModel>>(statuses);
 
                 return PartialView("_TwitterStatusPartial", statusesModel);
             }
@@ -86,7 +86,7 @@ namespace TwitterBackup.Web.Controllers
             {
                 var statuses = await this.twitterApiService.RetrieveTwitterAccountStatusesAsync(screenName, count);
 
-                var statusesModel = this.mappingProvider.MapTo<IEnumerable<TwitterStatusDTO>, IEnumerable<TwitterStatusViewModel>>(statuses);
+                var statusesModel = this.mappingProvider.MapTo<IEnumerable<TwitterStatusDTO>, IEnumerable<TwitterStatusPartialViewModel>>(statuses);
 
                 return PartialView("_TwitterStatusPartial", statusesModel);
             }

@@ -2,7 +2,7 @@
 
 namespace TwitterBackup.Services.ViewModels
 {
-    public class TwitterStatusViewModel
+    public class TwitterStatusPartialViewModel
     {
         public int Id { get; set; }
 
@@ -13,6 +13,8 @@ namespace TwitterBackup.Services.ViewModels
         public int RetweetCount { get; set; }
 
         public int FavoriteCount { get; set; }
+
+        public TwitterAccountViewModel User { get; set; }
 
         public DateTime? CreatedAt { get; set; }
     }
