@@ -11,7 +11,7 @@ using TwitterBackup.Data;
 namespace TwitterBackup.Data.Migrations
 {
     [DbContext(typeof(TwitterBackupDbContext))]
-    [Migration("20180506143317_InitialMigration")]
+    [Migration("20180507213310_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -259,13 +259,9 @@ namespace TwitterBackup.Data.Migrations
 
                     b.Property<string>("Text");
 
-                    b.Property<int?>("TwitterAccountId");
-
                     b.Property<string>("TwitterStatusId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("TwitterAccountId");
 
                     b.HasIndex("TwitterStatusId");
 
@@ -283,6 +279,19 @@ namespace TwitterBackup.Data.Migrations
                     b.HasIndex("TwitterAccountId");
 
                     b.ToTable("UserTwitterAccount");
+                });
+
+            modelBuilder.Entity("TwitterBackup.Data.Models.UserTwitterStatus", b =>
+                {
+                    b.Property<int>("UserId");
+
+                    b.Property<int>("TwitterStatusId");
+
+                    b.HasKey("UserId", "TwitterStatusId");
+
+                    b.HasIndex("TwitterStatusId");
+
+                    b.ToTable("UserTwitterStatus");
                 });
 
             modelBuilder.Entity("TwitterBackup.Data.Models.Identity.RoleClaim", b =>
@@ -338,13 +347,6 @@ namespace TwitterBackup.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("TwitterBackup.Data.Models.TwitterStatus", b =>
-                {
-                    b.HasOne("TwitterBackup.Data.Models.TwitterAccount", "TwitterAccount")
-                        .WithMany("TwitterStatuses")
-                        .HasForeignKey("TwitterAccountId");
-                });
-
             modelBuilder.Entity("TwitterBackup.Data.Models.UserTwitterAccount", b =>
                 {
                     b.HasOne("TwitterBackup.Data.Models.TwitterAccount", "TwitterAccount")
@@ -354,6 +356,19 @@ namespace TwitterBackup.Data.Migrations
 
                     b.HasOne("TwitterBackup.Data.Models.Identity.User", "User")
                         .WithMany("FavouriteUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("TwitterBackup.Data.Models.UserTwitterStatus", b =>
+                {
+                    b.HasOne("TwitterBackup.Data.Models.TwitterStatus", "TwitterStatus")
+                        .WithMany("Users")
+                        .HasForeignKey("TwitterStatusId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("TwitterBackup.Data.Models.Identity.User", "User")
+                        .WithMany("TwitterStatuses")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using TwitterBackup.Data.Models;
-using TwitterBackup.Data.Models.Identity;
 using TwitterBackup.Data.Repositories;
 
 namespace TwitterBackup.Data.UnitOfWork
@@ -12,6 +10,7 @@ namespace TwitterBackup.Data.UnitOfWork
         private IRepository<TwitterAccount> twitterAccounts;
         private IRepository<TwitterAccountImage> twitterAccountImages;
         private IRepository<UserTwitterAccount> userTwitterAccounts;
+        private IRepository<UserTwitterStatus> userTwitterStatuses;
         private IRepository<TwitterStatus> twitterStatuses;
 
         public UnitOfWork(TwitterBackupDbContext context)
@@ -24,12 +23,14 @@ namespace TwitterBackup.Data.UnitOfWork
             IRepository<TwitterAccount> twitterAccounts,
             IRepository<TwitterAccountImage> twitterAccountImages,
             IRepository<UserTwitterAccount> userTwitterAccounts,
+            IRepository<UserTwitterStatus> userTwitterStatuses,
             IRepository<TwitterStatus> twitterStatuses)
         {
             this.context = context;
             this.twitterAccounts = twitterAccounts;
             this.twitterAccountImages = twitterAccountImages;
             this.userTwitterAccounts = userTwitterAccounts;
+            this.userTwitterStatuses = userTwitterStatuses;
             this.twitterStatuses = twitterStatuses;
         }
 
@@ -69,6 +70,19 @@ namespace TwitterBackup.Data.UnitOfWork
                 }
 
                 return this.userTwitterAccounts;
+            }
+        }
+
+        public IRepository<UserTwitterStatus> UserTwitterStatuses
+        {
+            get
+            {
+                if (this.userTwitterStatuses == null)
+                {
+                    this.userTwitterStatuses = new GenericRepository<UserTwitterStatus>(this.context);
+                }
+
+                return this.userTwitterStatuses;
             }
         }
 

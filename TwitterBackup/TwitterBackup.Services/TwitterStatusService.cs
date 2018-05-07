@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using TwitterBackup.Data.Models;
 using TwitterBackup.Data.UnitOfWork;
 using TwitterBackup.Providers;
 using TwitterBackup.Services.Contracts;
@@ -23,49 +21,14 @@ namespace TwitterBackup.Services
 
         public List<TwitterStatusViewModel> GetAll(int accountId)
         {
-            var twitterStatuses = this.unitOfWork.TwitterStatuses
-                .All()
-                .Where(ts => ts.TwitterAccountId == accountId);
-
-            var twitterStatusesModel = this.mapper
-                .ProjectTo<TwitterStatusViewModel>(twitterStatuses)
-                .ToList();
-
-            return twitterStatusesModel;
+            throw new NotImplementedException();
         }
 
         public int Create(TwitterStatusDTO model)
         {
             try
             {
-                var status = this.unitOfWork.TwitterStatuses
-                    .All()
-                    .Where(ts => ts.TwitterStatusId.Equals(model.IdString))
-                    .FirstOrDefault();
-
-                if (status != null)
-                {
-                    throw new ArgumentException("Already exists!");
-                }
-
-                var account = this.unitOfWork.TwitterAccounts
-                    .All()
-                    .Where(ta => ta.TwitterId.Equals(model.User.IdString))
-                    .FirstOrDefault();
-
-                if (account == null)
-                {
-                    throw new ArgumentNullException("No such account in database!");
-                }
-
-                status = this.mapper.MapTo<TwitterStatus>(model);
-                status.CreatedAt = DateTime.Now;
-                status.TwitterAccount = account;
-
-                this.unitOfWork.TwitterStatuses.Add(status);
-                this.unitOfWork.SaveChanges();
-
-                return status.Id;
+                throw new NotImplementedException();
             }
             catch (Exception ex)
             {
