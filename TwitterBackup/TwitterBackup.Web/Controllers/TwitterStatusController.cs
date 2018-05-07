@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TwitterBackup.Data.Models.Identity;
 using TwitterBackup.Providers;
 using TwitterBackup.Services.Contracts;
 using TwitterBackup.Services.ViewModels;
@@ -16,21 +18,29 @@ namespace TwitterBackup.Web.Controllers
     {
         private ITwitterApiService twitterApiService;
         private ITwitterStatusService twitterStatusService;
-        private IMappingProvider mapper;
+        private IMappingProvider mappingProvider;
+        private UserManager<User> userManager;
 
-        public TwitterStatusController(ITwitterApiService twitterApiService, ITwitterStatusService twitterStatusService, IMappingProvider mapper)
+        public TwitterStatusController(
+            ITwitterApiService twitterApiService,
+            ITwitterStatusService twitterStatusService,
+            IMappingProvider mappingProvider,
+            UserManager<User> userManager)
         {
             this.twitterApiService = twitterApiService;
             this.twitterStatusService = twitterStatusService;
-            this.mapper = mapper;
+            this.mappingProvider = mappingProvider;
+            this.userManager = userManager;
         }
 
         [HttpGet]
-        public IActionResult ListAllStatuses(int accountId)
+        public IActionResult ListAllStatuses()
         {
-            var statuses = this.twitterStatusService.GetAll(accountId);
+            var userId = int.Parse(this.userManager.GetUserId(this.User));
 
-            return this.Ok();
+            var statuses = this.twitterStatusService.GetAll(userId);
+
+            return View(statuses);
         }
 
         [HttpPost]
@@ -38,9 +48,11 @@ namespace TwitterBackup.Web.Controllers
         {
             try
             {
+                int userId = int.Parse(this.userManager.GetUserId(this.User));
+
                 var status = await this.twitterApiService.RetrieveTwitterStatusAsync(statusId);
 
-                var result = this.twitterStatusService.Create(status);
+                var result = this.twitterStatusService.Create(status, userId);
 
                 return this.Ok(new { Id = result });
             }
@@ -57,7 +69,7 @@ namespace TwitterBackup.Web.Controllers
             {
                 var statuses = await this.twitterApiService.RetrieveTwitterAccountStatusesAsync(screenName);
 
-                var statusesModel = this.mapper.MapTo<IEnumerable<TwitterStatusDTO>, IEnumerable<TwitterStatusViewModel>>(statuses);
+                var statusesModel = this.mappingProvider.MapTo<IEnumerable<TwitterStatusDTO>, IEnumerable<TwitterStatusViewModel>>(statuses);
 
                 return PartialView("_TwitterStatusPartial", statusesModel);
             }
@@ -74,7 +86,7 @@ namespace TwitterBackup.Web.Controllers
             {
                 var statuses = await this.twitterApiService.RetrieveTwitterAccountStatusesAsync(screenName, count);
 
-                var statusesModel = this.mapper.MapTo<IEnumerable<TwitterStatusDTO>, IEnumerable<TwitterStatusViewModel>>(statuses);
+                var statusesModel = this.mappingProvider.MapTo<IEnumerable<TwitterStatusDTO>, IEnumerable<TwitterStatusViewModel>>(statuses);
 
                 return PartialView("_TwitterStatusPartial", statusesModel);
             }
@@ -82,6 +94,16 @@ namespace TwitterBackup.Web.Controllers
             {
                 return this.BadRequest();
             }
+        }
+
+        [HttpPost]
+        public IActionResult DeleteStatus(int statusId)
+        {
+            var userId = int.Parse(this.userManager.GetUserId(this.User));
+
+            bool isDeleted = this.twitterStatusService.Delete(statusId, userId);
+
+            return this.Ok(new { success = isDeleted });
         }
     }
 }

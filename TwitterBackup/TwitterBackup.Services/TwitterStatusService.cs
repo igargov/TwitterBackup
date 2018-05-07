@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using TwitterBackup.Data.Models;
 using TwitterBackup.Data.UnitOfWork;
 using TwitterBackup.Providers;
 using TwitterBackup.Services.Contracts;
@@ -10,25 +12,59 @@ namespace TwitterBackup.Services
 {
     public class TwitterStatusService : ITwitterStatusService
     {
-        private IMappingProvider mapper;
+        private IMappingProvider mappingProvider;
         private IUnitOfWork unitOfWork;
 
-        public TwitterStatusService(IUnitOfWork unitOfWork, IMappingProvider mapper)
+        public TwitterStatusService(IUnitOfWork unitOfWork, IMappingProvider mappingProvider)
         {
             this.unitOfWork = unitOfWork;
-            this.mapper = mapper;
+            this.mappingProvider = mappingProvider;
         }
 
-        public List<TwitterStatusViewModel> GetAll(int accountId)
+        public List<TwitterStatusViewModel> GetAll(int userId)
         {
-            throw new NotImplementedException();
+            var statuses = this.unitOfWork.TwitterStatuses
+                .All()
+                .Where(ts => ts.Users.Any(u => u.UserId == userId));
+
+            var statusesModel = this.mappingProvider.ProjectTo<TwitterStatusViewModel>(statuses).ToList();
+
+            return statusesModel;
         }
 
-        public int Create(TwitterStatusDTO model)
+        public int Create(TwitterStatusDTO model, int userId)
         {
             try
             {
-                throw new NotImplementedException();
+                var status = this.unitOfWork.TwitterStatuses
+                    .All()
+                    .Where(ts => ts.TwitterStatusId.Equals(model.IdString))
+                    .FirstOrDefault();
+
+                if (status == null)
+                {
+                    status = this.mappingProvider.MapTo<TwitterStatus>(model);
+                    status.CreatedAt = DateTime.Now;
+                    status.Users.Add(new UserTwitterStatus()
+                    {
+                        UserId = userId,
+                        TwitterStatus = status
+                    });
+
+                    this.unitOfWork.TwitterStatuses.Add(status);
+                }
+                else
+                {
+                    status.Users.Add(new UserTwitterStatus()
+                    {
+                        UserId = userId,
+                        TwitterStatus = status
+                    });
+                }
+
+                this.unitOfWork.SaveChanges();
+
+                return status.Id;
             }
             catch (Exception ex)
             {
@@ -36,9 +72,24 @@ namespace TwitterBackup.Services
             }
         }
 
-        public bool Delete()
+        public bool Delete(int statusId, int userId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var result = this.unitOfWork.UserTwitterStatuses
+                    .All()
+                    .Where(uts => uts.TwitterStatusId == statusId && uts.UserId == userId)
+                    .FirstOrDefault();
+
+                this.unitOfWork.UserTwitterStatuses.Delete(result);
+                this.unitOfWork.SaveChanges();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

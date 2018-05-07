@@ -14,17 +14,18 @@
                 <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                 <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                 @{
-					if (Context.User.Identity.IsAuthenticated)
-					{
+                    if (Context.User.Identity.IsAuthenticated)
+                    {
                         <li><a asp-area="" asp-controller="TwitterAccount" asp-action="ListAllAccounts">Favourites</a></li>
-					}
+                        <li><a asp-area="" asp-controller="TwitterStatus" asp-action="ListAllStatuses">Statuses</a></li>
+                    }
 
-					if (User.IsInRole("Admin"))
-					{
+                    if (User.IsInRole("Admin"))
+                    {
                         <li><a asp-area="Administration" asp-controller="Admin" asp-action="ShowAllUsers">All Users</a></li>
                         <li><a asp-area="Administration" asp-controller="Admin" asp-action="ShowAllAdmins">All Admins</a></li>
-					}
-				}
+                    }
+                }
             </ul>
 
             <div class="navbar-widgets">

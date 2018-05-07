@@ -22,12 +22,12 @@ namespace TwitterBackup.Services
             this.mappingProvider = mappingProvider;
         }
 
-        public TwitterAccountViewModel GetById(int id)
+        public TwitterAccountViewModel GetById(int accountId, int userId)
         {
             var account = this.unitOfWork.TwitterAccounts
                 .All()
                 .Include(tai => tai.TwitterAccountImage)
-                .Where(ta => ta.Id == id)
+                .Where(ta => ta.Id == accountId && ta.Users.Any(u => u.UserId == userId))
                 .FirstOrDefault();
 
             if (account == null)
@@ -90,7 +90,7 @@ namespace TwitterBackup.Services
                         TwitterAccount = account
                     });
                 }
-               
+
                 this.unitOfWork.SaveChanges();
 
                 return account.Id;

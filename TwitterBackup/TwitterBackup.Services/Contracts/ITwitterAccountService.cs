@@ -6,7 +6,7 @@ namespace TwitterBackup.Services.Contracts
 {
     public interface ITwitterAccountService
     {
-        TwitterAccountViewModel GetById(int accountId);
+        TwitterAccountViewModel GetById(int accountId, int userId);
 
         List<TwitterAccountViewModel> GetAll(int userId);
 
