@@ -1,1 +1,31 @@
-﻿
+﻿@using TwitterBackup.Services.ViewModels
+@model IEnumerable<TwitterStatusViewModel>
+
+<div class="row">
+    <div class="col-lg-9">
+        <div class="ibox float-e-margins m-l-xxxl">
+            <div class="ibox-title">
+            </div>
+            <div class="ibox-content">
+                <div class="feed-activity-list">
+                @{
+                    foreach (var status in Model)
+                    {
+                    <div class="feed-element">
+                        <img alt="image" class="img-circle pull-left" src="@status.User.ProfileImage">
+                        <div class="media-body">
+                            <strong>@status.User.Name</strong> <br>
+                            <small class="text-muted">@status.CreatedAt</small>
+                            <p>@status.Text</p>
+                            <div class="pull-right">
+                                <button class="btn btn-xs btn-danger btn-rounded">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                 }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,5 +1,4 @@
 ﻿using System;
-using TwitterBackup.TwitterDTOs;
 
 namespace TwitterBackup.Services.ViewModels
 {
@@ -15,7 +14,7 @@ namespace TwitterBackup.Services.ViewModels
 
         public int FavoriteCount { get; set; }
 
-        public TwitterAccountDTO User { get; set; }
+        public TwitterAccountViewModel User { get; set; }
 
         public DateTime? CreatedAt { get; set; }
     }

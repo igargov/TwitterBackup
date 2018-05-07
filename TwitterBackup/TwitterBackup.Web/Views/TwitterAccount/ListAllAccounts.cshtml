@@ -26,6 +26,9 @@
                     <a href="@item.Url" class="m-xs">@@@item.ScreenName</a>
                     <p class="m-xs">@item.Description</p>
                     <div class="text-right" data-card-id="@item.Id">
+                        <form class="details-form" asp-action="Details" asp-controller="TwitterAccountStatus" method="get">
+                            <input type="hidden" name="accountId" value="@item.Id" />
+                        </form>
                         <button id="details" type="button" class="btn btn-sm btn-default btn-rounded details-button">Details</button>
                         <button id="delete" type="button" class="btn btn-sm btn-danger btn-rounded delete-button" data-toggle="modal" data-target="#delete-twitter-modal">Delete</button>
                     </div>
@@ -72,16 +75,9 @@
         });
 
         $('#cardHolder').on("click", ".details-button", function () {
-            let cardId = $(this).parent().attr('data-card-id');
-            let url = '@Url.Action("", "")';
-
-            $.ajax({
-                type: 'GET',
-                url: url,
-                data: {
-                    accountId: cardId
-                }
-            });
+            var parent = $(this).parent();
+            let form = parent.children('.details-form');
+            form.submit();
         });
     </script>
 }
