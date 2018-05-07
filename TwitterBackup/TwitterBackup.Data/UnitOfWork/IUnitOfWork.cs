@@ -1,6 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using System.Threading.Tasks;
 using TwitterBackup.Data.Models;
-using TwitterBackup.Data.Models.Identity;
 using TwitterBackup.Data.Repositories;
 
 namespace TwitterBackup.Data.UnitOfWork
@@ -13,9 +13,7 @@ namespace TwitterBackup.Data.UnitOfWork
 
         IRepository<UserTwitterAccount> UserTwitterAccounts { get; }
 
-        IRepository<User> Users { get; }
-
-        IRepository<Role> Roles { get; }
+        IRepository<TwitterStatus> TwitterStatuses { get; }
 
         int SaveChanges();
 

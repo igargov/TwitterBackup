@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TwitterBackup.Data.Models;
@@ -22,14 +23,14 @@ namespace TwitterBackup.Services
             this.mappingProvider = mappingProvider;
         }
 
-        public List<TwitterAccountWithImageViewModel> GetAll(int userId)
+        public List<TwitterAccountViewModel> GetAll(int userId)
         {
             var allAccounts = this.unitOfWork.TwitterAccounts
                 .All()
                 .Where(ta => ta.Users.Any(u => u.UserId == userId))
                 .Include(tai => tai.TwitterAccountImage);
 
-            var allAccountModel = this.mappingProvider.ProjectTo<TwitterAccountWithImageViewModel>(allAccounts).ToList();
+            var allAccountModel = this.mappingProvider.ProjectTo<TwitterAccountViewModel>(allAccounts).ToList();
 
             return allAccountModel;
         }
@@ -72,7 +73,7 @@ namespace TwitterBackup.Services
                         TwitterAccount = account
                     });
                 }
-
+               
                 this.unitOfWork.SaveChanges();
 
                 return account.Id;
@@ -106,6 +107,25 @@ namespace TwitterBackup.Services
             {
                 return false;
             }
+        }
+
+        public int IsAccountPresent(string twitterId, int userId)
+        {
+            var result = this.unitOfWork.UserTwitterAccounts
+                .All()
+                .Join(this.unitOfWork.TwitterAccounts.All(),
+                    uta => uta.TwitterAccountId,
+                    (TwitterAccount ta) => ta.Id,
+                    (uta, ta) => new { uta.UserId, ta.TwitterId, ta.Id})
+                .Where(a => a.UserId == userId && a.TwitterId.Equals(twitterId))
+                .FirstOrDefault();
+
+            if (result == null)
+            {
+                return 0;
+            }
+
+            return result.Id;
         }
     }
 }

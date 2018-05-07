@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using System.Threading.Tasks;
 using TwitterBackup.Data.Models;
 using TwitterBackup.Data.Models.Identity;
 using TwitterBackup.Data.Repositories;
@@ -11,8 +12,7 @@ namespace TwitterBackup.Data.UnitOfWork
         private IRepository<TwitterAccount> twitterAccounts;
         private IRepository<TwitterAccountImage> twitterAccountImages;
         private IRepository<UserTwitterAccount> userTwitterAccounts;
-        private IRepository<User> users;
-        private IRepository<Role> roles;
+        private IRepository<TwitterStatus> twitterStatuses;
 
         public UnitOfWork(TwitterBackupDbContext context)
         {
@@ -24,15 +24,13 @@ namespace TwitterBackup.Data.UnitOfWork
             IRepository<TwitterAccount> twitterAccounts,
             IRepository<TwitterAccountImage> twitterAccountImages,
             IRepository<UserTwitterAccount> userTwitterAccounts,
-            IRepository<User> users,
-            IRepository<Role> roles)
+            IRepository<TwitterStatus> twitterStatuses)
         {
             this.context = context;
             this.twitterAccounts = twitterAccounts;
             this.twitterAccountImages = twitterAccountImages;
             this.userTwitterAccounts = userTwitterAccounts;
-            this.users = users;
-            this.roles = roles;
+            this.twitterStatuses = twitterStatuses;
         }
 
         public IRepository<TwitterAccount> TwitterAccounts
@@ -74,29 +72,16 @@ namespace TwitterBackup.Data.UnitOfWork
             }
         }
 
-        public IRepository<User> Users
+        public IRepository<TwitterStatus> TwitterStatuses
         {
             get
             {
-                if (this.users == null)
+                if (this.twitterStatuses == null)
                 {
-                    this.users = new GenericRepository<User>(this.context);
+                    this.twitterStatuses = new GenericRepository<TwitterStatus>(this.context);
                 }
 
-                return this.users;
-            }
-        }
-
-        public IRepository<Role> Roles
-        {
-            get
-            {
-                if (this.roles == null)
-                {
-                    this.roles = new GenericRepository<Role>(this.context);
-                }
-
-                return this.roles;
+                return this.twitterStatuses;
             }
         }
 

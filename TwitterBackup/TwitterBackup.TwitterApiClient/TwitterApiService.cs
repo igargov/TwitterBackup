@@ -55,7 +55,7 @@ namespace TwitterBackup.TwitterApiClient
             return twitterAccount;
         }
 
-        public async Task<string> RetrieveTwitterAccountStatusesAsync(string screenName)
+        public async Task<TwitterStatusesDTO> RetrieveTwitterAccountStatusesAsync(string screenName)
         {
             var parameters = new List<Parameter>()
             {
@@ -70,12 +70,12 @@ namespace TwitterBackup.TwitterApiClient
             };
 
             var twitterAccountStatuses = 
-                await this.ExecuteRequestCommonAsync<string>(TwitterApiParams.StatusesUserTimelineEndpoint, parameters);
+                await this.ExecuteRequestCommonAsync<TwitterStatusesDTO>(TwitterApiParams.StatusesUserTimelineEndpoint, parameters);
 
             return twitterAccountStatuses;
         }
 
-        public async Task<string> RetrieveTwitterAccountStatusesAsync(string screenName, int count)
+        public async Task<TwitterStatusesDTO> RetrieveTwitterAccountStatusesAsync(string screenName, int count)
         {
             var parameters = new List<Parameter>()
             {
@@ -98,7 +98,7 @@ namespace TwitterBackup.TwitterApiClient
             };
 
             var twitterAccountStatuses = 
-                await this.ExecuteRequestCommonAsync<string>(TwitterApiParams.StatusesUserTimelineEndpoint, parameters);
+                await this.ExecuteRequestCommonAsync<TwitterStatusesDTO>(TwitterApiParams.StatusesUserTimelineEndpoint, parameters);
 
             return twitterAccountStatuses;
         }

@@ -117,6 +117,37 @@ namespace TwitterBackup.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TwitterStatuses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CreatedAt = table.Column<DateTime>(nullable: true),
+                    CreatedAtTwitter = table.Column<DateTime>(nullable: true),
+                    FavoriteCount = table.Column<int>(nullable: false),
+                    InReplyToScreenName = table.Column<string>(nullable: true),
+                    InReplyToTwitterAccountId = table.Column<string>(nullable: true),
+                    InReplyToTwitterStatusId = table.Column<string>(nullable: true),
+                    IsQuotedStatus = table.Column<bool>(nullable: false),
+                    Language = table.Column<string>(nullable: true),
+                    QuotedStatusId = table.Column<string>(nullable: true),
+                    RetweetCount = table.Column<int>(nullable: false),
+                    Text = table.Column<string>(nullable: true),
+                    TwitterAccountId = table.Column<int>(nullable: true),
+                    TwitterStatusId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TwitterStatuses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TwitterStatuses_TwitterAccounts_TwitterAccountId",
+                        column: x => x.TwitterAccountId,
+                        principalTable: "TwitterAccounts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserClaims",
                 columns: table => new
                 {
@@ -244,6 +275,21 @@ namespace TwitterBackup.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_TwitterAccounts_TwitterId",
+                table: "TwitterAccounts",
+                column: "TwitterId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TwitterStatuses_TwitterAccountId",
+                table: "TwitterStatuses",
+                column: "TwitterAccountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TwitterStatuses_TwitterStatusId",
+                table: "TwitterStatuses",
+                column: "TwitterStatusId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserClaims_UserId",
                 table: "UserClaims",
                 column: "UserId");
@@ -283,6 +329,9 @@ namespace TwitterBackup.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "TwitterAccountImages");
+
+            migrationBuilder.DropTable(
+                name: "TwitterStatuses");
 
             migrationBuilder.DropTable(
                 name: "UserClaims");

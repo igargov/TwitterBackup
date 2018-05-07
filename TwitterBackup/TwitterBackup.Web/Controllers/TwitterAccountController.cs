@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -39,9 +39,17 @@ namespace TwitterBackup.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult ListAllAccounts()
+        public IActionResult ListAllAccounts(string externalUserId)
         {
-            int userId = int.Parse(this.userManager.GetUserId(this.User));
+            int userId;
+            if (externalUserId == null)
+            {
+                userId = int.Parse(this.userManager.GetUserId(this.User));
+            }
+            else
+            {
+                userId = Int32.Parse(externalUserId);
+            }
 
             var allAccounts = this.twitterAccountService.GetAll(userId);
 
@@ -58,7 +66,7 @@ namespace TwitterBackup.Web.Controllers
         {
             var twitterAccountResult = await this.memoryCache.GetOrCreateAsync(screenName, async (entry) =>
             {
-                entry.SetSlidingExpiration(TimeSpan.FromSeconds(60));
+                entry.SetSlidingExpiration(TimeSpan.FromMinutes(10));
 
                 return await this.twitterApiService.RetrieveTwitterAccountAsync(screenName);
             });
@@ -67,14 +75,19 @@ namespace TwitterBackup.Web.Controllers
 
             if (twitterAccountResult.Errors != null)
             {
-                var error = twitterAccountResult.Errors.First();
+                var errors = twitterAccountResult.Errors;
 
-                var errModel = this.mapping.MapTo<TwitterErrorViewModel>(error);
+                var errModel = this.mapping
+                    .MapTo<IEnumerable<TwitterErrorDTO>, IEnumerable<TwitterErrorViewModel>>(errors);
 
                 return View("TwitterError", errModel);
             }
 
+            int userId = int.Parse(this.userManager.GetUserId(this.User));
+            int isPresentResult = this.twitterAccountService.IsAccountPresent(twitterAccountResult.IdString, userId);
+
             var viewModel = this.mapping.MapTo<TwitterAccountViewModel>(twitterAccountResult);
+            viewModel.Id = isPresentResult;
 
             return View(viewModel);
         }
