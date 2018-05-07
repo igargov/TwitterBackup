@@ -2,7 +2,7 @@
 
 namespace TwitterBackup.Services.ViewModels
 {
-    public class TwitterAccountStatusDetailViewModel
+    public class TwitterAccountStatusDetailsViewModel
     {
         public TwitterAccountViewModel TwitterAccount { get; set; }
 

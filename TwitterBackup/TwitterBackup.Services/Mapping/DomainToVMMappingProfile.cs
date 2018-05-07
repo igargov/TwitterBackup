@@ -13,6 +13,9 @@ namespace TwitterBackup.Services.Mapping
             CreateMap<TwitterAccount, TwitterAccountViewModel>()
                 .ForMember(d => d.ProfileImage, opt => opt.MapFrom(s => s.TwitterAccountImage.ProfileImage));
 
+            CreateMap<TwitterStatus, TwitterStatusViewModel>()
+                .ForMember(d => d.CreatedAt, opt => opt.MapFrom(s => s.CreatedAtTwitter));
+
             CreateMap<User, UserViewModel>();
 
             //DTO mapping

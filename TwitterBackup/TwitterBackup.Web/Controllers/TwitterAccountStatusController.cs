@@ -29,7 +29,7 @@ namespace TwitterBackup.Web.Controllers
             var twitterAccount = this.twitterAccountService.GetById(accountId, userId);
             var twitterAccountStatuses = this.twitterStatusService.GetAll(userId);
 
-            var detailsModel = new TwitterAccountStatusDetailViewModel();
+            var detailsModel = new TwitterAccountStatusDetailsViewModel();
             detailsModel.TwitterAccount = twitterAccount;
             detailsModel.TwitterStatuses = twitterAccountStatuses;
 
