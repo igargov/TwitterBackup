@@ -39,17 +39,9 @@ namespace TwitterBackup.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult ListAllAccounts(string externalUserId)
+        public IActionResult ListAllAccounts()
         {
-            int userId;
-            if (externalUserId == null)
-            {
-                userId = int.Parse(this.userManager.GetUserId(this.User));
-            }
-            else
-            {
-                userId = Int32.Parse(externalUserId);
-            }
+            int userId = int.Parse(this.userManager.GetUserId(this.User));
 
             var allAccounts = this.twitterAccountService.GetAll(userId);
 
