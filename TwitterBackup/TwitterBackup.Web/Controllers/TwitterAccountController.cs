@@ -39,9 +39,17 @@ namespace TwitterBackup.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult ListAllAccounts()
+        public IActionResult ListAllAccounts(string externalUserId)
         {
-            int userId = int.Parse(this.userManager.GetUserId(this.User));
+            int userId;
+            if (externalUserId == null)
+            {
+                userId = int.Parse(this.userManager.GetUserId(this.User));
+            }
+            else
+            {
+                userId = Int32.Parse(externalUserId);
+            }
 
             var allAccounts = this.twitterAccountService.GetAll(userId);
 
@@ -75,7 +83,11 @@ namespace TwitterBackup.Web.Controllers
                 return View("TwitterError", errModel);
             }
 
+            int userId = int.Parse(this.userManager.GetUserId(this.User));
+            int isPresentResult = this.twitterAccountService.IsAccountPresent(twitterAccountResult.IdString, userId);
+
             var viewModel = this.mapping.MapTo<TwitterAccountViewModel>(twitterAccountResult);
+            viewModel.Id = isPresentResult;
 
             return View(viewModel);
         }

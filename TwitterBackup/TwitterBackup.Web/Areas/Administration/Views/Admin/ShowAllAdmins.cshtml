@@ -1,0 +1,38 @@
+﻿@using TwitterBackup.Services.ViewModels;
+@model IEnumerable<UserViewModel>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th scope="col">AdminId</th>
+			<th scope="col">UserName</th>
+			<th scope="col">Email</th>
+			<th scope="col">View Saved Tweets</th>
+			<th scope="col">View Saved Twitters</th>
+
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var admin in Model)
+		{
+			<tr>
+				<td>#@admin.Id</td>
+				<td>@admin.UserName</td>
+				<td>@admin.Email</td>
+
+				<td>
+					<form asp-area="Admin" asp-controller="Home" asp-action="SavedTweets" method="get">
+						<input hidden name="userId" value="@admin.Id" />
+						<button style="background:#ffffff; border-color: #19BCFF; color: #19BCFF" type="submit" class="btn btn-rounded">Tweets</button>
+					</form>
+				</td>
+				<td>
+					<form asp-area="Administration" asp-controller="Admin" asp-action="SavedTwitters" method="get">
+						<input hidden name="userId" value="@admin.Id" />
+						<button style="background:#ffffff; border-color: #19BCFF; color: #19BCFF" type="submit" class="btn btn-rounded">Twitters</button>
+					</form>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>

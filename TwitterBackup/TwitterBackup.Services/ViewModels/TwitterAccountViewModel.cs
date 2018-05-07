@@ -4,6 +4,8 @@
     {
         public int Id { get; set; }
 
+        public string TwitterId { get; set; }
+
         public string Description { get; set; }
 
         public int FollowersCount { get; set; }

@@ -13,5 +13,7 @@ namespace TwitterBackup.Services.Contracts
         int Update(TwitterAccountDTO model);
 
         bool Delete(int accountId, int userId);
+
+        int IsAccountPresent(string twitterId, int userId);
     }
 }
