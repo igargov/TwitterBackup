@@ -133,6 +133,15 @@ input::-webkit-search-cancel-button {
     width: 50%;
 }
 
+.select-box {
+    border: solid 1px #ccc;
+    padding: 5px 10px 4px 10px;
+    -webkit-border-radius: 10em;
+    -moz-border-radius: 10em;
+    border-radius: 10em;
+    width: 70px;  
+}
+
 input[type=search] {
     border: solid 1px #ccc;
     margin-top: 2px;

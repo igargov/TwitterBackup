@@ -29,8 +29,14 @@
     <div class="col-lg-8">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <button id="retrieveTweets" type="button" class="btn btn-sm btn-primary btn-rounded navy-bg">Load Tweets</button>
-                <button id="refreshTweets" type="button" class="btn btn-sm btn-primary btn-rounded navy-bg">Refresh</button>
+                <button id="retrieveTweets" type="button" class="btn btn-sm btn-primary btn-rounded navy-bg">Load Top 20 Tweets</button>
+                <button id="retrieveTweetsByCount" type="button" class="btn btn-sm btn-primary btn-rounded navy-bg">Load</button>
+                <select id="selectedTweets" class="select-box">
+                    <option>5</option>
+                    <option>10</option>
+                    <option>30</option>
+                    <option>50</option>
+                </select>
             </div>
             <div id="searchResults" class="ibox-content">
             </div>
@@ -118,6 +124,27 @@
                     url: url,
                     data: {
                         screenName: screenName
+                    },
+                    success: function (response) {
+                        $('#searchResults').html(response);
+                    },
+                    error: function (err) { 
+                        console.log(err);
+                    }
+                });
+            });
+
+            $('#retrieveTweetsByCount').on('click', function () {
+                let count = $('#selectedTweets option:selected').val();
+                let url = '@Url.Action("RetrieveStatusesByCount", "TwitterStatus")';
+                let screenName = '@Model.ScreenName';
+
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data: {
+                        screenName: screenName,
+                        count: count
                     },
                     success: function (response) {
                         $('#searchResults').html(response);

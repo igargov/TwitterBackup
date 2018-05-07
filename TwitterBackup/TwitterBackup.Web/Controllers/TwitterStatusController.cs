@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TwitterBackup.Providers;
@@ -24,11 +23,6 @@ namespace TwitterBackup.Web.Controllers
             this.mapper = mapper;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         [HttpGet]
         public IActionResult ListAllStatuses(int accountId)
         {
@@ -42,7 +36,24 @@ namespace TwitterBackup.Web.Controllers
         {
             try
             {
-                var statuses = await this.twitterApiService.RetrieveTwitterAccountStatusesAsync(screenName, 3);
+                var statuses = await this.twitterApiService.RetrieveTwitterAccountStatusesAsync(screenName);
+
+                var statusesModel = this.mapper.MapTo<IEnumerable<TwitterStatusDTO>, IEnumerable<TwitterStatusViewModel>>(statuses);
+
+                return PartialView("_TwitterStatusPartial", statusesModel);
+            }
+            catch (Exception ex)
+            {
+                return this.BadRequest();
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> RetrieveStatusesByCount(string screenName, int count)
+        {
+            try
+            {
+                var statuses = await this.twitterApiService.RetrieveTwitterAccountStatusesAsync(screenName, count);
 
                 var statusesModel = this.mapper.MapTo<IEnumerable<TwitterStatusDTO>, IEnumerable<TwitterStatusViewModel>>(statuses);
 
