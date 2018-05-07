@@ -33,6 +33,23 @@ namespace TwitterBackup.Web.Controllers
             return this.Ok();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CreateStatus(string statusId)
+        {
+            try
+            {
+                var status = await this.twitterApiService.RetrieveTwitterStatusAsync(statusId);
+
+                var result = this.twitterStatusService.Create(status);
+
+                return this.Ok(new { Id = result });
+            }
+            catch (Exception ex)
+            {
+                return this.BadRequest(ex.InnerException.Message);
+            }
+        }
+
         [HttpGet]
         public async Task<IActionResult> RetrieveStatuses(string screenName)
         {

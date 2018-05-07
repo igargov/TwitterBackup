@@ -2,7 +2,7 @@
 @model TwitterAccountViewModel
 @{
     ViewBag.Title = "Search Result";
-}  
+}
 <div class="row">
     <div class="col-lg-4">
         <div class="widget-head-color-box navy-bg p-h-m text-center">
@@ -42,7 +42,7 @@
             </div>
         </div>
     </div>
-</div>   
+</div>
 
 <div id="save-twitter-modal" class="modal fade" style="display: none;">
     <div class="modal-dialog modal-confirm">
@@ -81,7 +81,7 @@
 </div>
 
 @section Scripts
-{
+    {
     <script type="text/javascript">
             $('#modalSaveButt').on("click", function () {
                 let screenName = '@Model.ScreenName';
@@ -128,7 +128,7 @@
                     success: function (response) {
                         $('#searchResults').html(response);
                     },
-                    error: function (err) { 
+                    error: function (err) {
                         console.log(err);
                     }
                 });
@@ -149,8 +149,25 @@
                     success: function (response) {
                         $('#searchResults').html(response);
                     },
-                    error: function (err) { 
+                    error: function (err) {
                         console.log(err);
+                    }
+                });
+            });
+
+            $('#searchResults').on("click", ".save-button", function () {
+                let element = $(this).parent();
+                let statusId = element.attr("data-feed-id");
+                let url = '@Url.Action("CreateStatus", "TwitterStatus")';
+
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: {
+                        statusId: statusId
+                    },
+                    success: function () {
+                        $(element).children(".save-button").prop("disabled", true);
                     }
                 });
             });

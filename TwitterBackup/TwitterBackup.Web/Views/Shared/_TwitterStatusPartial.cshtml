@@ -5,7 +5,7 @@
     ViewBag.Title = "TwitterStatuses";
 }
 
-<div class="feed-activity-list" id="feedActivityId">
+<div class="feed-activity-list">
     @{
         foreach (var status in Model)
         {
@@ -17,7 +17,7 @@
                     <div class="well">
                         @status.Text
                     </div>
-                    <div class="pull-right" data-feed-id="">
+                    <div class="pull-right" data-feed-id="@status.TwitterStatusId">
                         <button class="btn btn-xs btn-primary btn-rounded navy-bg save-button">Save</button>
                     </div>
                 </div>
@@ -25,9 +25,3 @@
         }
     }
 </div>
-
-@section Scripts 
-{
-    <script type="text/javascript">
-    </script>
-}
