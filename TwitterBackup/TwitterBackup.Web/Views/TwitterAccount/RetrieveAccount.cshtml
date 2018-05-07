@@ -1,136 +1,115 @@
 ﻿@using TwitterBackup.Services.ViewModels
 @model TwitterAccountViewModel
-
 @{
-	ViewBag.Title = "Search Result";
+    ViewBag.Title = "Search Result";
 }
 <div class="row">
-	<div class="col-lg-4">
-		<div class="widget-head-color-box navy-bg p-h-m text-center">
-			<div class="m-b-md">
-				<h2>@Model.Name</h2>
-			</div>
-			<img src="@Model.ProfileImageUrl" class="img-circle img-circle-profile circle-border m-b-md" alt="profile">
-			<div>
-				<span>@Model.StatusesCount Tweets</span> |
-				<span>@Model.FriendsCount Friends</span> |
-				<span>@Model.FollowersCount Followers</span>
-			</div>
-		</div>
-		<div class="widget-text-box">
-			<h4 class="media-heading m-xs">@Model.Name</h4>
-			<a href="@Model.Url" class="m-xs">@@@Model.ScreenName</a>
-			<p class="m-xs">@Model.Description</p>
-			<div class="text-right">
-				<button name="sav" type="submit" id="savePrimary" class="btn btn-sm btn-primary btn-rounded navy-bg" onclick="toggleSaveTwitterModal()">Save</button>
-				<button name="del" disabled="disabled" type="submit" id="deletePrimary" class="btn btn-sm btn-danger btn-rounded" onclick="toggleDeleteTwitterModal()">Delete</button>
-			</div>
-		</div>
-	</div>
+    <div class="col-lg-4">
+        <div class="widget-head-color-box navy-bg p-h-m text-center">
+            <div class="m-b-md">
+                <h2>@Model.Name</h2>
+            </div>
+            <img src="@Model.ProfileImageUrl" class="img-circle img-circle-profile circle-border m-b-md" alt="profile">
+            <div>
+                <span>@Model.StatusesCount Tweets</span> |
+                <span>@Model.FriendsCount Friends</span> |
+                <span>@Model.FollowersCount Followers</span>
+            </div>
+        </div>
+        <div class="widget-text-box">
+            <h4 class="media-heading m-xs">@Model.Name</h4>
+            <a href="@Model.Url" class="m-xs">@@@Model.ScreenName</a>
+            <p class="m-xs">@Model.Description</p>
+            <div class="text-right">
+                <button id="saveRetrieved" type="button" class="btn btn-sm btn-primary btn-rounded navy-bg" data-toggle="modal" data-target="#save-twitter-modal">Save</button>
+                <button id="deleteRetrieved" type="button" class="btn btn-sm btn-danger btn-rounded" data-toggle="modal" data-target="#delete-twitter-modal">Delete</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div id="save-twitter-modal" class="modal fade" style="display: none;">
-	<div class="modal-dialog modal-confirm">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h4 class="modal-title">Are you sure?</h4>
-				<button type="button" id="closeModal" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-			</div>
-			<div class="modal-body">
-				<p>Do you really want to save this Twitter account?</p>
-			</div>
-			<div class="modal-footer">
-				<button id="save" type="submit" class="btn btn-info btn-rounded">Save</button>
-				<button type="button" class="btn btn-danger btn-rounded" data-dismiss="modal">Cancel</button>
-			</div>
-		</div>
-	</div>
+    <div class="modal-dialog modal-confirm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Are you sure?</h4>
+                <button type="button" id="closeModal" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <p>Do you really want to save this Twitter account?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="modalSaveButt" type="button" class="btn btn-info btn-rounded" data-dismiss="modal">Save</button>
+                <button type="button" class="btn btn-danger btn-rounded" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div id="delete-twitter-modal" class="modal fade" style="display: none;">
-	<div class="modal-dialog modal-confirm">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h4 class="modal-title">Are you sure?</h4>
-				<button type="button" id="closeModal" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-			</div>
-			<div class="modal-body">
-				<p>Do you really want to delete this Twitter account?</p>
-			</div>
-			<div class="modal-footer">
-				<button id="delete" type="submit" class="btn btn-danger btn-rounded">Delete</button>
-				<button type="button" class="btn btn-info btn-rounded" data-dismiss="modal">Cancel</button>
-			</div>
-		</div>
-	</div>
+    <div class="modal-dialog modal-confirm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Are you sure?</h4>
+                <button type="button" id="closeModal" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <p>Do you really want to delete this Twitter account?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="modalDeleteButt" type="button" class="btn btn-danger btn-rounded" data-dismiss="modal">Delete</button>
+                <button type="button" class="btn btn-info btn-rounded" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts
-	{
-	<script type="text/javascript">
-		function deleteFunc() {
-			if (document.querySelectorAll("button")[1].disabled == 1) {
-				document.querySelectorAll("button")[1].disabled = false;
-				document.querySelectorAll("button")[2].disabled = true;
-				$('#savePrimary').html('Save');
-				$('#deletePrimary').html('Delete');
-				$('#closeModal').click();
-			}
-		}
-	</script>
-	<script type="text/javascript">
-		function saveFunc() {
-			if (document.querySelectorAll("button")[2].disabled == 1) {
-				document.querySelectorAll("button")[2].disabled = false;
-				document.querySelectorAll("button")[1].disabled = true;
-				$('#savePrimary').html('Saved');
-				$('#deletePrimary').html('Delete');
-				$('#closeModal').click();
-			}
-		}
-	</script>
-	<script>
-		var toggleSaveTwitterModal = function () {
-			$("#save-twitter-modal").modal('toggle');
-		};
-	</script>
-	<script>
-		var toggleDeleteTwitterModal = function () {
-			$("#delete-twitter-modal").modal('toggle');
-		};
-	</script>
-	<script type="text/javascript">
-        $('#save').on("click", function () {
-            let screenName = '@Model.ScreenName';
+{
+    <script type="text/javascript">
+            $('#modalSaveButt').on("click", function () {
+                let screenName = '@Model.ScreenName';
 
-            $.ajax({
-                type: 'POST',
-                url: '/TwitterAccount/CreateAccount',
-                data: {
-                    screenName: screenName
-                },
-                dataType: "json",
-				success: function (success) {
-					saveFunc();
-                },
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("CreateAccount", "TwitterAccount")',
+                    data: {
+                        screenName: screenName
+                    },
+                    success: function (success) {
+                        $('#saveRetrieved').prop('disabled', true);
+                        $('#deleteRetrieved').prop('disabled', false);
+                    }
+                });
+		    });
+
+            $('#modalDeleteButt').on("click", function () {
+                let modelId = '@Model.Id';
+
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("DeleteAccount", "TwitterAccount")',
+                    data: {
+                        accountId: modelId
+                    },
+                    success: function (success) {
+                        $('#saveRetrieved').prop('disabled', false);
+                        $('#deleteRetrieved').prop('disabled', true);
+                    }
+                });
             });
-		});
 
-	</script>
-	<script type="text/javascript">
-		$('#delete').on("click", function () {
-			let accountID = @Model.TwitterId;
+            $(function () {
+                let modelId = '@Model.Id';
 
-			$.ajax({
-				type: 'POST',
-				url: '/TwitterAccount/DeleteAccount',
-				data: {
-					accountId: accountID
-				},
-				success: function (success) {
-					deleteFunc();
-				}
-			});
-		})
-	</script>
+                if (modelId == 0) {
+                    $('#saveRetrieved').prop('disabled', false);
+                    $('#deleteRetrieved').prop('disabled', true);
+                }
+                else {
+                    $('#saveRetrieved').prop('disabled', true);
+                    $('#deleteRetrieved').prop('disabled', false);
+                }
+            });
+    </script>
 }

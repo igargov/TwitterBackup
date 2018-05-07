@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TwitterBackup.Data.Models;
@@ -72,7 +73,7 @@ namespace TwitterBackup.Services
                         TwitterAccount = account
                     });
                 }
-
+               
                 this.unitOfWork.SaveChanges();
 
                 return account.Id;
@@ -106,6 +107,25 @@ namespace TwitterBackup.Services
             {
                 return false;
             }
+        }
+
+        public int IsAccountPresent(string twitterId, int userId)
+        {
+            var result = this.unitOfWork.UserTwitterAccounts
+                .All()
+                .Join(this.unitOfWork.TwitterAccounts.All(),
+                    uta => uta.TwitterAccountId,
+                    (TwitterAccount ta) => ta.Id,
+                    (uta, ta) => new { uta.UserId, ta.TwitterId, ta.Id})
+                .Where(a => a.UserId == userId && a.TwitterId.Equals(twitterId))
+                .FirstOrDefault();
+
+            if (result == null)
+            {
+                return 0;
+            }
+
+            return result.Id;
         }
     }
 }

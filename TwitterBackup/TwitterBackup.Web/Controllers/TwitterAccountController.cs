@@ -82,7 +82,11 @@ namespace TwitterBackup.Web.Controllers
                 return View("TwitterError", errModel);
             }
 
+            int userId = int.Parse(this.userManager.GetUserId(this.User));
+            int isPresentResult = this.twitterAccountService.IsAccountPresent(twitterAccountResult.IdString, userId);
+
             var viewModel = this.mapping.MapTo<TwitterAccountViewModel>(twitterAccountResult);
+            viewModel.Id = isPresentResult;
 
             return View(viewModel);
         }
