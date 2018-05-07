@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ using TwitterBackup.TwitterDTOs;
 
 namespace TwitterBackup.Web.Controllers
 {
+    [Authorize]
     public class TwitterStatusController : Controller
     {
         private ITwitterApiService twitterApiService;
