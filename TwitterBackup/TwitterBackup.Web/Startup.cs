@@ -11,12 +11,9 @@ using AutoMapper;
 using TwitterBackup.Providers;
 using TwitterBackup.Services;
 using TwitterBackup.Data.UnitOfWork;
-using TwitterBackup.TwitterApiClient.Contracts;
-using TwitterBackup.TwitterApiClient.RestClientFactory;
-using TwitterBackup.TwitterApiClient;
 using Microsoft.Extensions.Caching.Memory;
-using TwitterBackup.Services.ViewModels;
 using TwitterBackup.Services.Contracts;
+using TwitterBackup.Web.Extensions;
 
 namespace TwitterBackup.Web
 {
@@ -57,23 +54,16 @@ namespace TwitterBackup.Web
                 .AddEntityFrameworkStores<TwitterBackupDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddTwitterApiClient(consumerKey, consumerSecret);
+
             //TODO: Decorator pattern
             services.AddMemoryCache(mc => new MemoryCacheOptions());
 
-            services.AddSingleton<IRestClientFactory, RestClientFactory>();
-            services.AddSingleton<IRestRequestFactory, RestRequestFactory>();
-
-            //TODO: Extension method
-            services.AddSingleton<TwitterAccessTokenProvider, TwitterAccessTokenProvider>(tatp =>
-            {
-                return new TwitterAccessTokenProvider(consumerKey, consumerSecret);
-            });
-
-            services.AddScoped<ITwitterApiService, TwitterApiService>();
             services.AddScoped<ITwitterAccountService, TwitterAccountService>();
             services.AddScoped<ITwitterStatusService, TwitterStatusService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IMappingProvider, MappingProvider>();
+
             services.AddAutoMapper();
             services.AddMvc();
             services.AddAntiforgery(opt => { opt.HeaderName = "token"; });
