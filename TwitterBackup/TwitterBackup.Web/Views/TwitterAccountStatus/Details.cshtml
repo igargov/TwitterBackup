@@ -1,0 +1,15 @@
+﻿@using TwitterBackup.Services.ViewModels
+@model TwitterAccountStatusDetailsViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+@{
+    await Html.RenderPartialAsync("TwitterAccountDetailsPartial", Model.TwitterAccount);
+}
+
+@{ 
+    await Html.RenderPartialAsync("TwitterStatusDetailsPartial", Model.TwitterStatusWithAccount);
+}
+

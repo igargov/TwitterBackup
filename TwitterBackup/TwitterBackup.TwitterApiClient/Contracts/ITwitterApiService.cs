@@ -7,6 +7,8 @@ namespace TwitterBackup.TwitterApiClient.Contracts
     {
         Task<TwitterAccountDTO> RetrieveTwitterAccountAsync(string screenName);
 
+        Task<TwitterStatusDTO> RetrieveTwitterStatusAsync(string statusId);
+
         Task<TwitterStatusesDTO> RetrieveTwitterAccountStatusesAsync(string screenName);
 
         Task<TwitterStatusesDTO> RetrieveTwitterAccountStatusesAsync(string screenName, int count);

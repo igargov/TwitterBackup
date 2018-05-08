@@ -12,29 +12,38 @@ namespace TwitterBackup.Services
 {
     public class TwitterStatusService : ITwitterStatusService
     {
-        private IMappingProvider mapper;
+        private IMappingProvider mappingProvider;
         private IUnitOfWork unitOfWork;
 
-        public TwitterStatusService(IUnitOfWork unitOfWork, IMappingProvider mapper)
+        public TwitterStatusService(IUnitOfWork unitOfWork, IMappingProvider mappingProvider)
         {
             this.unitOfWork = unitOfWork;
-            this.mapper = mapper;
+            this.mappingProvider = mappingProvider;
         }
 
-        public List<TwitterStatusViewModel> GetAll(int accountId)
+        public List<TwitterStatusViewModel> GetAll(int userId)
         {
-            var twitterStatuses = this.unitOfWork.TwitterStatuses
+            var statuses = this.unitOfWork.TwitterStatuses
                 .All()
-                .Where(ts => ts.TwitterAccountId == accountId);
+                .Where(ts => ts.Users.Any(u => u.UserId == userId));
 
-            var twitterStatusesModel = this.mapper
-                .ProjectTo<TwitterStatusViewModel>(twitterStatuses)
-                .ToList();
+            var statusesModel = this.mappingProvider.ProjectTo<TwitterStatusViewModel>(statuses).ToList();
 
-            return twitterStatusesModel;
+            return statusesModel;
         }
 
-        public int Create(TwitterStatusDTO model)
+        public List<TwitterStatusViewModel> GetAll(int accountId, int userId)
+        {
+            var statuses = this.unitOfWork.TwitterStatuses
+                .All()
+                .Where(ts => ts.TwitterAccountId == accountId && ts.Users.Any(u => u.UserId == userId));
+
+            var statusesModel = this.mappingProvider.ProjectTo<TwitterStatusViewModel>(statuses).ToList();
+
+            return statusesModel;
+        }
+
+        public int Create(TwitterStatusDTO model, int userId)
         {
             try
             {
@@ -43,26 +52,37 @@ namespace TwitterBackup.Services
                     .Where(ts => ts.TwitterStatusId.Equals(model.IdString))
                     .FirstOrDefault();
 
-                if (status != null)
+                if (status == null)
                 {
-                    throw new ArgumentException("Already exists!");
-                }
+                    status = this.mappingProvider.MapTo<TwitterStatus>(model);
+                    status.CreatedAt = DateTime.Now;
+                    status.Users.Add(new UserTwitterStatus()
+                    {
+                        UserId = userId,
+                        TwitterStatus = status
+                    });
 
-                var account = this.unitOfWork.TwitterAccounts
+                    var account = this.unitOfWork.TwitterAccounts
                     .All()
                     .Where(ta => ta.TwitterId.Equals(model.User.IdString))
                     .FirstOrDefault();
 
-                if (account == null)
+                    if (account != null)
+                    {
+                        status.TwitterAccount = account;
+                    }
+
+                    this.unitOfWork.TwitterStatuses.Add(status);
+                }
+                else
                 {
-                    throw new ArgumentNullException("No such account in database!");
+                    status.Users.Add(new UserTwitterStatus()
+                    {
+                        UserId = userId,
+                        TwitterStatus = status
+                    });
                 }
 
-                status = this.mapper.MapTo<TwitterStatus>(model);
-                status.CreatedAt = DateTime.Now;
-                status.TwitterAccount = account;
-
-                this.unitOfWork.TwitterStatuses.Add(status);
                 this.unitOfWork.SaveChanges();
 
                 return status.Id;
@@ -73,9 +93,24 @@ namespace TwitterBackup.Services
             }
         }
 
-        public bool Delete()
+        public bool Delete(int statusId, int userId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var result = this.unitOfWork.UserTwitterStatuses
+                    .All()
+                    .Where(uts => uts.TwitterStatusId == statusId && uts.UserId == userId)
+                    .FirstOrDefault();
+
+                this.unitOfWork.UserTwitterStatuses.Delete(result);
+                this.unitOfWork.SaveChanges();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

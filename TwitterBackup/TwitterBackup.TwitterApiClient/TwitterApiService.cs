@@ -55,6 +55,25 @@ namespace TwitterBackup.TwitterApiClient
             return twitterAccount;
         }
 
+        public Task<TwitterStatusDTO> RetrieveTwitterStatusAsync(string statusId)
+        {
+            var parameters = new List<Parameter>()
+            {
+                {
+                    new Parameter()
+                    {
+                        Name = "id",
+                        Value = statusId,
+                        Type = ParameterType.QueryString
+                    }
+                },
+            };
+
+            var twitterStatus = this.ExecuteRequestCommonAsync<TwitterStatusDTO>(TwitterApiParams.StatusesShowEndpoint, parameters);
+
+            return twitterStatus;
+        }
+
         public async Task<TwitterStatusesDTO> RetrieveTwitterAccountStatusesAsync(string screenName)
         {
             var parameters = new List<Parameter>()

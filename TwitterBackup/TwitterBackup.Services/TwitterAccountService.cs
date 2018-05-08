@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TwitterBackup.Data.Models;
@@ -21,6 +20,24 @@ namespace TwitterBackup.Services
         {
             this.unitOfWork = unitOfWork;
             this.mappingProvider = mappingProvider;
+        }
+
+        public TwitterAccountViewModel GetById(int accountId, int userId)
+        {
+            var account = this.unitOfWork.TwitterAccounts
+                .All()
+                .Include(tai => tai.TwitterAccountImage)
+                .Where(ta => ta.Id == accountId && ta.Users.Any(u => u.UserId == userId))
+                .FirstOrDefault();
+
+            if (account == null)
+            {
+                return null;
+            }
+
+            var accountModel = this.mappingProvider.MapTo<TwitterAccountViewModel>(account);
+
+            return accountModel;
         }
 
         public List<TwitterAccountViewModel> GetAll(int userId)
@@ -73,7 +90,7 @@ namespace TwitterBackup.Services
                         TwitterAccount = account
                     });
                 }
-               
+
                 this.unitOfWork.SaveChanges();
 
                 return account.Id;

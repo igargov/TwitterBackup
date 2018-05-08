@@ -6,10 +6,12 @@ namespace TwitterBackup.Services.Contracts
 {
     public interface ITwitterStatusService
     {
-        List<TwitterStatusViewModel> GetAll(int accountId);
+        List<TwitterStatusViewModel> GetAll(int userId);
 
-        int Create(TwitterStatusDTO model);
+        List<TwitterStatusViewModel> GetAll(int accountId, int userId);
 
-        bool Delete();
+        int Create(TwitterStatusDTO model, int userId);
+
+        bool Delete(int statusId, int userId);
     }
 }

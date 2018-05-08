@@ -256,6 +256,37 @@ namespace TwitterBackup.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "UserTwitterStatus",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(nullable: false),
+                    TwitterStatusId = table.Column<int>(nullable: false),
+                    TwitterAccountId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserTwitterStatus", x => new { x.UserId, x.TwitterStatusId });
+                    table.ForeignKey(
+                        name: "FK_UserTwitterStatus_TwitterAccounts_TwitterAccountId",
+                        column: x => x.TwitterAccountId,
+                        principalTable: "TwitterAccounts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_UserTwitterStatus_TwitterStatuses_TwitterStatusId",
+                        column: x => x.TwitterStatusId,
+                        principalTable: "TwitterStatuses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserTwitterStatus_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_RoleClaims_RoleId",
                 table: "RoleClaims",
@@ -320,6 +351,16 @@ namespace TwitterBackup.Data.Migrations
                 name: "IX_UserTwitterAccount_TwitterAccountId",
                 table: "UserTwitterAccount",
                 column: "TwitterAccountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserTwitterStatus_TwitterAccountId",
+                table: "UserTwitterStatus",
+                column: "TwitterAccountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserTwitterStatus_TwitterStatusId",
+                table: "UserTwitterStatus",
+                column: "TwitterStatusId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -329,9 +370,6 @@ namespace TwitterBackup.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "TwitterAccountImages");
-
-            migrationBuilder.DropTable(
-                name: "TwitterStatuses");
 
             migrationBuilder.DropTable(
                 name: "UserClaims");
@@ -349,13 +387,19 @@ namespace TwitterBackup.Data.Migrations
                 name: "UserTwitterAccount");
 
             migrationBuilder.DropTable(
+                name: "UserTwitterStatus");
+
+            migrationBuilder.DropTable(
                 name: "Roles");
 
             migrationBuilder.DropTable(
-                name: "TwitterAccounts");
+                name: "TwitterStatuses");
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "TwitterAccounts");
         }
     }
 }

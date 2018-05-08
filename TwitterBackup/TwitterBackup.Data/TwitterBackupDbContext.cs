@@ -34,6 +34,19 @@ namespace TwitterBackup.Data
                 .WithMany(twu => twu.Users)
                 .HasForeignKey(fk => fk.TwitterAccountId);
 
+            builder.Entity<UserTwitterStatus>()
+                .HasKey(k => new { k.UserId, k.TwitterStatusId });
+
+            builder.Entity<UserTwitterStatus>()
+                .HasOne(u => u.User)
+                .WithMany(ts => ts.TwitterStatuses)
+                .HasForeignKey(fk => fk.UserId);
+
+            builder.Entity<UserTwitterStatus>()
+                .HasOne(ts => ts.TwitterStatus)
+                .WithMany(u => u.Users)
+                .HasForeignKey(fk => fk.TwitterStatusId);
+
             builder.Entity<TwitterAccount>()
                 .HasOne(twui => twui.TwitterAccountImage)
                 .WithOne(twu => twu.TwitterAccount)

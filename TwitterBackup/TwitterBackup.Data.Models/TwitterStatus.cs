@@ -1,9 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TwitterBackup.Data.Models
 {
     public class TwitterStatus
     {
+        public TwitterStatus()
+        {
+            this.Users = new HashSet<UserTwitterStatus>();
+        }
+
         public int Id { get; set; }
 
         public string TwitterStatusId { get; set; }
@@ -18,7 +24,6 @@ namespace TwitterBackup.Data.Models
 
         public bool IsQuotedStatus { get; set; }
 
-
         public int RetweetCount { get; set; }
 
         public int FavoriteCount { get; set; }
@@ -31,7 +36,11 @@ namespace TwitterBackup.Data.Models
 
         public DateTime? CreatedAtTwitter{ get; set; }
 
+
         public int? TwitterAccountId { get; set; }
+
         public TwitterAccount TwitterAccount { get; set; }
+
+        public ICollection<UserTwitterStatus> Users { get; set; }
     }
 }

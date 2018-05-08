@@ -1,5 +1,5 @@
 ﻿@using TwitterBackup.Services.ViewModels
-@model List<TwitterAccountViewModel>
+@model IEnumerable<TwitterAccountViewModel>
 @{
     ViewBag.Title = "Search Result";
 }
@@ -26,9 +26,11 @@
                     <a href="@item.Url" class="m-xs">@@@item.ScreenName</a>
                     <p class="m-xs">@item.Description</p>
                     <div class="text-right" data-card-id="@item.Id">
-                        <button id="details" type="submit" class="btn btn-sm btn-default btn-rounded details-button">Details</button>
-                        <button id="update" type="submit" class="btn btn-sm btn-primary btn-rounded navy-bg update-button">Update</button>
-                        <button id="delete" type="submit" class="btn btn-sm btn-danger btn-rounded delete-button">Delete</button>
+                        <form class="details-form" asp-action="Details" asp-controller="TwitterAccountStatus" method="get">
+                            <input type="hidden" name="accountId" value="@item.Id" />
+                        </form>
+                        <button id="details" type="button" class="btn btn-sm btn-default btn-rounded details-button">Details</button>
+                        <button id="delete" type="button" class="btn btn-sm btn-danger btn-rounded delete-button" data-toggle="modal" data-target="#delete-twitter-modal">Delete</button>
                     </div>
                 </div>
             </div>
@@ -36,18 +38,46 @@
     }
 </div>
 
+<div id="delete-twitter-modal" class="modal fade" style="display: none;">
+    <div class="modal-dialog modal-confirm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Are you sure?</h4>
+                <button type="button" id="closeModal" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <p>Do you really want to delete this Twitter account?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="modalDeleteButt" type="button" class="btn btn-danger btn-rounded" data-dismiss="modal">Delete</button>
+                <button type="button" class="btn btn-info btn-rounded" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <script type="text/javascript">
-        $('#cardHolder').on("click", ".delete-button", function () { 
+        $('#cardHolder').on("click", ".delete-button", function () {
             let cardId = $(this).parent().attr('data-card-id');
 
-            $.ajax({
-                type: 'POST',
-                url: '/TwitterAccount/DeleteAccount',
-                data: {
-                    accountId: cardId
-                }
+            $('#modalDeleteButt').on("click", function () {
+                let url = '@Url.Action("DeleteAccount", "TwitterAccount")';
+
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: {
+                        accountId: cardId
+                    }
+                });
             });
-        })
+        });
+
+        $('#cardHolder').on("click", ".details-button", function () {
+            var parent = $(this).parent();
+            let form = parent.children('.details-form');
+            form.submit();
+        });
     </script>
 }
