@@ -32,6 +32,17 @@ namespace TwitterBackup.Services
             return statusesModel;
         }
 
+        public List<TwitterStatusViewModel> GetAll(int accountId, int userId)
+        {
+            var statuses = this.unitOfWork.TwitterStatuses
+                .All()
+                .Where(ts => ts.TwitterAccountId == accountId && ts.Users.Any(u => u.UserId == userId));
+
+            var statusesModel = this.mappingProvider.ProjectTo<TwitterStatusViewModel>(statuses).ToList();
+
+            return statusesModel;
+        }
+
         public int Create(TwitterStatusDTO model, int userId)
         {
             try
@@ -50,6 +61,16 @@ namespace TwitterBackup.Services
                         UserId = userId,
                         TwitterStatus = status
                     });
+
+                    var account = this.unitOfWork.TwitterAccounts
+                    .All()
+                    .Where(ta => ta.TwitterId.Equals(model.User.IdString))
+                    .FirstOrDefault();
+
+                    if (account != null)
+                    {
+                        status.TwitterAccount = account;
+                    }
 
                     this.unitOfWork.TwitterStatuses.Add(status);
                 }

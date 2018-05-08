@@ -36,6 +36,11 @@ namespace TwitterBackup.Data.Models
 
         public DateTime? CreatedAtTwitter{ get; set; }
 
+
+        public int? TwitterAccountId { get; set; }
+
+        public TwitterAccount TwitterAccount { get; set; }
+
         public ICollection<UserTwitterStatus> Users { get; set; }
     }
 }

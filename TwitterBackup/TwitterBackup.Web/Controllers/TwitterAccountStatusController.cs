@@ -27,7 +27,7 @@ namespace TwitterBackup.Web.Controllers
             var userId = int.Parse(this.userManager.GetUserId(this.User));
 
             var twitterAccount = this.twitterAccountService.GetById(accountId, userId);
-            var twitterAccountStatuses = this.twitterStatusService.GetAll(userId);
+            var twitterAccountStatuses = this.twitterStatusService.GetAll(accountId, userId);
 
             var detailsModel = new TwitterAccountStatusDetailsViewModel();
 

@@ -20,7 +20,7 @@ namespace TwitterBackup.Services.Mapping
 
             //DTO mapping
             CreateMap<TwitterAccountDTO, TwitterAccountViewModel>();
-            CreateMap<TwitterStatusDTO, TwitterStatusViewModel>()
+            CreateMap<TwitterStatusDTO, TwitterStatusPartialViewModel>()
                 .ForMember(d => d.TwitterStatusId, opt => opt.MapFrom(s => s.IdString));
             CreateMap<TwitterErrorDTO, TwitterErrorViewModel>();
         }

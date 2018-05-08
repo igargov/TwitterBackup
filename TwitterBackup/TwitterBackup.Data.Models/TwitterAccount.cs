@@ -8,6 +8,7 @@ namespace TwitterBackup.Data.Models
         public TwitterAccount()
         {
             this.Users = new HashSet<UserTwitterAccount>();
+            this.Statuses = new HashSet<UserTwitterStatus>();
         }
 
         public int Id { get; set; }
@@ -42,5 +43,7 @@ namespace TwitterBackup.Data.Models
         public TwitterAccountImage TwitterAccountImage { get; set; }
 
         public ICollection<UserTwitterAccount> Users { get; set; }
+
+        public ICollection<UserTwitterStatus> Statuses { get; set; }
     }
 }

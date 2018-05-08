@@ -11,7 +11,7 @@ using TwitterBackup.Data;
 namespace TwitterBackup.Data.Migrations
 {
     [DbContext(typeof(TwitterBackupDbContext))]
-    [Migration("20180507213310_InitialMigration")]
+    [Migration("20180508001531_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -259,9 +259,13 @@ namespace TwitterBackup.Data.Migrations
 
                     b.Property<string>("Text");
 
+                    b.Property<int?>("TwitterAccountId");
+
                     b.Property<string>("TwitterStatusId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TwitterAccountId");
 
                     b.HasIndex("TwitterStatusId");
 
@@ -287,7 +291,11 @@ namespace TwitterBackup.Data.Migrations
 
                     b.Property<int>("TwitterStatusId");
 
+                    b.Property<int?>("TwitterAccountId");
+
                     b.HasKey("UserId", "TwitterStatusId");
+
+                    b.HasIndex("TwitterAccountId");
 
                     b.HasIndex("TwitterStatusId");
 
@@ -347,6 +355,13 @@ namespace TwitterBackup.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("TwitterBackup.Data.Models.TwitterStatus", b =>
+                {
+                    b.HasOne("TwitterBackup.Data.Models.TwitterAccount", "TwitterAccount")
+                        .WithMany()
+                        .HasForeignKey("TwitterAccountId");
+                });
+
             modelBuilder.Entity("TwitterBackup.Data.Models.UserTwitterAccount", b =>
                 {
                     b.HasOne("TwitterBackup.Data.Models.TwitterAccount", "TwitterAccount")
@@ -362,6 +377,10 @@ namespace TwitterBackup.Data.Migrations
 
             modelBuilder.Entity("TwitterBackup.Data.Models.UserTwitterStatus", b =>
                 {
+                    b.HasOne("TwitterBackup.Data.Models.TwitterAccount")
+                        .WithMany("Statuses")
+                        .HasForeignKey("TwitterAccountId");
+
                     b.HasOne("TwitterBackup.Data.Models.TwitterStatus", "TwitterStatus")
                         .WithMany("Users")
                         .HasForeignKey("TwitterStatusId")
