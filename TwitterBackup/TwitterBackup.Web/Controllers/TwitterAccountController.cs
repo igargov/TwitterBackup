@@ -50,7 +50,7 @@ namespace TwitterBackup.Web.Controllers
                 return View("_NotFound");
             }
 
-            return View(allAccounts);
+            return View("ListAllAccounts", allAccounts);
         }
 
         [HttpGet]

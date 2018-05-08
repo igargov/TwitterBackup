@@ -27,7 +27,7 @@ namespace TwitterBackup.Web.Areas.Administration.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View("Index");
         }
 
         public async Task<IActionResult> ShowAllUsers()
@@ -46,7 +46,7 @@ namespace TwitterBackup.Web.Areas.Administration.Controllers
 
             var usersAsViewModels = this.mappingProvider.ProjectTo<UserViewModel>(users.AsQueryable<User>());
 
-            return View(usersAsViewModels);
+            return View("ShowAllUsers", usersAsViewModels);
         }
 
         public async Task<IActionResult> ShowAllAdmins()
@@ -65,7 +65,7 @@ namespace TwitterBackup.Web.Areas.Administration.Controllers
 
             var usersAsViewModels = this.mappingProvider.ProjectTo<UserViewModel>(admins.AsQueryable<User>());
 
-            return View(usersAsViewModels);
+            return View("ShowAllAdmins", usersAsViewModels);
         }
 
         [HttpPost]
@@ -98,6 +98,11 @@ namespace TwitterBackup.Web.Areas.Administration.Controllers
             }
 
             var user = await this.userManager.FindByIdAsync(Id);
+            if (user == null)
+            {
+                throw new ArgumentException();
+            }
+
             await this.userManager.DeleteAsync(user);
             return RedirectToAction("ShowAllUsers");
         }
@@ -105,6 +110,11 @@ namespace TwitterBackup.Web.Areas.Administration.Controllers
         [HttpGet]
         public IActionResult SavedTwitters(string userId)
         {
+            if (userId == null)
+            {
+                throw new ArgumentException();
+            }
+
             return RedirectToAction("ListAllAccounts", "TwitterAccount", new { area = "", externalUserId = userId });
         }
     }
