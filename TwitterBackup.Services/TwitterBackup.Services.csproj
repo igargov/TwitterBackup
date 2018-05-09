@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="6.2.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TwitterBackup.Data\TwitterBackup.Data.csproj" />
+    <ProjectReference Include="..\TwitterBackup.Providers\TwitterBackup.Providers.csproj" />
+    <ProjectReference Include="..\TwitterBackup.TwitterApiClient\TwitterBackup.TwitterApiClient.csproj" />
+  </ItemGroup>
+
+</Project>
