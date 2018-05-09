@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TwitterBackup.TwitterApiClient.Contracts;
-using TwitterBackup.TwitterDTOs;
+using TwitterBackup.TwitterApiClient.Models;
 
 namespace TwitterBackup.TwitterApiClient
 {

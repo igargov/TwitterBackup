@@ -2,7 +2,7 @@
 using TwitterBackup.Data.Models;
 using TwitterBackup.Data.Models.Identity;
 using TwitterBackup.Services.ViewModels;
-using TwitterBackup.TwitterDTOs;
+using TwitterBackup.TwitterApiClient.Models;
 
 namespace TwitterBackup.Services.Mapping
 {

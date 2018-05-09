@@ -9,7 +9,7 @@ using TwitterBackup.Providers;
 using TwitterBackup.Services.Contracts;
 using TwitterBackup.Services.ViewModels;
 using TwitterBackup.TwitterApiClient.Contracts;
-using TwitterBackup.TwitterDTOs;
+using TwitterBackup.TwitterApiClient.Models;
 
 namespace TwitterBackup.Web.Controllers
 {

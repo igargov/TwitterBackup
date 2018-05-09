@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using TwitterBackup.Services.ViewModels;
-using TwitterBackup.TwitterDTOs;
+using TwitterBackup.TwitterApiClient.Models;
 
 namespace TwitterBackup.Services.Contracts
 {

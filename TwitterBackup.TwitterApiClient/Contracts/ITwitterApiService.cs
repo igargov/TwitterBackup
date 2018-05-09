@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using TwitterBackup.TwitterDTOs;
+using TwitterBackup.TwitterApiClient.Models;
 
 namespace TwitterBackup.TwitterApiClient.Contracts
 {

@@ -12,7 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\TwitterBackup.Data\TwitterBackup.Data.csproj" />
     <ProjectReference Include="..\TwitterBackup.Providers\TwitterBackup.Providers.csproj" />
-    <ProjectReference Include="..\TwitterBackup.TwitterDTOs\TwitterBackup.TwitterDTOs.csproj" />
+    <ProjectReference Include="..\TwitterBackup.TwitterApiClient\TwitterBackup.TwitterApiClient.csproj" />
   </ItemGroup>
 
 </Project>
