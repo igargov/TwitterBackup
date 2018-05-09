@@ -3,18 +3,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
 using System.Reflection;
 using System.Security.Claims;
-using System.Text;
 using TwitterBackup.Data.Models.Identity;
 using TwitterBackup.Providers;
 using TwitterBackup.Services.Contracts;
 using TwitterBackup.TwitterApiClient.Contracts;
 using TwitterBackup.Web.Controllers;
 
-namespace TwitterBackup.UnitTesting.Controllers.TwitterAccountControllerTesting
+namespace TwitterBackup.UnitTests.Controllers.TwitterAccountControllerTesting
 {
     [TestClass]
     public class DeleteAccountAction_Should

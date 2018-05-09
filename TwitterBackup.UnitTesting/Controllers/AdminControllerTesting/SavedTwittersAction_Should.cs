@@ -8,7 +8,7 @@ using TwitterBackup.Providers;
 using TwitterBackup.Services.Contracts;
 using TwitterBackup.Web.Areas.Administration.Controllers;
 
-namespace TwitterBackup.UnitTesting.Controllers.AdminControllerTesting
+namespace TwitterBackup.UnitTests.Controllers.AdminControllerTesting
 {
     [TestClass]
     public class SavedTwittersAction_Should

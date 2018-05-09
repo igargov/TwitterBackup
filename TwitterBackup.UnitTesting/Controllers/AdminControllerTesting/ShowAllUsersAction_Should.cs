@@ -2,15 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using TwitterBackup.Data.Models.Identity;
 using TwitterBackup.Providers;
 using TwitterBackup.Services.Contracts;
-using TwitterBackup.Services.ViewModels;
 using TwitterBackup.Web.Areas.Administration.Controllers;
 
-namespace TwitterBackup.UnitTesting.Controllers.AdminControllerTesting
+namespace TwitterBackup.UnitTests.Controllers.AdminControllerTesting
 {
     [TestClass]
     public class ShowAllUsersAction_Should

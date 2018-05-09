@@ -3,15 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using TwitterBackup.Data.Models.Identity;
 using TwitterBackup.Providers;
 using TwitterBackup.Services.Contracts;
 using TwitterBackup.Web.Areas.Administration.Controllers;
 
-namespace TwitterBackup.UnitTesting.Controllers.AdminControllerTesting
+namespace TwitterBackup.UnitTests.Controllers.AdminControllerTesting
 {
     [TestClass]
     public class DelUserAction_Should
