@@ -11,7 +11,6 @@ using AutoMapper;
 using TwitterBackup.Providers;
 using TwitterBackup.Services;
 using TwitterBackup.Data.UnitOfWork;
-using Microsoft.Extensions.Caching.Memory;
 using TwitterBackup.Services.Contracts;
 using TwitterBackup.Web.Extensions;
 
@@ -48,25 +47,22 @@ namespace TwitterBackup.Web
                 consumerSecret = Environment.GetEnvironmentVariable("CONSUMER_SECRET", EnvironmentVariableTarget.Machine);
             }
 
-            services.BuildServiceProvider().GetService<TwitterBackupDbContext>().Database.Migrate();
-
             services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<TwitterBackupDbContext>()
                 .AddDefaultTokenProviders();
 
             services.AddTwitterApiClient(consumerKey, consumerSecret);
 
-            //TODO: Decorator pattern
-            services.AddMemoryCache(mc => new MemoryCacheOptions());
+            services.AddMemoryCache();
 
             services.AddScoped<ITwitterAccountService, TwitterAccountService>();
             services.AddScoped<ITwitterStatusService, TwitterStatusService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IMappingProvider, MappingProvider>();
 
+            services.AddScoped<IMappingProvider, MappingProvider>();
             services.AddAutoMapper();
+
             services.AddMvc();
-            services.AddAntiforgery(opt => { opt.HeaderName = "token"; });
 
             return services.BuildServiceProvider();
         }
@@ -74,6 +70,8 @@ namespace TwitterBackup.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
+            serviceProvider.GetService<TwitterBackupDbContext>().Database.Migrate();
+
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
