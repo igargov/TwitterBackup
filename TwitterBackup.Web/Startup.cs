@@ -67,7 +67,6 @@ namespace TwitterBackup.Web
             return services.BuildServiceProvider();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
             serviceProvider.GetService<TwitterBackupDbContext>().Database.Migrate();

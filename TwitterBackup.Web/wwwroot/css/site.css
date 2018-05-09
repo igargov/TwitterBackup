@@ -55,12 +55,20 @@
 .widget-text-box {
     padding: 20px;
     border: 1px solid #e7eaec;
+    text-overflow: ellipsis;
     background: #ffffff;
 }
 
 .widget-head-color-box {
     border-radius: 5px 5px 0 0;
     margin-top: 10px;
+}
+
+.overflow-ellipsis {
+    text-overflow: ellipsis;
+    height: 40px;
+    width: 308px;
+    overflow: hidden;
 }
 
 .gray-bg,
@@ -133,10 +141,7 @@ input::-webkit-search-cancel-button {
     width: 50%;
 }
 
-.img-circle-profile-details {
-    height: 30%;
-    width: 30%
-}
+/* SEARCH BOX*/
 
 .select-box {
     border: solid 1px #ccc;
@@ -601,39 +606,7 @@ img.circle-border {
     color: #00aced
 }
 
-blockquote.twitter-tweet {
-    display: inline-block;
-    font-family: "Helvetica Neue", Roboto, "Segoe UI", Calibri, sans-serif;
-    font-size: 12px;
-    font-weight: bold;
-    line-height: 16px;
-    border-color: #eee #ddd #bbb;
-    border-radius: 5px;
-    border-style: solid;
-    border-width: 1px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
-    margin: 10px 5px;
-    padding: 0 16px 16px 16px;
-    max-width: 468px;
-}
-
-blockquote.twitter-tweet p {
-    font-size: 16px;
-    font-weight: normal;
-    line-height: 20px;
-}
-
-blockquote.twitter-tweet a {
-    color: inherit;
-    font-weight: normal;
-    text-decoration: none;
-    outline: 0 none;
-}
-
-blockquote.twitter-tweet a:hover,
-blockquote.twitter-tweet a:focus {
-    text-decoration: underline;
-}
+/* TWITTER STATUS BOX */
 
 .ibox {
     clear: both;
@@ -802,6 +775,8 @@ blockquote.twitter-tweet a:focus {
     left: auto;
     right: 0;
 }
+
+/* TWITTER STATUS */
 
 .feed-activity-list .feed-element {
     border-bottom: 1px solid #e7eaec;
