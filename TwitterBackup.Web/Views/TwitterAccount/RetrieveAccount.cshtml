@@ -29,14 +29,8 @@
     <div class="col-lg-8">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
+                <button id="retrieveTweetsByCount" type="button" class="btn btn-sm btn-primary btn-rounded navy-bg">Load Top 5 Tweets</button>
                 <button id="retrieveTweets" type="button" class="btn btn-sm btn-primary btn-rounded navy-bg">Load Top 20 Tweets</button>
-                <button id="retrieveTweetsByCount" type="button" class="btn btn-sm btn-primary btn-rounded navy-bg">Load</button>
-                <select id="selectedTweets" class="select-box">
-                    <option>5</option>
-                    <option>10</option>
-                    <option>30</option>
-                    <option>50</option>
-                </select>
             </div>
             <div id="searchResults" class="ibox-content">
             </div>
@@ -144,7 +138,7 @@
                     url: url,
                     data: {
                         screenName: screenName,
-                        count: count
+                        count: 5
                     },
                     success: function (response) {
                         $('#searchResults').html(response);
