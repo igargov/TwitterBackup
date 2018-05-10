@@ -85,11 +85,13 @@ namespace TwitterBackup.Web.Controllers
         {
             try
             {
+                int userId = int.Parse(this.userManager.GetUserId(this.User));
+
                 var statuses = await this.twitterApiService.RetrieveTwitterAccountStatusesAsync(screenName, count);
 
                 var statusIds = statuses.Select(s => s.IdString);
 
-                var savedStatuses = this.twitterStatusService.GetSavedStatusIds(statusIds);
+                var savedStatuses = this.twitterStatusService.GetSavedStatusIds(statusIds, userId);
 
                 var statusesModel = this.mappingProvider.MapTo<IEnumerable<TwitterStatusDTO>, IEnumerable<TwitterStatusPartialViewModel>>(statuses);
 

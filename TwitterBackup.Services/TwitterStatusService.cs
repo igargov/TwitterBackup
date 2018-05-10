@@ -113,9 +113,9 @@ namespace TwitterBackup.Services
             }
         }
 
-        public List<TwitterStatusIdPair> GetSavedStatusIds(IEnumerable<string> statusIds)
+        public List<TwitterStatusIdPair> GetSavedStatusIds(IEnumerable<string> statusIds, int userId)
         {
-            var results = this.unitOfWork.TwitterStatuses
+            var existingStatuses = this.unitOfWork.TwitterStatuses
                 .All()
                 .Select(s => new TwitterStatusIdPair()
                 {
@@ -123,6 +123,20 @@ namespace TwitterBackup.Services
                     TwitterStatusId = s.TwitterStatusId
                 })
                 .Where(ts => statusIds.Contains(ts.TwitterStatusId))
+                .ToList();
+
+            var results = this.unitOfWork.UserTwitterStatuses
+                .All()
+                .Join(existingStatuses,
+                    uts => uts.TwitterStatusId,
+                    (TwitterStatusIdPair tsip) => tsip.Id,
+                    (uts, tsip) => new TwitterStatusIdPair()
+                    {
+                        Id = uts.TwitterStatusId,
+                        TwitterStatusId = tsip.TwitterStatusId,
+                        UserId = uts.UserId
+                    })
+                .Where(a => a.UserId == userId)
                 .ToList();
 
             return results;
