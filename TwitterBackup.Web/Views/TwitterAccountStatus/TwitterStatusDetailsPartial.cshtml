@@ -7,7 +7,7 @@
 
 <div class="row">
     <div class="col-md-6 col-md-offset-3">
-        <div class="ibox float-e-margins">
+        <div id="statusList" class="ibox float-e-margins">
             <div class="ibox-title">
             </div>
             <div class="ibox-content">
@@ -21,8 +21,8 @@
                             <strong>@Model.TwitterAccountName</strong> <br>
                             <small class="text-muted">@status.CreatedAt</small>
                             <p>@status.Text</p>
-                            <div class="pull-right">
-                                <button class="btn btn-xs btn-danger btn-rounded">Delete</button>
+                            <div class="pull-right" data-status-id="@status.Id">
+                                <button class="btn btn-xs btn-danger btn-rounded delete-status">Delete</button>
                             </div>
                         </div>
                     </div>

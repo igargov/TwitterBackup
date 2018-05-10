@@ -262,11 +262,15 @@ namespace TwitterBackup.Data.Migrations
 
                     b.Property<string>("TwitterStatusId");
 
+                    b.Property<string>("TwitterUserId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("TwitterAccountId");
 
                     b.HasIndex("TwitterStatusId");
+
+                    b.HasIndex("TwitterUserId");
 
                     b.ToTable("TwitterStatuses");
                 });

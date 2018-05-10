@@ -14,6 +14,8 @@ namespace TwitterBackup.Data.Models
 
         public string TwitterStatusId { get; set; }
 
+        public string TwitterUserId { get; set; }
+
         public string Text { get; set; }
 
         public string InReplyToTwitterStatusId { get; set; }

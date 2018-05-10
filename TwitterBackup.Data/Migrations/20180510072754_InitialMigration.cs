@@ -134,7 +134,8 @@ namespace TwitterBackup.Data.Migrations
                     RetweetCount = table.Column<int>(nullable: false),
                     Text = table.Column<string>(nullable: true),
                     TwitterAccountId = table.Column<int>(nullable: true),
-                    TwitterStatusId = table.Column<string>(nullable: true)
+                    TwitterStatusId = table.Column<string>(nullable: true),
+                    TwitterUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -319,6 +320,11 @@ namespace TwitterBackup.Data.Migrations
                 name: "IX_TwitterStatuses_TwitterStatusId",
                 table: "TwitterStatuses",
                 column: "TwitterStatusId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TwitterStatuses_TwitterUserId",
+                table: "TwitterStatuses",
+                column: "TwitterUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserClaims_UserId",

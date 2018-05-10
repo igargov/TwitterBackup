@@ -11,7 +11,7 @@ using TwitterBackup.Data;
 namespace TwitterBackup.Data.Migrations
 {
     [DbContext(typeof(TwitterBackupDbContext))]
-    [Migration("20180508001531_InitialMigration")]
+    [Migration("20180510072754_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -263,11 +263,15 @@ namespace TwitterBackup.Data.Migrations
 
                     b.Property<string>("TwitterStatusId");
 
+                    b.Property<string>("TwitterUserId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("TwitterAccountId");
 
                     b.HasIndex("TwitterStatusId");
+
+                    b.HasIndex("TwitterUserId");
 
                     b.ToTable("TwitterStatuses");
                 });

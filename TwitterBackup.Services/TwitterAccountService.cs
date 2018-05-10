@@ -63,22 +63,7 @@ namespace TwitterBackup.Services
 
                 if (account == null)
                 {
-                    account = this.mappingProvider.MapTo<TwitterAccount>(model);
-                    account.CreatedAt = DateTime.Now;
-                    account.Users.Add(new UserTwitterAccount()
-                    {
-                        UserId = userId,
-                        TwitterAccount = account
-                    });
-
-                    if (!string.IsNullOrEmpty(picBase64))
-                    {
-                        account.TwitterAccountImage = new TwitterAccountImage()
-                        {
-                            ProfileImage = picBase64,
-                            TwitterAccount = account
-                        };
-                    }
+                    account = this.BuildTwitterAccountObject(model, userId, picBase64);
 
                     this.unitOfWork.TwitterAccounts.Add(account);
                 }
@@ -90,6 +75,8 @@ namespace TwitterBackup.Services
                         TwitterAccount = account
                     });
                 }
+
+                this.AddToAccountStatuses(account.TwitterId, account);
 
                 this.unitOfWork.SaveChanges();
 
@@ -143,6 +130,44 @@ namespace TwitterBackup.Services
             }
 
             return result.Id;
+        }
+
+        private TwitterAccount BuildTwitterAccountObject(TwitterAccountDTO model, int userId, string picBase64)
+        {
+            var account = this.mappingProvider.MapTo<TwitterAccount>(model);
+            account.CreatedAt = DateTime.Now;
+            account.Users.Add(new UserTwitterAccount()
+            {
+                UserId = userId,
+                TwitterAccount = account
+            });
+
+            if (!string.IsNullOrEmpty(picBase64))
+            {
+                account.TwitterAccountImage = new TwitterAccountImage()
+                {
+                    ProfileImage = picBase64,
+                    TwitterAccount = account
+                };
+            }
+
+            return account;
+        }
+
+        private void AddToAccountStatuses(string accountTwitterId, TwitterAccount account)
+        {
+            var statuses = this.unitOfWork.TwitterStatuses
+                .All()
+                .Where(ts => ts.TwitterUserId.Equals(accountTwitterId))
+                .ToList();
+
+            if (statuses != null)
+            {
+                foreach (var status in statuses)
+                {
+                    status.TwitterAccount = account;
+                }
+            }
         }
     }
 }
