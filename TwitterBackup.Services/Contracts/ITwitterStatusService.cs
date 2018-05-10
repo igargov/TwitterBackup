@@ -10,6 +10,8 @@ namespace TwitterBackup.Services.Contracts
 
         List<TwitterStatusViewModel> GetAll(int accountId, int userId);
 
+        List<TwitterStatusIdPair> GetSavedStatusIds(IEnumerable<string> statusIds);
+
         int Create(TwitterStatusDTO model, int userId);
 
         bool Delete(int statusId, int userId);

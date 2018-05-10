@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TwitterBackup.Data.Models.Identity;
 using TwitterBackup.Providers;
@@ -86,7 +87,16 @@ namespace TwitterBackup.Web.Controllers
             {
                 var statuses = await this.twitterApiService.RetrieveTwitterAccountStatusesAsync(screenName, count);
 
+                var statusIds = statuses.Select(s => s.IdString);
+
+                var savedStatuses = this.twitterStatusService.GetSavedStatusIds(statusIds);
+
                 var statusesModel = this.mappingProvider.MapTo<IEnumerable<TwitterStatusDTO>, IEnumerable<TwitterStatusPartialViewModel>>(statuses);
+
+                foreach (var saved in savedStatuses)
+                {
+                    statusesModel.First(sm => sm.TwitterStatusId.Equals(saved.TwitterStatusId)).Id = saved.Id;
+                }
 
                 return PartialView("_TwitterStatusPartial", statusesModel);
             }

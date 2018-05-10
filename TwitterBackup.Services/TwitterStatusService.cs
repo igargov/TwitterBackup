@@ -112,5 +112,20 @@ namespace TwitterBackup.Services
                 return false;
             }
         }
+
+        public List<TwitterStatusIdPair> GetSavedStatusIds(IEnumerable<string> statusIds)
+        {
+            var results = this.unitOfWork.TwitterStatuses
+                .All()
+                .Select(s => new TwitterStatusIdPair()
+                {
+                    Id = s.Id,
+                    TwitterStatusId = s.TwitterStatusId
+                })
+                .Where(ts => statusIds.Contains(ts.TwitterStatusId))
+                .ToList();
+
+            return results;
+        }
     }
 }

@@ -129,7 +129,6 @@
             });
 
             $('#retrieveTweetsByCount').on('click', function () {
-                let count = $('#selectedTweets option:selected').val();
                 let url = '@Url.Action("RetrieveStatusesByCount", "TwitterStatus")';
                 let screenName = '@Model.ScreenName';
 
@@ -142,6 +141,14 @@
                     },
                     success: function (response) {
                         $('#searchResults').html(response);
+
+                        $('.status-buttons-box').each(function (i, obj) {
+                            let statusId = $(obj).attr("data-id");
+
+                            if (statusId != 0) {
+                                $(obj).children(".save-button").prop("disabled", true);
+                            }
+                        });
                     },
                     error: function (err) {
                         console.log(err);
@@ -151,7 +158,7 @@
 
             $('#searchResults').on("click", ".save-button", function () {
                 let element = $(this).parent();
-                let statusId = element.attr("data-feed-id");
+                let statusId = element.attr("data-status-id");
                 let url = '@Url.Action("CreateStatus", "TwitterStatus")';
 
                 $.ajax({
