@@ -9,7 +9,28 @@
     await Html.RenderPartialAsync("TwitterAccountDetailsPartial", Model.TwitterAccount);
 }
 
-@{ 
+@{
     await Html.RenderPartialAsync("TwitterStatusDetailsPartial", Model.TwitterStatusWithAccount);
 }
 
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $('#statusList').on("click", ".delete-status", function () {
+            let statusId = $(this).parent().attr("data-status-id");
+            let url = '@Url.Action("DeleteStatus", "TwitterStatus")';
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    statusId: statusId
+                },
+                success: function (response) {
+                    console.log(response);
+                }
+            });
+        });
+    </script>
+}
