@@ -58,6 +58,9 @@ namespace TwitterBackup.Data
             builder.Entity<TwitterStatus>()
                 .HasIndex(ts => ts.TwitterStatusId);
 
+            builder.Entity<TwitterStatus>()
+                .HasIndex(ts => ts.TwitterUserId);
+
             builder.Entity<User>(e => e.ToTable("Users"));
             builder.Entity<Role>(e => e.ToTable("Roles"));
             builder.Entity<UserRole>(e => e.ToTable("UserRoles"));
